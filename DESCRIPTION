@@ -1,0 +1,20 @@
+Package: SensoGrappe
+Title: Some functions for sensory data in GRAPPE Laboratory
+Version: 5.1.2
+Authors@R: 
+    person(given = "Ronan",
+           family = "SYMONEAUX",
+           role = c("aut", "cre"),
+           email = "r.symoneaux@groupe-esa.com",
+           comment = c(ORCID = "0000-0001-6792-8629"))
+Description: Several functions useful in Sensory evaluations such as AOV and PrefMax.
+Depends: R (>= 4.0.0)
+License: GPL-3
+Imports: dplyr,agricolae,ggplot2,car,lmerTest,qpdf,rlang,utils,stats,plyr,gridExtra,tidyr,FactoMineR,factoextra,stringr,RColorBrewer
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests: 
+    knitr
+VignetteBuilder: knitr
