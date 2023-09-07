@@ -2,7 +2,7 @@
 % Please edit documentation in R/canonisation.R
 \name{canonisation}
 \alias{canonisation}
-\title{canonistation : transpose a multivariable table in one column}
+\title{canonisation : transpose a multivariable table in one column}
 \usage{
 canonisation(data.canon, NbLeft)
 }
@@ -12,8 +12,16 @@ canonisation(data.canon, NbLeft)
 \item{NbLeft}{a value indicating the number of column on the left of the table that do no be concatened}
 }
 \value{
-XXXXXX
+a dataframe with the NbLeft columns, a column with the canonized variables in "Attribute" column and the value in "Score" column
 }
 \description{
 transpose a multivariable table in one column
+}
+\examples{
+data(wine)
+Var.Grappe(wine)
+winef=Var.Grappe(wine,column = c(1:2), type="factor")
+canonisation(winef,2)
+
+
 }

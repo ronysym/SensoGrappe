@@ -8,7 +8,7 @@ AOV.Grappe(x,
  column,
   Model,
   Random = TRUE,
-  randomodel=F,
+  randomodel=FALSE,
   reducF=FALSE,
   reducR=FALSE,
   graphic=FALSE,
@@ -21,23 +21,23 @@ AOV.Grappe(x,
 
 \item{Model}{anova Model
 - Syntax for fixed factor                :    facteur_A
-- Syntax for Fixed factorsr            : 1|facteur_A)
+- Syntax for Random factorr            : (1|facteur_A)
 - Fixed factors                          : facteur1 + facteur2
 - Interaction for Fixed Factors    : facteur1 + facteur2 + facteur1:facteur2
-- Fixed factor & Fixed factor      : facteur1 + (1|facteur2)
-- Interaction with random          : (1|facteur1:facteur2)"}
+- Fixed factor & Random factor    : facteur1 + (1|facteur2)
+- Interaction with random          : facteur1 + (1|facteur2)+ (1|facteur1:facteur2)"}
 
 \item{Random}{Not use for the moment (to be check)}
 
 \item{randomodel}{Not use for the moment (to be check)}
 
-\item{reducF}{logical.  reduce fixed effect structure? FALSE by default.}
+\item{reducF}{logical.reduce fixed effect structure (FALSE by default). To be used only for very complex models}
 
-\item{reducR}{logical. reduce random effect structure? FALSE by default.}
+\item{reducR}{logical. reduce random effect structure (FALSE by default).To be used only for very complex models}
 
-\item{graphic}{plot the graph TRUE / FALSE}
+\item{graphic}{logical. plot the graph (FALSE by default)}
 
-\item{verbose}{logical.show the progression of the analysis ? TRUE by Default}
+\item{verbose}{logical. show the progression of the analysis TRUE by Default}
 }
 \description{
 ANOVA table with F-tests and p-values using Satterthwaite's method for denominator
@@ -49,10 +49,11 @@ data(wine)
 Var.Grappe(wine)
 winef=Var.Grappe(wine,column = c(1:2), type="factor")
 res.AOV <- AOV.Grappe( x=winef,column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
+\dontrun{
 export.AOV(res.AOV)
-library(RColorBrewer)
-mycolor=brewer.pal(7,"Greens")
-graph.AOV(res.AOV,color.graph=mycolor)
+}
+mycolor=c("#EDF8E9","#C7E9C0","#A1D99B","#74C476","#41AB5D","#238B45","#005A32")
+graph.AOV(res.AOV,color.graph=mycolor,y.label="Moyenne")
 graph.AOV(res.AOV,title.graph="Sensory Score", add.moy=TRUE, x.ordered=1, ymin=1, ymax=9)
 
 

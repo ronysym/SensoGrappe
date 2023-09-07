@@ -24,7 +24,9 @@ graph.AOV(
   suffix = NULL,
   add.moy = FALSE,
   extension = "wmf",
-  color.graph = NULL
+  color.graph = NULL,
+  y.label = "Mean",
+  x.label = NULL
 )
 }
 \arguments{
@@ -32,7 +34,7 @@ graph.AOV(
 
 \item{factor}{factor is used to precise the fixed factor(s) to be presented. NULL by default
 - factor=NULL then all factors are presented
-- to represent one factor use  factor="ProduName"
+- to represent one factor use  factor="ProductName"
 - to represent several factos use   factor=c("ProductName", "Block", "Seance")}
 
 \item{attribute}{attribute is used to precise the attribute(s) to be presented. NULL by default
@@ -40,7 +42,7 @@ graph.AOV(
 - to represent one attribute use  attribute="S_sucre"
 - to represent several attributes use   attribute=c("S_sucre", "A_abricot")}
 
-\item{horizontal}{logical.draw horizontal graphs ? FALSE by default}
+\item{horizontal}{logical.draw horizontal graphs ( FALSE by default)}
 
 \item{pvalue}{logical.add the pvalue of the representated factor on the graph ? TRUE by default}
 
@@ -75,6 +77,10 @@ graph.AOV(
 \item{extension}{image format (wmf, png, etc.) wmf by default}
 
 \item{color.graph}{vector containing as much color than needed (NULL by defaut)}
+
+\item{y.label}{value for the label (by default : "Mean")}
+
+\item{x.label}{value for the label (by default : "Product")}
 }
 \value{
 Returns graphs of means by factors and variables with letters from posthoc test, standard deviations and pvalue from ANOVAs
@@ -92,10 +98,11 @@ data(wine)
 Var.Grappe(wine)
 winef=Var.Grappe(wine,column = c(1:2), type="factor")
 res.AOV <- AOV.Grappe( x=winef,column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
+\dontrun{
 export.AOV(res.AOV)
-library(RColorBrewer)
-mycolor=brewer.pal(7,"Greens")
-graph.AOV(res.AOV,color.graph=mycolor)
+}
+mycolor=c("#EDF8E9","#C7E9C0","#A1D99B","#74C476","#41AB5D","#238B45","#005A32")
+graph.AOV(res.AOV,color.graph=mycolor,y.label="Moyenne")
 graph.AOV(res.AOV,title.graph="Sensory Score", add.moy=TRUE, x.ordered=1, ymin=1, ymax=9)
 
 

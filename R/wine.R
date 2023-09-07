@@ -1,6 +1,6 @@
 #' Sensory evaluation of wine
 #'
-#' Data from a tasting done with X students from ESA Angers in 2015
+#' Data from a tasting done with 33 students from ESA Angers in 2018
 #'
 #' @docType data
 #'

@@ -16,6 +16,6 @@ a dataset with 6 wines, 2 replicates and 33 tasters
 data(wine)
 }
 \description{
-Data from a tasting done with X students from ESA Angers in 2015
+Data from a tasting done with 33 students from ESA Angers in 2018
 }
 \keyword{datasets}
