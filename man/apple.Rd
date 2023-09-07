@@ -3,19 +3,24 @@
 \docType{data}
 \name{apple}
 \alias{apple}
-\title{HRATA data on apple}
+\title{HRATA data on apples}
 \format{
-a dataset with X wines, 2 replicates and 33 tasters
+a dataset with 12 apples and 16 tasters
 \describe{
-\item{CJ}{33 tasters from ESA Angers - MIM ASPE 2018}
-\item{ProductName}{6 wines}
-\item{Attributes}{23 sensory attibutes scored from 0 to 10}
+\item{Juge}{16 trained tasters from ESA Angers - UR GRAPPE}
+\item{Product}{12 apples cultivars}
+\item{Attributes}{50  sensory attributes scored from NA to 3 following the HRATA methodology}
 }
 }
 \usage{
 data(apple)
 }
 \description{
-Data from a tasting done on 12 apples with X panelis from ESA Angers in 2020
+Data from a tasting done on 12 apples with 16 trained panelist from ESA Angers in 2020
+}
+\details{
+Symoneaux, R., Patron, C. and Brasse, C. (2022). HRATA: a new sensory methodology for a better aroma characterization – a case study on apple (Malus domestica). Acta Hortic. 1353, 101-108
+DOI: 10.17660/ActaHortic.2022.1353.14
+https://doi.org/10.17660/ActaHortic.2022.1353.14
 }
 \keyword{datasets}

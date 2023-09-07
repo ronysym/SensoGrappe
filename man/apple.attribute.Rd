@@ -3,19 +3,25 @@
 \docType{data}
 \name{apple.attribute}
 \alias{apple.attribute}
-\title{Hierarchical structure}
+\title{Hierarchical structure of the attributes in HRATA apple dataset}
 \format{
-a XXXX
+a dataframe with 3 columns (Family,Category and Attribute)
 \describe{
-\item{CJ}{33 tasters from ESA Angers - MIM ASPE 2018}
-\item{ProductName}{6 wines}
-\item{Attributes}{23 sensory attibutes scored from 0 to 10}
+\item{Family}{Aromatic families}
+\item{Category}{Categories under the families}
+\item{Attribute}{Attributes or terms under category and family}
 }
 }
 \usage{
 data(apple.attribute)
 }
 \description{
-xxxxxx
+Dataframe of the apple aromatic wheel structured with three columns and presenting the hierarchical organization of the dataset (wheel)
+Family and Category are duplicated to express the hierarchical structure
+}
+\details{
+Symoneaux, R., Patron, C. and Brasse, C. (2022). HRATA: a new sensory methodology for a better aroma characterization – a case study on apple (Malus domestica). Acta Hortic. 1353, 101-108
+DOI: 10.17660/ActaHortic.2022.1353.14
+https://doi.org/10.17660/ActaHortic.2022.1353.14
 }
 \keyword{datasets}
