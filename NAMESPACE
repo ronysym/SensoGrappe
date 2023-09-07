@@ -32,6 +32,5 @@ import(stats, except=step)
 import(stats, except=step)
 
 
-import(stringr)
 import(tidyr)
 import(utils)

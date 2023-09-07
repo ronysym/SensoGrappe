@@ -1,10 +1,10 @@
 Package: SensoGrappe
 Title: Some functions for sensory data in GRAPPE Laboratory
-Version: 5.1.2
+Version: 5.1.2.0001
 Authors@R: 
     person(given = "Ronan",
            family = "SYMONEAUX",
-           role = c("aut", "cre"),
+           role = c("aut", "cre"),  
            email = "r.symoneaux@groupe-esa.com",
            comment = c(ORCID = "0000-0001-6792-8629"))
 Description: Several functions useful in Sensory evaluations such as AOV and PrefMax.
