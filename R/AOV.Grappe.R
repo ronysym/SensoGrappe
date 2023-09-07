@@ -10,7 +10,7 @@
 #'  column,
 #'   Model,
 #'   Random = TRUE,
-#'   randomodel=F,
+#'   randomodel=FALSE,
 #'   reducF=FALSE,
 #'   reducR=FALSE,
 #'   graphic=FALSE,
@@ -20,17 +20,17 @@
 #' @param		column  number of the columns on which ANOVA are performed
 #' @param	  Model   anova Model
 #'										- Syntax for fixed factor				:	facteur_A
-#'										- Syntax for Fixed factorsr			: 1|facteur_A)
+#'										- Syntax for Random factorr			: (1|facteur_A)
 #'										- Fixed factors				          : facteur1 + facteur2
 #'										- Interaction for Fixed Factors	: facteur1 + facteur2 + facteur1:facteur2
-#'										- Fixed factor & Fixed factor	  : facteur1 + (1|facteur2)
-#'										- Interaction with random	      : (1|facteur1:facteur2)"
+#'										- Fixed factor & Random factor	: facteur1 + (1|facteur2)
+#'										- Interaction with random	      : facteur1 + (1|facteur2)+ (1|facteur1:facteur2)"
 #' @param   Random Not use for the moment (to be check)
 #' @param   randomodel Not use for the moment (to be check)
-#' @param		reducF logical.  reduce fixed effect structure? FALSE by default.
-#' @param	  reducR logical. reduce random effect structure? FALSE by default.
-#' @param		graphic plot the graph TRUE / FALSE
-#' @param   verbose logical.show the progression of the analysis ? TRUE by Default
+#' @param		reducF logical.reduce fixed effect structure (FALSE by default). To be used only for very complex models
+#' @param	  reducR logical. reduce random effect structure (FALSE by default).To be used only for very complex models
+#' @param		graphic logical. plot the graph (FALSE by default)
+#' @param   verbose logical. show the progression of the analysis TRUE by Default
 #'
 #' @import  utils lmerTest agricolae
 #' @rawNamespace import(stats, except=step)
@@ -41,10 +41,11 @@
 #'Var.Grappe(wine)
 #'winef=Var.Grappe(wine,column = c(1:2), type="factor")
 #'res.AOV <- AOV.Grappe( x=winef,column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
+#'\dontrun{
 #'export.AOV(res.AOV)
-#'library(RColorBrewer)
-#'mycolor=brewer.pal(7,"Greens")
-#'graph.AOV(res.AOV,color.graph=mycolor)
+#'}
+#'mycolor=c("#EDF8E9","#C7E9C0","#A1D99B","#74C476","#41AB5D","#238B45","#005A32")
+#'graph.AOV(res.AOV,color.graph=mycolor,y.label="Moyenne")
 #'graph.AOV(res.AOV,title.graph="Sensory Score", add.moy=TRUE, x.ordered=1, ymin=1, ymax=9)
 #'
 #'
@@ -237,7 +238,7 @@ AOV.Grappe <- function(x, column, Model, Random = TRUE, randomodel=FALSE,
     #-------------------------------------+
     for(ph in c(1:length(Fact)))
     {
-      #Extrait le facteur d'?tude
+      #Extrait le facteur d'etude
       facteur <- Fact[ph]
       if(verbose == TRUE) { cat("\nFacteur  :", facteur)}
       verif.signi <- as.matrix(Total.result$pvalue)[facteur, nom_var]
@@ -279,9 +280,9 @@ AOV.Grappe <- function(x, column, Model, Random = TRUE, randomodel=FALSE,
       mat[, 1] <- nam
 
       #Estimate
-      mat[, 3] <-  round(sou1$"Estimate"[sou1$term==facteur],3)
+      mat[, 3] <-  round(sou1$"Estimate"[sou1$term==facteur],2)
       #Standard Error
-      mat[, 4] <- sou1$"Std. Error"[sou1$term==facteur]
+      mat[, 4] <- round(sou1$"Std. Error"[sou1$term==facteur],2)
 
       mat <-  mat[order(mat[, nom_var], decreasing = FALSE), ]
 
@@ -293,12 +294,14 @@ AOV.Grappe <- function(x, column, Model, Random = TRUE, randomodel=FALSE,
         #Dans X - Y : Si Estimate < 0, alors X < Y
         #Il faut donc que le groupe de Y soit "superieur" : X groupe a et Y groupe b
 
+
+
         if(sou$"p-value"[l] <= 0.05 && sou$Estimate[l] < 0)
         {
           #Pour chaque modalite, trouve la ligne correspondante dans la matrice
-          if(pmatch(sou$n2[l], mat[, 1], nomatch=0) > 0)
+          if(pmatch(sou$n1[l], mat[, 1], nomatch=0) > 0)
           {
-            ligne <- pmatch(sou$n2[l], mat[, 1], nomatch=0)
+            ligne <- pmatch(sou$n1[l], mat[, 1], nomatch=0)
           } else {
             ligne <- long
           }
@@ -313,9 +316,9 @@ AOV.Grappe <- function(x, column, Model, Random = TRUE, randomodel=FALSE,
           if(sou$"p-value"[l] <= 0.05 && sou$Estimate[l] > 0)
           {
             #Pour chaque modalite, trouve la ligne correspondante dans la matrice
-            if(pmatch(sou$n1[l], mat[, 1], nomatch=0) > 0)
+            if(pmatch(sou$n2[l], mat[, 1], nomatch=0) > 0)
             {
-              ligne <- pmatch(sou$n1[l], mat[, 1], nomatch=0)
+              ligne <- pmatch(sou$n2[l], mat[, 1], nomatch=0)
             } else {
               ligne <- long
             }
@@ -434,7 +437,7 @@ AOV.Grappe <- function(x, column, Model, Random = TRUE, randomodel=FALSE,
         mat[lol, 2] <- paste(lol_NewNom, mat[lol, 2], sep="")
       }
       #Arrondi les valeurs
-      mat[, c(3, 4)] <- round(as.numeric(mat[, c(3, 4)]), 3)
+      mat[, c(3, 4)] <- format(round(as.numeric(mat[, c(3, 4)]), 2),nsmall = 2)
       grp <- gsub(pattern=" ", replacement="", x=mat[, 2])
       #Enregistre les resultats
       Total.result$lsd.result[[facteur]] <- cbind(Total.result$lsd.result[[facteur]], mat[, c(3, 4, 2)])
