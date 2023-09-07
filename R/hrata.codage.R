@@ -1,7 +1,11 @@
-#' hrata.codage : function to modify Hierachical structure CSV file
+#' hrata.codage : function to prepare the codage file needed in hrata.agregation from the Hierachical structure CSV file
 #'
 #'
-#' @param h.table dataframe from a CSV file containing the Hierachical structure
+#' @param h.table dataframe (from a CSV file)  containing the Hierachical structure and structured with three columns and presenting the hierarchical organization of the dataset (wheel)
+#' Family and Category are duplicated to express the hierarchical structure : 3 columns (Family,Category and Attribute)
+#'
+#' @seealso [hrata.signi()] [hrata.table()] [hrata.multidim()]
+#'
 #'
 #' @examples
 #' data(apple.attribute)
@@ -11,7 +15,6 @@
 #' @export
 hrata.codage<-function(h.table)
   {
-
   data.table=h.table
   data.table=Var.Grappe(data.table,c(1:2), "factor",verbose = FALSE)
   nattribut<-nlevels(data.table[,1])+nlevels(data.table[,2])+length(data.table[,3])
@@ -21,8 +24,10 @@ hrata.codage<-function(h.table)
   i<-1
   cc<-1
   ff<-1
+
+
   for (f in 1:nlevels(data.table[,1])){
-    fam<-levels(data.table[,1])[f]
+    fam<-levels( factor(data.table[,1], as.character(unique(data.table[,1]))))[f]
     codage[i,1]<-as.character(fam)
     codage[i,2]<-NA
     codage[i,3]<-ff
