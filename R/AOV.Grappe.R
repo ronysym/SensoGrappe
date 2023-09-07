@@ -56,6 +56,7 @@ AOV.Grappe <- function(x, column, Model, Random = TRUE, randomodel=F,
   #Prepare les objets pour stocker les resultats
   #----------------------------------------------+
   #Nombre de variables a analyser
+  attach(x)
   nbvar <- length(column)
   #Modele
   mod.temp <- formula(paste("variable", Model, sep="~"))
@@ -441,5 +442,6 @@ AOV.Grappe <- function(x, column, Model, Random = TRUE, randomodel=F,
     if(verbose == TRUE) { cat("\n")}
 
   }
+  detach(x)
   return(Total.result) }
 
