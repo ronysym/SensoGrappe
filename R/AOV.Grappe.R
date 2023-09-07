@@ -18,7 +18,6 @@
 #'
 #' @param		x       dataframe
 #' @param		column  number of the columns on which ANOVA are performed
-#' @param		graphic plot the graph TRUE / FALSE
 #' @param	  Model   anova Model
 #'										- Syntax for fixed factor				:	facteur_A
 #'										- Syntax for Fixed factorsr			: 1|facteur_A)
@@ -26,11 +25,12 @@
 #'										- Interaction for Fixed Factors	: facteur1 + facteur2 + facteur1:facteur2
 #'										- Fixed factor & Fixed factor	  : facteur1 + (1|facteur2)
 #'										- Interaction with random	      : (1|facteur1:facteur2)"
+#' @param   Random Not use for the moment (to be check)
+#' @param   randomodel Not use for the moment (to be check)
 #' @param		reducF logical.  reduce fixed effect structure? FALSE by default.
 #' @param	  reducR logical. reduce random effect structure? FALSE by default.
-#' @param   Random Not use for the moment (to be check)
+#' @param		graphic plot the graph TRUE / FALSE
 #' @param   verbose logical.show the progression of the analysis ? TRUE by Default
-#' @param   randomodel Not use for the moment (to be check)
 #'
 #' @import  utils lmerTest agricolae
 #' @rawNamespace import(stats, except=step)
@@ -50,7 +50,7 @@
 #'
 #'
 #' @export
-AOV.Grappe <- function(x, column, Model, Random = TRUE, randomodel=F,
+AOV.Grappe <- function(x, column, Model, Random = TRUE, randomodel=FALSE,
                          reducF=FALSE, reducR=FALSE, graphic=FALSE, verbose=TRUE)
 {
   #Prepare les objets pour stocker les resultats
