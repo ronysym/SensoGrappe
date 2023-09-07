@@ -2,22 +2,25 @@
 % Please edit documentation in R/hrata.agregation.R
 \name{hrata.agregation}
 \alias{hrata.agregation}
-\title{hrata.agregation : prepare the hrata table for analysis}
+\title{hrata.agregation : prepare the HRATA or HCATA table for analysis from rawdata}
 \usage{
 hrata.agregation(data, h.table, crit.agreg = max)
 }
 \arguments{
-\item{data}{a dataframe containing rawdata HRATA or HCATA sensory task wiht Juge in first column and Product in the second column}
+\item{data}{a dataframe containing rawdata HRATA or HCATA sensory task with Juge in first column and Product in the second column then all attributes}
 
-\item{h.table}{a dataframe with the hierarchical structure : three columns Familly, Category, Terms}
+\item{h.table}{a dataframe with the hierarchical structure : three columns "Family", "Category", "Attribute"}
 
-\item{crit.agreg}{agregation criterion used during the data allocation : max, min, or mean}
+\item{crit.agreg}{agregation criterion used during the data allocation : "max" or "mean" (by default : max is used in Koenig et al 2023 and is adapted for HRATA and HCATA, mean is only usable in HRATA)}
 }
 \value{
-returns graphs of means by factors and variables with letters from posthoc test, standard deviations and pvalue from ANOVAs
+List of 3 objects
+1) hierarchical.data : a dataframe of the reallocated data.
+2) lfam.name  a list of the families and associated categories.
+3) lcat.name a list of the categories and associated attributes.
 }
 \description{
-create the dataframe use for HRATA analysis
+create the dataframe used for HRATA or HCATA analysis by integreting the reallocation strategy from attribute to category and category to term as defined in Koenig et al (2023)
 }
 \examples{
 data(apple)
@@ -29,6 +32,9 @@ res.PCA<-hrata.multidim(res.table,method="PCA",scale.unit=FALSE,niv=3)
 
 
 }
+\references{
+Koenig, L., Symoneaux, R., Pouzalgues, N., Cariou, V., Vigneau, E., & Coulon-Leroy, C. (2023). Development of a Hierarchical Rate-All-That-Apply (HRATA) methodology for the aromatic characterisation of wine. OENO One, 57(1), 175–190. https://doi.org/10.20870/oeno-one.2023.57.1.5531
+}
 \seealso{
-xxxxxx
+\code{\link[=hrata.signi]{hrata.signi()}} \code{\link[=hrata.table]{hrata.table()}} \code{\link[=hrata.multidim]{hrata.multidim()}}
 }

@@ -1,25 +1,31 @@
-#' hrata.agregation : prepare the hrata table for analysis
+#' hrata.agregation : prepare the HRATA or HCATA table for analysis from rawdata
 #'
-#' @description create the dataframe use for HRATA analysis
-#'
-#' @param	data  a dataframe containing rawdata HRATA or HCATA sensory task wiht Juge in first column and Product in the second column
-#' @param	h.table  a dataframe with the hierarchical structure : three columns Familly, Category, Terms
-#' @param	crit.agreg agregation criterion used during the data allocation : max, min, or mean
+#' @description create the dataframe used for HRATA or HCATA analysis by integreting the reallocation strategy from attribute to category and category to term as defined in Koenig et al (2023)
 #'
 #'
+#' @param	data  a dataframe containing rawdata HRATA or HCATA sensory task with Juge in first column and Product in the second column then all attributes
+#' @param	h.table  a dataframe with the hierarchical structure : three columns "Family", "Category", "Attribute"
+#' @param	crit.agreg agregation criterion used during the data allocation : "max" or "mean" (by default : max is used in Koenig et al 2023 and is adapted for HRATA and HCATA, mean is only usable in HRATA)
 #'
-#' @return returns graphs of means by factors and variables with letters from posthoc test, standard deviations and pvalue from ANOVAs
 #'
 #'
-#' @seealso xxxxxx
+#' @return List of 3 objects
+#'          1) hierarchical.data : a dataframe of the reallocated data.
+#'          2) lfam.name  a list of the families and associated categories.
+#'          3) lcat.name a list of the categories and associated attributes.
+#'
+#'
+#' @references Koenig, L., Symoneaux, R., Pouzalgues, N., Cariou, V., Vigneau, E., & Coulon-Leroy, C. (2023). Development of a Hierarchical Rate-All-That-Apply (HRATA) methodology for the aromatic characterisation of wine. OENO One, 57(1), 175–190. https://doi.org/10.20870/oeno-one.2023.57.1.5531
+#'
+#' @seealso [hrata.signi()] [hrata.table()] [hrata.multidim()]
 #'
 #' @examples
-#'data(apple)
-#'data(apple.attribute)
-#'res.agreg<-hrata.agregation(data=apple,h.table=apple.attribute,crit.agreg=max)
-#'res.signi<-hrata.signi(res.agreg,seuil=0.05)
-#'res.table<-hrata.table(res.agreg,type="dravnieks")
-#'res.PCA<-hrata.multidim(res.table,method="PCA",scale.unit=FALSE,niv=3)
+#' data(apple)
+#' data(apple.attribute)
+#' res.agreg<-hrata.agregation(data=apple,h.table=apple.attribute,crit.agreg=max)
+#' res.signi<-hrata.signi(res.agreg,seuil=0.05)
+#' res.table<-hrata.table(res.agreg,type="dravnieks")
+#' res.PCA<-hrata.multidim(res.table,method="PCA",scale.unit=FALSE,niv=3)
 #'
 #'
 #' @export
