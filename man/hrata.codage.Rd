@@ -2,19 +2,23 @@
 % Please edit documentation in R/hrata.codage.R
 \name{hrata.codage}
 \alias{hrata.codage}
-\title{hrata.codage : function to modify Hierachical structure CSV file}
+\title{hrata.codage : function to prepare the codage file needed in hrata.agregation from the Hierachical structure CSV file}
 \usage{
 hrata.codage(h.table)
 }
 \arguments{
-\item{h.table}{dataframe from a CSV file containing the Hierachical structure}
+\item{h.table}{dataframe (from a CSV file)  containing the Hierachical structure and structured with three columns and presenting the hierarchical organization of the dataset (wheel)
+Family and Category are duplicated to express the hierarchical structure : 3 columns (Family,Category and Attribute)}
 }
 \description{
-hrata.codage : function to modify Hierachical structure CSV file
+hrata.codage : function to prepare the codage file needed in hrata.agregation from the Hierachical structure CSV file
 }
 \examples{
 data(apple.attribute)
 hrata.codage(apple.attribute)
 
 
+}
+\seealso{
+\code{\link[=hrata.signi]{hrata.signi()}} \code{\link[=hrata.table]{hrata.table()}} \code{\link[=hrata.multidim]{hrata.multidim()}}
 }
