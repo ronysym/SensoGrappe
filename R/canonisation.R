@@ -1,4 +1,4 @@
-#' canonistation : transpose a multivariable table in one column
+#' canonisation : transpose a multivariable table in one column
 #'
 #' @description transpose a multivariable table in one column
 #'
@@ -6,7 +6,13 @@
 #' @param	NbLeft  a value indicating the number of column on the left of the table that do no be concatened
 #'
 #'
-#' @return XXXXXX
+#' @return a dataframe with the NbLeft columns, a column with the canonized variables in "Attribute" column and the value in "Score" column
+#'
+#' @examples
+#' data(wine)
+#' Var.Grappe(wine)
+#' winef=Var.Grappe(wine,column = c(1:2), type="factor")
+#' canonisation(winef,2)
 #'
 #'
 #' @export
