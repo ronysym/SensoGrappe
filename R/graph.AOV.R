@@ -5,14 +5,14 @@
 #' @param	AOV.res  an object results from [AOV.Grappe()]
 #' @param	factor   factor is used to precise the fixed factor(s) to be presented. NULL by default
 #'                 - factor=NULL then all factors are presented
-#'                 - to represent one factor use  factor="ProduName"
+#'                 - to represent one factor use  factor="ProductName"
 #'                 - to represent several factos use   factor=c("ProductName", "Block", "Seance")
 #' @param	attribute   attribute is used to precise the attribute(s) to be presented. NULL by default
 #'                 - Attribute=NULL then all attributes are presented
 #'                 - to represent one attribute use  attribute="S_sucre"
 #'                 - to represent several attributes use   attribute=c("S_sucre", "A_abricot")
 #'
-#' @param	horizontal logical.draw horizontal graphs ? FALSE by default
+#' @param	horizontal logical.draw horizontal graphs ( FALSE by default)
 #' @param	ymin minimum for Y (0 by default)
 #' @param	ymax maximum  for Y (by default the max of Y is used)
 #' @param	angle.x angle for labels on X (by default 0) but 45 is better for long labels
@@ -34,7 +34,8 @@
 #                    3: increasing averages.
 #' @param add.moy  logical.  add the value of the mean on the graph (FALSE by default)
 #' @param color.graph vector containing as much color than needed (NULL by defaut)
-#'
+#' @param y.label value for the label (by default : "Mean")
+#' @param x.label value for the label (by default : "Product")
 #'
 #'
 #' @return Returns graphs of means by factors and variables with letters from posthoc test, standard deviations and pvalue from ANOVAs
@@ -45,15 +46,16 @@
 #' @import  utils ggplot2 grDevices tidyr qpdf RColorBrewer
 #' @rawNamespace import(stats, except=step)
 #'
-#' @examples
+#'@examples
 #'data(wine)
 #'Var.Grappe(wine)
 #'winef=Var.Grappe(wine,column = c(1:2), type="factor")
 #'res.AOV <- AOV.Grappe( x=winef,column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
+#'\dontrun{
 #'export.AOV(res.AOV)
-#'library(RColorBrewer)
-#'mycolor=brewer.pal(7,"Greens")
-#'graph.AOV(res.AOV,color.graph=mycolor)
+#'}
+#'mycolor=c("#EDF8E9","#C7E9C0","#A1D99B","#74C476","#41AB5D","#238B45","#005A32")
+#'graph.AOV(res.AOV,color.graph=mycolor,y.label="Moyenne")
 #'graph.AOV(res.AOV,title.graph="Sensory Score", add.moy=TRUE, x.ordered=1, ymin=1, ymax=9)
 #'
 #'
@@ -64,7 +66,7 @@
 #' For example :  color.graph= rep("grey",6)
 #'
 #' @export
-graph.AOV <- function(AOV.res=NULL, factor=NULL, attribute=NULL, horizontal=FALSE, pvalue = TRUE,title.graph=NULL, ymin=0, ymax=NULL, angle.x=0, angle.y=0, angle.grp=0, size.x=10,size.grp=4,save.graph=FALSE, x.ordered=3, prefix=NULL, suffix=NULL, add.moy=FALSE, extension="wmf", color.graph=NULL)
+graph.AOV <- function(AOV.res=NULL, factor=NULL, attribute=NULL, horizontal=FALSE, pvalue = TRUE,title.graph=NULL, ymin=0, ymax=NULL, angle.x=0, angle.y=0, angle.grp=0, size.x=10,size.grp=4,save.graph=FALSE, x.ordered=3, prefix=NULL, suffix=NULL, add.moy=FALSE, extension="wmf", color.graph=NULL,y.label="Mean",x.label=NULL)
 {
 
   #Variables pour aligner les noms sur les axes
@@ -240,11 +242,14 @@ graph.AOV <- function(AOV.res=NULL, factor=NULL, attribute=NULL, horizontal=FALS
         #Barres avec Standard Error (donnees par lmer)
         gp <- gp + geom_errorbar(data=data.temp, aes(ymin=Moy_num, ymax=Moy_num+SE_num), width=0.25)
         #Titres
-        gp <- gp + labs(x=nombaz, y="Mean", title=paste(name.temp),caption=paste("pvalue :" ,pvalue.temp))
+
+        if(is.null(x.label) == TRUE) {x.label<-nombaz}
+
+        gp <- gp + labs(x=x.label, y=y.label, title=paste(name.temp),caption=paste("pvalue :" ,pvalue.temp))
 
         if(pvalue == FALSE)
         {
-          gp <- gp + labs(x=nombaz, y="Mean", title=paste(name.temp),caption=NULL)
+          gp <- gp + labs(x=x.label, y=y.label, title=paste(name.temp),caption=NULL)
         }
 
 
@@ -263,7 +268,7 @@ graph.AOV <- function(AOV.res=NULL, factor=NULL, attribute=NULL, horizontal=FALS
         if(horizontal == TRUE) { gp <- gp + coord_flip() }
         #Ajoute les lettres des groupes
         gp <- gp + annotate(geom="text", x=data.temp$Names, y=ypos, label=data.temp$Grp, size=size.grp, hjust=hgrp, angle=angle.grp)
-        if(add.moy == TRUE) {gp <- gp + annotate(geom="text", x=data.temp$Names, y=ymin+0.2, label=data.temp$Moy_num, size=3, hjust=hgrp, angle=angle.grp)}
+        if(add.moy == TRUE) {gp <- gp + annotate(geom="text", x=data.temp$Names, y=ymin+0.2, label=format(data.temp$Moy_num,2), size=3, hjust=hgrp, angle=angle.grp)}
 
 
 
@@ -296,11 +301,11 @@ graph.AOV <- function(AOV.res=NULL, factor=NULL, attribute=NULL, horizontal=FALS
           plot.inter <- plot.inter + stat_summary(fun.y=mean, geom="point") + stat_summary(fun.y=mean, geom="line")
           plot.inter <- plot.inter + theme_bw()
           #Titres
-          plot.inter <- plot.inter + labs(x=nomBaz[1], y="Mean", title=name.temp, colour=nomBaz[2],caption=paste("pvalue :" ,pvalue.temp))
+          plot.inter <- plot.inter + labs(x=nomBaz[1], y=y.label, title=name.temp, colour=nomBaz[2],caption=paste("pvalue :" ,pvalue.temp))
 
           if(pvalue == FALSE)
           {
-            plot.inter <- plot.inter + labs(x=nomBaz[1], y="Mean", title=name.temp, colour=nomBaz[2],caption=NULL)
+            plot.inter <- plot.inter + labs(x=nomBaz[1], y=y.label, title=name.temp, colour=nomBaz[2],caption=NULL)
           }
 
 
@@ -337,11 +342,11 @@ graph.AOV <- function(AOV.res=NULL, factor=NULL, attribute=NULL, horizontal=FALS
           plot.inter <- plot.inter + stat_summary(fun.y=mean, geom="point") + stat_summary(fun.y=mean, geom="line")
           plot.inter <- plot.inter + theme_bw()
           #Titres
-          plot.inter <- plot.inter + labs(x=nomBaz[2], y="Mean", title=name.temp, colour=nomBaz[1],caption=paste("pvalue :" ,pvalue.temp))
+          plot.inter <- plot.inter + labs(x=nomBaz[2], y=y.label, title=name.temp, colour=nomBaz[1],caption=paste("pvalue :" ,pvalue.temp))
 
           if(pvalue == FALSE)
           {
-            plot.inter <- plot.inter + labs(x=nomBaz[2], y="Mean", title=name.temp, colour=nomBaz[1],caption=NULL)
+            plot.inter <- plot.inter + labs(x=nomBaz[2], y=y.label, title=name.temp, colour=nomBaz[1],caption=NULL)
           }
 
 
