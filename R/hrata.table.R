@@ -1,14 +1,14 @@
-#' hrata.table : Compute the average table from HRATA result
+#' hrata.table : Compute the average table for HRATA or HCATA multidimensionnal result
 #'
-#' @description Compute the dravnieks or mean table from HRATA results
+#' @description Compute the dravnieks or mean table from HRATA results or the contingency table for HCATA as defined in Koenig et al (2023)
 #'
 #' @param	res.agreg results from [hrata.agregation]
-#' @param type  aggregation criterion of the average table ("mean" or "dravnieks") by default "dravnieks"
+#' @param type  aggregation criterion of the average table ("mean" or "dravnieks" or "contingency") by default "dravnieks"
 #'
 #'
 #' @import FactoMineR stringr
 #' @rawNamespace import(factoextra, except=hcut)
-#' @seealso XXXXXX
+#' @seealso [hrata.signi()] [hrata.agregation()] [hrata.multidim()]
 #'
 #'
 #' @examples

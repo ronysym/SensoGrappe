@@ -8,7 +8,7 @@
 #' @return returns graphs of means by factors and variables with letters from posthoc test, standard deviations and pvalue from ANOVAs
 #'
 #'
-#' @seealso xxxxxx
+#' @seealso [hrata.signi()] [hrata.agregation()] [hrata.multidim()]
 #'
 #' @examples
 #'data(apple)
