@@ -2,7 +2,7 @@
 % Please edit documentation in R/hrata.multidim.R
 \name{hrata.multidim}
 \alias{hrata.multidim}
-\title{hrata.multidim : Performs a multidimensionnal analysis PCA for HRATA data}
+\title{hrata.multidim : Performs a multidimensionnal analysis PCA for HRATA and HCATA data}
 \usage{
 hrata.multidim(
   res.table,
@@ -13,9 +13,9 @@ hrata.multidim(
 )
 }
 \arguments{
-\item{res.table}{a dataframe provided by \link{hrata.agregation}}
+\item{res.table}{a dataframe provided by \link{hrata.table}}
 
-\item{method}{"PCA" for Hrata or "CA" for Hcata}
+\item{method}{"PCA" for HRATA or "CA" for HCATA and HRATA}
 
 \item{scale.unit}{a boolean, if TRUE (value set by default) then data are scaled to unit variance}
 
@@ -27,7 +27,7 @@ hrata.multidim(
 Returns a list similar to \link{PCA}
 }
 \description{
-Performs a multidimensionnal analysis PCA for HRATA data
+Performs a multidimensionnal analysis PCA for HRATA data and HCATA data
 }
 \examples{
 data(rose)
@@ -40,5 +40,5 @@ res.PCA<-hrata.multidim(res.table,method="PCA",scale.unit=FALSE,niv=3)
 
 }
 \seealso{
-XXXXXX
+\code{\link[=hrata.signi]{hrata.signi()}} \code{\link[=hrata.agregation]{hrata.agregation()}} \code{\link[=hrata.table]{hrata.table()}}
 }
