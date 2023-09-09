@@ -4,18 +4,21 @@
 \alias{hrata.signi}
 \title{hrata.signi : Perform a regression analysis}
 \usage{
-hrata.signi(res.agreg, seuil = NULL)
+hrata.signi(res.agreg, select.judge = TRUE, seuil = NULL)
 }
 \arguments{
 \item{res.agreg}{results from \link{hrata.agregation}}
 
-\item{seuil}{the significance threshold considered for the analyses of variance. Only attribute under this value will keep in the results (by default 0.05)}
+\item{select.judge}{logical. (By default = TRUE) if TRUE subjects who did not consider an attribute were excluded from the analysis of that attribute so that the number of subjects for each attribute varied. If FALSE : all subjects are used fo all attributes}
+
+\item{seuil}{numeric. the significance threshold considered for the analyses of variance. Only attribute under this value will keep in the results (by default 0.05)}
 }
 \value{
-Returns graphs of means by factors and variables with letters from posthoc test, standard deviations and pvalue from ANOVAs
+Returns a dataframe with the pvalue for each attributes
 }
 \description{
-Perform a XXXXX analysis on the HRATA or HCATA data to identify discriminative attibutes
+Perform a logistic regression was  performed for each attribute, with subject and product as independent factors (Dobson and Barnett, 2008) for HRATA or HCATA data to identify discriminative attibutes
+as recommended  in Koenig et al (2023)
 }
 \examples{
 data(apple)

@@ -28,7 +28,7 @@
 
 
 
-hrata.signi<-function(res.agreg, select.judge=TRUE, seuil=NULL)
+hrata.signi<-function(res.agreg, select.judge=FALSE, seuil=NULL)
   {
 
   data<-res.agreg$hierarchical.data
@@ -40,9 +40,17 @@ hrata.signi<-function(res.agreg, select.judge=TRUE, seuil=NULL)
 
 
   latt<-vector("list",ncol(data)-2)
+
   for (i in 3:ncol(data)){
-    suj<-data[which(data[,i]>0),1]  # selectionne les sujets qui ont evalue l'attribut i pour n'importe quel produit
-    if (length(which(duplicated(suj)))==0){ # verifie s'il y a des duplicats dans les sujets selectionnes
+
+
+    if (select.judge==TRUE){ # verifie s'il y a des duplicats dans les sujets selectionnes
+      suj<-data[which(data[,i]>0),1]   # selectionne les sujets qui ont evalue l'attribut i pour n'importe quel produit
+      }else{
+      suj<-data[which(data[,i]>=0),1] # si duplicats, on les enleve --> on obtient la liste des sujets qui ont selectionne l'atttribut i pour au moins un des produits
+    }
+
+     if (length(which(duplicated(suj)))==0){ # verifie s'il y a des duplicats dans les sujets selectionnes
       suj<-suj
     }else{
       suj<-suj[-which(duplicated(suj))] # si duplicats, on les enleve --> on obtient la liste des sujets qui ont selectionne l'atttribut i pour au moins un des produits
@@ -55,31 +63,35 @@ hrata.signi<-function(res.agreg, select.judge=TRUE, seuil=NULL)
     latt[[i-2]]<-data[vec,c(1,2,i)]
   }
 
-  reg2<-vector(length=length(latt))
-  names(reg2)<-colnames(data)[3:ncol(data)]
+
+  reg2 <- as.data.frame(matrix(data=NA, nrow=length(latt), ncol=2))
+  rownames(reg2)<-colnames(data)[3:ncol(data)]
+  names(reg2)<-c("pvalue","NbrJuge")
+
+
   for (i in 1:length(latt)){
     dd<-latt[[i]]
-    if (nrow(dd)>24){
+    dd[,3]<-replace(dd[,3],dd[,3]>0,1)
+    response<-dd[,3]
+    produit<-dd[,2]
+    sujet<-dd[,1]
 
-      dd[,3]<-replace(dd[,3],dd[,3]>0,1)
-
-      response<-dd[,3]
-      produit<-dd[,2]
-      sujet<-dd[,1]
-
+    if (nlevels(droplevels(sujet))>2){
       res.reg2<-suppressWarnings({glm(response~sujet+produit,family=binomial)})
-      res2<-Anova(res.reg2,type=3)
-      reg2[i]<-res2$`Pr(>Chisq)`[2]
+      res2<-suppressWarnings({Anova(res.reg2,type=3)})
+      reg2[i,1]<-res2$`Pr(>Chisq)`[2]
+      reg2[i,2]<-nlevels(droplevels(sujet))
 
-    }  else {
-      reg2[i]<-1
+    }else {
+      reg2[i,1]<-1
     }
   }
-  if (is.null(seuil))  {
+
+   if (is.null(seuil))  {
     return(reg2)
   }else{
 
-    out<-reg2[which(reg2<seuil)]
+    out<-reg2[which(reg2$pvalue<seuil),]
     return(out)
   }
 }
