@@ -2,17 +2,17 @@
 % Please edit documentation in R/hrata.table.R
 \name{hrata.table}
 \alias{hrata.table}
-\title{hrata.table : Compute the average table from HRATA result}
+\title{hrata.table : Compute the average table for HRATA or HCATA multidimensionnal result}
 \usage{
 hrata.table(res.agreg, type = "dravnieks")
 }
 \arguments{
 \item{res.agreg}{results from \link{hrata.agregation}}
 
-\item{type}{aggregation criterion of the average table ("mean" or "dravnieks") by default "dravnieks"}
+\item{type}{aggregation criterion of the average table ("mean" or "dravnieks" or "contingency") by default "dravnieks"}
 }
 \description{
-Compute the dravnieks or mean table from HRATA results
+Compute the dravnieks or mean table from HRATA results or the contingency table for HCATA as defined in Koenig et al (2023)
 }
 \examples{
 data(apple)
@@ -25,5 +25,5 @@ res.PCA<-hrata.multidim(res.table,method="PCA",scale.unit=FALSE,niv=3)
 
 }
 \seealso{
-XXXXXX
+\code{\link[=hrata.signi]{hrata.signi()}} \code{\link[=hrata.agregation]{hrata.agregation()}} \code{\link[=hrata.multidim]{hrata.multidim()}}
 }
