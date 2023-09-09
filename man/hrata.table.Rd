@@ -4,10 +4,12 @@
 \alias{hrata.table}
 \title{hrata.table : Compute the average table for HRATA or HCATA multidimensionnal result}
 \usage{
-hrata.table(res.agreg, type = "dravnieks")
+hrata.table(res.agreg, select.judge = FALSE, type = "dravnieks")
 }
 \arguments{
 \item{res.agreg}{results from \link{hrata.agregation}}
+
+\item{select.judge}{logical. (By default = TRUE) if TRUE subjects who did not consider an attribute were excluded from the analysis of that attribute so that the number of subjects for each attribute varied. If FALSE : all subjects are used fo all attributes}
 
 \item{type}{aggregation criterion of the average table ("mean" or "dravnieks" or "contingency") by default "dravnieks"}
 }
@@ -15,9 +17,9 @@ hrata.table(res.agreg, type = "dravnieks")
 Compute the dravnieks or mean table from HRATA results or the contingency table for HCATA as defined in Koenig et al (2023)
 }
 \examples{
-data(apple)
-data(apple.attribute)
-res.agreg<-hrata.agregation(data=apple,h.table=apple.attribute,crit.agreg=max)
+data(rose)
+data(rose.attribute)
+res.agreg<-hrata.agregation(data=rose,h.table=rose.attribute,crit.agreg=max)
 res.signi<-hrata.signi(res.agreg,seuil=0.05)
 res.table<-hrata.table(res.agreg,type="dravnieks")
 res.PCA<-hrata.multidim(res.table,method="PCA",scale.unit=FALSE,niv=3)

@@ -8,8 +8,8 @@
 #'
 #'
 #' @examples
-#' data(apple.attribute)
-#' hrata.codage(apple.attribute)
+#' data(rose.attribute)
+#' hrata.codage(rose.attribute)
 #'
 #'
 #' @export

@@ -1,10 +1,10 @@
-#' hrata.multidim : Performs a multidimensionnal analysis PCA for HRATA data
+#' hrata.multidim : Performs a multidimensionnal analysis PCA for HRATA and HCATA data
 #'
-#' @description Performs a multidimensionnal analysis PCA for HRATA data
+#' @description Performs a multidimensionnal analysis PCA for HRATA data and HCATA data
 #'
 #'
-#'@param res.table  a dataframe provided by [hrata.agregation]
-#'@param method  "PCA" for Hrata or "CA" for Hcata
+#'@param res.table  a dataframe provided by [hrata.table]
+#'@param method  "PCA" for HRATA or "CA" for HCATA and HRATA
 #'@param scale.unit  a boolean, if TRUE (value set by default) then data are scaled to unit variance
 #'@param niv a value to be fixe at 2 if the number of hierarichie is 2
 #'@param select a value indicating which level are used as active variables  : "cat" for category, "fam" for familly, "att" for terms (by defaul NULL)
@@ -14,13 +14,13 @@
 #'
 #' @import FactoMineR
 #'
-#' @seealso XXXXXX
+#' @seealso [hrata.signi()] [hrata.agregation()] [hrata.table()]
 #'
 #'
 #' @examples
-#'data(apple)
-#'data(apple.attribute)
-#'res.agreg<-hrata.agregation(data=apple,h.table=apple.attribute,crit.agreg=max)
+#'data(rose)
+#'data(rose.attribute)
+#'res.agreg<-hrata.agregation(data=rose,h.table=rose.attribute,crit.agreg=max)
 #'res.signi<-hrata.signi(res.agreg,seuil=0.05)
 #'res.table<-hrata.table(res.agreg,type="dravnieks")
 #'res.PCA<-hrata.multidim(res.table,method="PCA",scale.unit=FALSE,niv=3)

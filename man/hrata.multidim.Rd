@@ -30,9 +30,9 @@ Returns a list similar to \link{PCA}
 Performs a multidimensionnal analysis PCA for HRATA data
 }
 \examples{
-data(apple)
-data(apple.attribute)
-res.agreg<-hrata.agregation(data=apple,h.table=apple.attribute,crit.agreg=max)
+data(rose)
+data(rose.attribute)
+res.agreg<-hrata.agregation(data=rose,h.table=rose.attribute,crit.agreg=max)
 res.signi<-hrata.signi(res.agreg,seuil=0.05)
 res.table<-hrata.table(res.agreg,type="dravnieks")
 res.PCA<-hrata.multidim(res.table,method="PCA",scale.unit=FALSE,niv=3)

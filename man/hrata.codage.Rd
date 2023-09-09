@@ -14,8 +14,8 @@ Family and Category are duplicated to express the hierarchical structure : 3 col
 hrata.codage : function to prepare the codage file needed in hrata.agregation from the Hierachical structure CSV file
 }
 \examples{
-data(apple.attribute)
-hrata.codage(apple.attribute)
+data(rose.attribute)
+hrata.codage(rose.attribute)
 
 
 }
