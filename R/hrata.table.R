@@ -13,25 +13,23 @@
 #'
 #'
 #' @examples
-#'data(rose)
-#'data(rose.attribute)
-#'res.agreg<-hrata.agregation(data=rose,h.table=rose.attribute,crit.agreg=max)
-#'res.signi<-hrata.signi(res.agreg,seuil=0.05)
-#'res.table<-hrata.table(res.agreg,type="dravnieks")
-#'res.PCA<-hrata.multidim(res.table,method="PCA",scale.unit=FALSE,niv=3)
-#'
+#' data(rose)
+#' data(rose.attribute)
+#' res.agreg <- hrata.agregation(data = rose, h.table = rose.attribute, crit.agreg = max)
+#' res.signi <- hrata.signi(res.agreg, seuil = 0.05)
+#' res.table <- hrata.table(res.agreg, type = "dravnieks")
+#' res.PCA <- hrata.multidim(res.table, method = "PCA", scale.unit = FALSE, niv = 3)
 #'
 #' @export
 
 
 hrata.table <- function(res.agreg,
                         select.judge = FALSE,
-                        type = "dravnieks")
-{
+                        type = "dravnieks") {
   lfam.name <- res.agreg$lfam.name
   lcat.name <- res.agreg$lcat.name
 
-  res.agreg$hierarchical.data$Produit = as.factor(res.agreg$hierarchical.data$Produit)
+  res.agreg$hierarchical.data$Produit <- as.factor(res.agreg$hierarchical.data$Produit)
   npdt <- nlevels(res.agreg$hierarchical.data$Produit)
 
   data <- res.agreg$hierarchical.data
@@ -41,8 +39,8 @@ hrata.table <- function(res.agreg,
     if (select.judge == TRUE) {
       # verifie s'il y a des duplicats dans les sujets selectionnes
       suj <-
-        data[which(data[, i] > 0), 1]   # selectionne les sujets qui ont evalue l'attribut i pour n'importe quel produit
-    } else{
+        data[which(data[, i] > 0), 1] # selectionne les sujets qui ont evalue l'attribut i pour n'importe quel produit
+    } else {
       suj <-
         data[which(data[, i] >= 0), 1] # si duplicats, on les enleve --> on obtient la liste des sujets qui ont selectionne l'atttribut i pour au moins un des produits
     }
@@ -50,7 +48,7 @@ hrata.table <- function(res.agreg,
     if (length(which(duplicated(suj))) == 0) {
       # verifie s'il y a des duplicats dans les sujets selectionnes
       suj <- suj
-    } else{
+    } else {
       suj <-
         suj[-which(duplicated(suj))] # si duplicats, on les enleve --> on obtient la liste des sujets qui ont selectionne l'atttribut i pour au moins un des produits
     }
@@ -70,19 +68,18 @@ hrata.table <- function(res.agreg,
     for (i in 1:length(latt)) {
       for (k in 1:nlevels(data$Produit)) {
         data.table[k, i] <-
-          mean(latt[[i]][which(latt[[i]][, 2] == levels(data$Produit)[k]),][, 3])
+          mean(latt[[i]][which(latt[[i]][, 2] == levels(data$Produit)[k]), ][, 3])
       }
     }
     data.table[is.na(data.table)] <- 0
 
     colnames(data.table) <- colnames(data)[3:ncol(data)]
     rownames(data.table) <- levels(data[, 2])
-    data.table = as.data.frame(data.table)
+    data.table <- as.data.frame(data.table)
     res.table <- list(data.table, lfam.name, lcat.name)
     names(res.table) <- c("data.table", "lfam.name", "lcat.name")
     return(res.table)
-
-  } else{
+  } else {
     if (type == "dravnieks") {
       # calcul du score de dravnieks
       data.table <- matrix(nrow = npdt, ncol = ncol(data) - 2)
@@ -111,8 +108,7 @@ hrata.table <- function(res.agreg,
       res.table <- list(data.table, lfam.name, lcat.name)
       names(res.table) <- c("data.table", "lfam.name", "lcat.name")
       return(res.table)
-
-    } else{
+    } else {
       if (type == "contingency") {
         lfam.name <- res.agreg$lfam.name
         lcat.name <- res.agreg$lcat.name
@@ -120,7 +116,7 @@ hrata.table <- function(res.agreg,
         data.hcata$Score[data.hcata$Score > 1] <- 1
         data.hcata$Score[data.hcata$Score == 0] <- NA
 
-        #creation du tableau de contingence
+        # creation du tableau de contingence
         mytable <-
           xtabs(Score ~ Attribute + Produit, data = data.hcata)
         attributes(mytable)$class <- "table"
@@ -131,7 +127,7 @@ hrata.table <- function(res.agreg,
         )), quiet = TRUE)
         mytable <-
           cbind(mytable, mytable[, "Max"] - mytable[, "Min"])
-        colnames(mytable)[length(colnames(mytable))] = "Amplitude"
+        colnames(mytable)[length(colnames(mytable))] <- "Amplitude"
         mytable <- as.data.frame(mytable)
 
         data.table <- as.data.frame(mytable)
@@ -139,8 +135,7 @@ hrata.table <- function(res.agreg,
         names(res.table) <-
           c("data.table", "lfam.name", "lcat.name")
         return(res.table)
-
-      } else{
+      } else {
         print("Type not valid")
       }
     }
