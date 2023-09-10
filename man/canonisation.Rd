@@ -20,8 +20,7 @@ transpose a multivariable table in one column
 \examples{
 data(wine)
 Var.Grappe(wine)
-winef=Var.Grappe(wine,column = c(1:2), type="factor")
-canonisation(winef,2)
-
+winef <- Var.Grappe(wine, column = c(1:2), type = "factor")
+canonisation(winef, 2)
 
 }

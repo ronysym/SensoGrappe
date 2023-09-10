@@ -96,16 +96,14 @@ For example :  color.graph= rep("grey",6)
 \examples{
 data(wine)
 Var.Grappe(wine)
-winef=Var.Grappe(wine,column = c(1:2), type="factor")
-res.AOV <- AOV.Grappe( x=winef,column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
+winef <- Var.Grappe(wine, column = c(1:2), type = "factor")
+res.AOV <- AOV.Grappe(x = winef, column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
 \dontrun{
 export.AOV(res.AOV)
 }
-mycolor=c("#EDF8E9","#C7E9C0","#A1D99B","#74C476","#41AB5D","#238B45","#005A32")
-graph.AOV(res.AOV,color.graph=mycolor,y.label="Moyenne")
-graph.AOV(res.AOV,title.graph="Sensory Score", add.moy=TRUE, x.ordered=1, ymin=1, ymax=9)
-
-
+mycolor <- c("#EDF8E9", "#C7E9C0", "#A1D99B", "#74C476", "#41AB5D", "#238B45", "#005A32")
+graph.AOV(res.AOV, color.graph = mycolor, y.label = "Moyenne")
+graph.AOV(res.AOV, title.graph = "Sensory Score", add.moy = TRUE, x.ordered = 1, ymin = 1, ymax = 9)
 
 }
 \seealso{

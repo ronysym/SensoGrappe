@@ -16,5 +16,4 @@ STAR.Grappe : function for encode pvalue to stars
 attach(iris)
 STAR.Grappe(iris$Sepal.Width)
 
-
 }
