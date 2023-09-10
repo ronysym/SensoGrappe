@@ -1,6 +1,6 @@
 Package: SensoGrappe
 Title: Some functions for sensory data in GRAPPE Laboratory
-Version: 5.1.3
+Version: 5.2
 Authors@R: 
     person(given = "Ronan",
            family = "SYMONEAUX",
