@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),  
            email = "r.symoneaux@groupe-esa.com",
            comment = c(ORCID = "0000-0001-6792-8629"))
-Description: Several functions useful in Sensory evaluations such as AOV and PrefMax.
+Description: Several functions useful in Sensory evaluations such as ANOVA and HRATA.
 Depends: R (>= 4.0.0)
 License: GPL-3
 Imports: dplyr,agricolae,ggplot2,car,lmerTest,qpdf,rlang,utils,stats,plyr,gridExtra,tidyr,FactoMineR,factoextra,stringr,RColorBrewer
