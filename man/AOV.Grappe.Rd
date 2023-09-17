@@ -7,8 +7,6 @@
 AOV.Grappe(x,
  column,
   Model,
-  Random = TRUE,
-  randomodel=FALSE,
   reducF=FALSE,
   reducR=FALSE,
   graphic=FALSE,
@@ -26,10 +24,6 @@ AOV.Grappe(x,
 - Interaction for Fixed Factors    : facteur1 + facteur2 + facteur1:facteur2
 - Fixed factor & Random factor    : facteur1 + (1|facteur2)
 - Interaction with random          : facteur1 + (1|facteur2)+ (1|facteur1:facteur2)"}
-
-\item{Random}{Not use for the moment (to be check)}
-
-\item{randomodel}{Not use for the moment (to be check)}
 
 \item{reducF}{logical.reduce fixed effect structure (FALSE by default). To be used only for very complex models}
 

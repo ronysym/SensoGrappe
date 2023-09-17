@@ -8,8 +8,6 @@
 #' AOV.Grappe(x,
 #'  column,
 #'   Model,
-#'   Random = TRUE,
-#'   randomodel=FALSE,
 #'   reducF=FALSE,
 #'   reducR=FALSE,
 #'   graphic=FALSE,
@@ -24,14 +22,12 @@
 #' 										- Interaction for Fixed Factors	: facteur1 + facteur2 + facteur1:facteur2
 #' 										- Fixed factor & Random factor	: facteur1 + (1|facteur2)
 #' 										- Interaction with random	      : facteur1 + (1|facteur2)+ (1|facteur1:facteur2)"
-#' @param   Random Not use for the moment (to be check)
-#' @param   randomodel Not use for the moment (to be check)
 #' @param		reducF logical.reduce fixed effect structure (FALSE by default). To be used only for very complex models
 #' @param	  reducR logical. reduce random effect structure (FALSE by default).To be used only for very complex models
 #' @param		graphic logical. plot the graph (FALSE by default)
 #' @param   verbose logical. show the progression of the analysis TRUE by Default
 #'
-#' @import  utils lmerTest agricolae stringr
+#' @import  utils lmerTest agricolae stringr lme4
 #' @rawNamespace import(stats, except=step)
 #'
 #'
@@ -52,8 +48,6 @@ AOV.Grappe <-
   function(x,
            column,
            Model,
-           Random = TRUE,
-           randomodel = FALSE,
            reducF = FALSE,
            reducR = FALSE,
            graphic = FALSE,
@@ -62,9 +56,20 @@ AOV.Grappe <-
     #----------------------------------------------+
     # Nombre de variables a analyser
     attach(x)
+    force(x)
     nbvar <- length(column)
     # Modele
     mod.temp <- formula(paste("variable", Model, sep = "~"))
+
+    bar.pres <- findbars(mod.temp)
+    if (is.null(bar.pres) == TRUE) {
+      Random <- FALSE
+    } else {
+      Random <- TRUE
+    }
+
+    randomodel = FALSE # a vérifier un jour à quoi ca sert dans le code
+
     # Matrice de base pour regrouper les p.values, les etoiles et les F
     mat.base <-
       matrix(data = NA,
@@ -553,7 +558,7 @@ AOV.Grappe <-
         rp <- subset(rp, id.res != TRUE)
         rp <- rp[1]
         colnames(rp) <- "p.value"
-
+        rownames(rp)<- Fact
 
         Total.result$pvalue[, ctm] <-
           round(rp[order(rownames(rp), decreasing = F),], 4)

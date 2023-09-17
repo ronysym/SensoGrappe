@@ -43,7 +43,7 @@
 #'
 #' @seealso [AOV.Grappe()]
 #'
-#' @import  utils ggplot2 grDevices tidyr qpdf RColorBrewer
+#' @import  utils ggplot2 grDevices tidyr qpdf RColorBrewer randomcoloR
 #' @rawNamespace import(stats, except=step)
 #'
 #' @examples
@@ -64,8 +64,31 @@
 #' For example :  color.graph= rep("grey",6)
 #'
 #' @export
-graph.AOV <- function(AOV.res = NULL, factor = NULL, attribute = NULL, horizontal = FALSE, pvalue = TRUE, title.graph = NULL, ymin = 0, ymax = NULL, angle.x = 0, angle.y = 0, angle.grp = 0, size.x = 10, size.grp = 4, save.graph = FALSE, x.ordered = 3, prefix = NULL, suffix = NULL, add.moy = FALSE, extension = "wmf", color.graph = NULL, y.label = "Mean", x.label = NULL) {
-  # Variables pour aligner les noms sur les axes
+graph.AOV <- function(AOV.res = NULL,
+                      factor = NULL,
+                      attribute = NULL,
+                      horizontal = FALSE,
+                      pvalue = TRUE,
+                      title.graph = NULL,
+                      ymin = 0,
+                      ymax = NULL,
+                      angle.x = 0,
+                      angle.y = 0,
+                      angle.grp = 0,
+                      size.x = 10,
+                      size.grp = 4,
+                      save.graph = FALSE,
+                      x.ordered = 3,
+                      prefix = NULL,
+                      suffix = NULL,
+                      add.moy = FALSE,
+                      extension = "wmf",
+                      color.graph = NULL,
+                      y.label = "Mean",
+                      x.label = NULL) {
+
+
+   # Variables pour aligner les noms sur les axes
   hx <- hy <- vx <- vy <- hgrp <- 0.5
   if (angle.x > 0) {
     hx <- 1
@@ -132,7 +155,7 @@ graph.AOV <- function(AOV.res = NULL, factor = NULL, attribute = NULL, horizonta
 
   for (f in 1:length(factor))
   {
-    # Enregistre les donnees coresspondantes a chaque factor
+    # Enregistre les donnees corespondantes a chaque factor
     pvalue.factor <- AOV.pvalue[[1]][factor[f], ]
     data.factor <- AOV.result[[factor[f]]]
     nombaz <- factor[f]
@@ -175,6 +198,8 @@ graph.AOV <- function(AOV.res = NULL, factor = NULL, attribute = NULL, horizonta
       block <- ceiling(block / 3)
     }
 
+
+    i=1
     # Boucle pour les graphiques
     for (i in block)
     {
@@ -215,8 +240,10 @@ graph.AOV <- function(AOV.res = NULL, factor = NULL, attribute = NULL, horizonta
       }
 
       if (is.null(color.graph) == TRUE) {
+        if (length(data.temp$Names)<20){
         color.graph <- c(brewer.pal(12, "Set3"), brewer.pal(8, "Set1"))
-      }
+        }else{ color.graph <- distinctColorPalette(length(data.temp$Names))}}
+
       data.temp$Names <- factor(data.temp$Names)
       names(color.graph) <- levels(data.temp$Names)
 
@@ -257,16 +284,16 @@ graph.AOV <- function(AOV.res = NULL, factor = NULL, attribute = NULL, horizonta
         # Personnalisation du graphique
         # Barres avec Standard Error (donnees par lmer)
         gp <- gp + geom_errorbar(data = data.temp, aes(ymin = Moy_num, ymax = Moy_num + SE_num), width = 0.25)
-        # Titres
 
+        # Titres
         if (is.null(x.label) == TRUE) {
-          x.label <- nombaz
+          x.label.tmp <- nombaz
         }
 
-        gp <- gp + labs(x = x.label, y = y.label, title = paste(name.temp), caption = paste("pvalue :", pvalue.temp))
+        gp <- gp + labs(x = x.label.tmp, y = y.label, title = paste(name.temp), caption = paste("pvalue :", pvalue.temp))
 
         if (pvalue == FALSE) {
-          gp <- gp + labs(x = x.label, y = y.label, title = paste(name.temp), caption = NULL)
+          gp <- gp + labs(x = x.label.tmp, y = y.label, title = paste(name.temp), caption = NULL)
         }
 
 
@@ -321,7 +348,7 @@ graph.AOV <- function(AOV.res = NULL, factor = NULL, attribute = NULL, horizonta
       # Ajoute le graphique des interactions
       if (sum(grep(":", factor[f], fixed = TRUE)) != 0) {
         nomBaz <- unlist(strsplit(x = factor[f], split = ":", fixed = TRUE))
-        data.temp <- separate(data.temp, Names, c("v1", "v2"), sep = " - ")
+        data.temp <- separate(data.temp, Names, c("v1", "v2"), sep = ":")
         #
         { # Dessine le graphique des interactions
           plot.inter <- ggplot(data = data.temp, aes(x = v1, y = Moy_num, colour = v2, group = v2))

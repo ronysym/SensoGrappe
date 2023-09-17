@@ -1,6 +1,6 @@
 Package: SensoGrappe
 Title: Some functions for sensory data in GRAPPE Laboratory
-Version: 5.2
+Version: 5.3.4
 Authors@R: 
     person(given = "Ronan",
            family = "SYMONEAUX",
@@ -10,7 +10,7 @@ Authors@R:
 Description: Several functions useful in Sensory evaluations such as ANOVA and HRATA.
 Depends: R (>= 4.0.0)
 License: GPL-3
-Imports: dplyr,agricolae,ggplot2,car,lmerTest,qpdf,rlang,utils,stats,plyr,gridExtra,tidyr,FactoMineR,factoextra,stringr,RColorBrewer
+Imports: dplyr,agricolae,ggplot2,car,lmerTest,lme4,qpdf,rlang,utils,stats,plyr,gridExtra,tidyr,FactoMineR,factoextra,stringr,RColorBrewer,randomcoloR
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
