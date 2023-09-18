@@ -59,7 +59,7 @@
 #' graph.AOV(res.AOV, title.graph = "Sensory Score", add.moy = TRUE, x.ordered = 1, ymin = 1, ymax = 9)
 #'
 #' @details
-#' By default, the function uses the 20 colors from the command = c(brewer.pal(12,"Set3"),brewer.pal(8,"Set1")) that is recorded in the function.
+#' By default, the function uses the 20 colors from the command = c(brewer.pal(12,"Set3"),brewer.pal(8,"Set1")) that is recorded in the function and added with as much random color than needed over the 20 first color
 #' It is possible to modify by entering a color vector containing at least the same number of colors to use in the graph
 #' For example :  color.graph= rep("grey",6)
 #'
