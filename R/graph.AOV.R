@@ -239,10 +239,9 @@ graph.AOV <- function(AOV.res = NULL,
         hx <- 0.5
       }
 
-      if (is.null(color.graph) == TRUE) {
-        if (length(data.temp$Names)<=20){
+      if (is.null(color.graph) == FALSE) {col.graph=color.graph}  else if (length(data.temp$Names)<=20){
         col.graph <- c(brewer.pal(12, "Set3"), brewer.pal(8, "Set1"))
-        }else{ col.graph <- distinctColorPalette(length(data.temp$Names))}}
+        }else{ col.graph <- distinctColorPalette(length(data.temp$Names))}
 
       data.temp$Names <- factor(data.temp$Names)
       names(col.graph) <- levels(data.temp$Names)
@@ -352,7 +351,7 @@ graph.AOV <- function(AOV.res = NULL,
         #
         { # Dessine le graphique des interactions
           plot.inter <- ggplot(data = data.temp, aes(x = v1, y = Moy_num, colour = v2, group = v2))
-          plot.inter <- plot.inter + stat_summary(fun.y = mean, geom = "point") + stat_summary(fun.y = mean, geom = "line")
+          plot.inter <- plot.inter + stat_summary(fun = mean, geom = "point") + stat_summary(fun = mean, geom = "line")
           plot.inter <- plot.inter + theme_bw()
           # Titres
           plot.inter <- plot.inter + labs(x = nomBaz[1], y = y.label, title = name.temp, colour = nomBaz[2], caption = paste("pvalue :", pvalue.temp))
@@ -401,7 +400,7 @@ graph.AOV <- function(AOV.res = NULL,
 
         { # Dessine le graphique des interactions
           plot.inter <- ggplot(data = data.temp, aes(x = v2, y = Moy_num, colour = v1, group = v1))
-          plot.inter <- plot.inter + stat_summary(fun.y = mean, geom = "point") + stat_summary(fun.y = mean, geom = "line")
+          plot.inter <- plot.inter + stat_summary(fun = mean, geom = "point") + stat_summary(fun = mean, geom = "line")
           plot.inter <- plot.inter + theme_bw()
           # Titres
           plot.inter <- plot.inter + labs(x = nomBaz[2], y = y.label, title = name.temp, colour = nomBaz[1], caption = paste("pvalue :", pvalue.temp))

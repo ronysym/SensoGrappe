@@ -57,17 +57,19 @@ AOV.Grappe <-
     # Nombre de variables a analyser
 
 
-    x <<- x.tmp
-    nbvar <- length(column)
-    # Modele
     mod.temp <- formula(paste("variable", Model, sep = "~"))
-
     bar.pres <- findbars(mod.temp)
     if (is.null(bar.pres) == TRUE) {
       Random <- FALSE
     } else {
       Random <- TRUE
     }
+
+    if(Random==FALSE){x<-x.tmp} else {x <<- x.tmp}
+
+    nbvar <- length(column)
+    # Modele
+
 
     randomodel = FALSE # a vérifier un jour à quoi ca sert dans le code
 
@@ -104,7 +106,7 @@ AOV.Grappe <-
     if (Random == FALSE) {
       formula <- as.formula(paste(nom_var, Model, sep = "~"))
       Fact <- attr(terms(formula), "term.labels")
-      anova <- aov(formula)
+      anova <- aov(formula,data = x)
       rp <- summary(anova)[[1]]["Pr(>F)"]
       rp <- subset(rp, rownames(rp) != "Residuals     ")
       colnames(rp) <- "p.value"
