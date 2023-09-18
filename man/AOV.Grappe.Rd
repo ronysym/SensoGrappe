@@ -4,20 +4,20 @@
 \alias{AOV.Grappe}
 \title{AOV.Grappe  ANOVA et post-hoc analysis for Linear Mixed Models}
 \usage{
-AOV.Grappe(x.tmp,
- column,
-  Model,
+AOV.Grappe(data,
+  column,
+  model,
   reducF=FALSE,
   reducR=FALSE,
   graphic=FALSE,
   verbose=TRUE)
 }
 \arguments{
-\item{x.tmp}{dataframe}
+\item{data}{dataframe}
 
 \item{column}{number of the columns on which ANOVA are performed}
 
-\item{Model}{anova Model
+\item{model}{anova model
 - Syntax for fixed factor                :    facteur_A
 - Syntax for Random factorr            : (1|facteur_A)
 - Fixed factors                          : facteur1 + facteur2
