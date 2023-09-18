@@ -5,17 +5,17 @@
 #' Then  LS-means differences of LS-mean for all considered factors in the linear mixed model.
 #'
 #' @usage
-#' AOV.Grappe(x.tmp,
-#'  column,
-#'   Model,
+#' AOV.Grappe(data,
+#'   column,
+#'   model,
 #'   reducF=FALSE,
 #'   reducR=FALSE,
 #'   graphic=FALSE,
 #'   verbose=TRUE)
 #'
-#' @param		x.tmp       dataframe
+#' @param		data    dataframe
 #' @param		column  number of the columns on which ANOVA are performed
-#' @param	  Model   anova Model
+#' @param	  model   anova model
 #' 										- Syntax for fixed factor				:	facteur_A
 #' 										- Syntax for Random factorr			: (1|facteur_A)
 #' 										- Fixed factors				          : facteur1 + facteur2
@@ -45,9 +45,9 @@
 #'
 #' @export
 AOV.Grappe <-
-  function(x.tmp,
+  function(data,
            column,
-           Model,
+           model,
            reducF = FALSE,
            reducR = FALSE,
            graphic = FALSE,
@@ -57,7 +57,7 @@ AOV.Grappe <-
     # Nombre de variables a analyser
 
 
-    mod.temp <- formula(paste("variable", Model, sep = "~"))
+    mod.temp <- formula(paste("variable", model, sep = "~"))
     bar.pres <- findbars(mod.temp)
     if (is.null(bar.pres) == TRUE) {
       Random <- FALSE
@@ -65,7 +65,7 @@ AOV.Grappe <-
       Random <- TRUE
     }
 
-    if(Random==FALSE){x<-x.tmp} else {x <<- x.tmp}
+    if(Random==FALSE){x<-data} else {x <<- data}
 
     nbvar <- length(column)
     # Modele
@@ -104,7 +104,7 @@ AOV.Grappe <-
     nom_var <- names(x)[initcol]
 
     if (Random == FALSE) {
-      formula <- as.formula(paste(nom_var, Model, sep = "~"))
+      formula <- as.formula(paste(nom_var, model, sep = "~"))
       Fact <- attr(terms(formula), "term.labels")
       anova <- aov(formula,data = x)
       rp <- summary(anova)[[1]]["Pr(>F)"]
@@ -115,7 +115,7 @@ AOV.Grappe <-
     } else {
       variable <- x[, initcol]
       res.base <-
-        lmer(formula = formula(paste(nom_var, Model, sep = "~")), data = x)
+        lmer(formula = formula(paste(nom_var, model, sep = "~")), data = x)
       lsmeans.table <- as.data.frame(ls_means(res.base))
       lsmeans.table$term <- as.factor(lsmeans.table$term)
       Fact <- levels(lsmeans.table$term)
@@ -187,7 +187,7 @@ AOV.Grappe <-
           cat("\n", "\nVARIABLE :", toupper(nom_var), "\n")
         }
         res.base <-
-          lmer(formula = formula(paste(nom_var, Model, sep = "~")), data = x)
+          lmer(formula = formula(paste(nom_var, model, sep = "~")), data = x)
         res.step <-
           lmerTest::step(res.base,
                          reduce.fixed = reducF,
@@ -554,7 +554,7 @@ AOV.Grappe <-
 
 
         ######################################
-        anova <- aov( formula(paste(nom_var, Model, sep = "~")), data = x)
+        anova <- aov( formula(paste(nom_var, model, sep = "~")), data = x)
         rp <- summary(anova)[[1]]["Pr(>F)"]
         id.res<-str_detect(rownames(rp), "Residuals")
         rp=cbind(rp,id.res)
@@ -667,6 +667,6 @@ AOV.Grappe <-
         }
       }
     }
-
+    if (graphic == TRUE) {graph.AOV(Total.result)}
     return(Total.result)
   }
