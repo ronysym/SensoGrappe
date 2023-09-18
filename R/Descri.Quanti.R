@@ -26,7 +26,7 @@ Descri.Quanti <- function(x, column, group = NULL, print.graph = TRUE, graph.gro
     date.fin <- paste(date.ori[3], date.ori[2], date.ori[5], sep = "_")
   }
   # Extrait le numero des colonnes si besoin
-  if (class(column) == "character") {
+  if (is.character(column)) {
     col.temp <- vector()
     for (c in 1:length(column))
     {
