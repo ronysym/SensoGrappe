@@ -17,7 +17,7 @@
 #'
 #' @export
 Descri.Quanti <- function(x, column, group = NULL, print.graph = TRUE, graph.grouped = TRUE, save.graph = FALSE, date = FALSE, extension = "wmf") {
-  if (!is.null(group) && class(group) != "character") {
+  if (!is.null(group) && !is.character(group)) {
     stop("L'argument group doit etre une chaine de caracteres (entre guillemets)")
   }
   # Enregistre la date du jour
