@@ -10,7 +10,7 @@ Authors@R:
 Description: Several functions useful in Sensory evaluations such as ANOVA and HRATA.
 Depends: R (>= 4.0.0)
 License: GPL-3
-Imports: dplyr,agricolae,ggplot2,car,lmerTest,lme4,qpdf,rlang,utils,stats,plyr,gridExtra,tidyr,FactoMineR,factoextra,stringr,RColorBrewer,randomcoloR
+Imports: agricolae,ggplot2,car,lmerTest,lme4,qpdf,utils,stats,plyr,gridExtra,tidyr,FactoMineR,factoextra,stringr,RColorBrewer,randomcoloR, graphics
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
