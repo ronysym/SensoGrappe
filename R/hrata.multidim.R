@@ -12,7 +12,7 @@
 #' @return Returns a list similar to [PCA]
 #'
 #'
-#' @import FactoMineR
+#' @import FactoMineR graphics
 #'
 #' @seealso [hrata.signi()] [hrata.agregation()] [hrata.table()]
 #'
