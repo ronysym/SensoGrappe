@@ -5,7 +5,7 @@
 #' Then  LS-means differences of LS-mean for all considered factors in the linear mixed model.
 #'
 #' @usage
-#' AOV.Grappe(x,
+#' AOV.Grappe(x.tmp,
 #'  column,
 #'   Model,
 #'   reducF=FALSE,
@@ -13,7 +13,7 @@
 #'   graphic=FALSE,
 #'   verbose=TRUE)
 #'
-#' @param		x       dataframe
+#' @param		x.tmp       dataframe
 #' @param		column  number of the columns on which ANOVA are performed
 #' @param	  Model   anova Model
 #' 										- Syntax for fixed factor				:	facteur_A
@@ -35,7 +35,7 @@
 #' data(wine)
 #' Var.Grappe(wine)
 #' winef <- Var.Grappe(wine, column = c(1:2), type = "factor")
-#' res.AOV <- AOV.Grappe(x = winef, column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
+#' res.AOV <- AOV.Grappe(winef, column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
 #' \dontrun{
 #' export.AOV(res.AOV)
 #' }
@@ -45,7 +45,7 @@
 #'
 #' @export
 AOV.Grappe <-
-  function(x,
+  function(x.tmp,
            column,
            Model,
            reducF = FALSE,
@@ -55,8 +55,9 @@ AOV.Grappe <-
     # Prepare les objets pour stocker les resultats
     #----------------------------------------------+
     # Nombre de variables a analyser
-    attach(x)
-    force(x)
+
+
+    x <<- x.tmp
     nbvar <- length(column)
     # Modele
     mod.temp <- formula(paste("variable", Model, sep = "~"))
@@ -665,6 +666,5 @@ AOV.Grappe <-
       }
     }
 
-    detach(x)
     return(Total.result)
   }

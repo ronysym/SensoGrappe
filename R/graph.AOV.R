@@ -240,12 +240,12 @@ graph.AOV <- function(AOV.res = NULL,
       }
 
       if (is.null(color.graph) == TRUE) {
-        if (length(data.temp$Names)<20){
-        color.graph <- c(brewer.pal(12, "Set3"), brewer.pal(8, "Set1"))
-        }else{ color.graph <- distinctColorPalette(length(data.temp$Names))}}
+        if (length(data.temp$Names)<=20){
+        col.graph <- c(brewer.pal(12, "Set3"), brewer.pal(8, "Set1"))
+        }else{ col.graph <- distinctColorPalette(length(data.temp$Names))}}
 
       data.temp$Names <- factor(data.temp$Names)
-      names(color.graph) <- levels(data.temp$Names)
+      names(col.graph) <- levels(data.temp$Names)
 
       # Ordonne les niveaux par moyennes croissantes
       if (x.ordered == 2) {
@@ -276,7 +276,7 @@ graph.AOV <- function(AOV.res = NULL,
 
         gp <- ggplot(data.temp, aes(x = Names, y = Moy_num, fill = Names))
 
-        gp <- gp + scale_fill_manual(name = "Names", values = color.graph)
+        gp <- gp + scale_fill_manual(name = "Names", values = col.graph)
         gp <- gp + geom_bar(position = "dodge", stat = "identity", color = "black") + theme_bw()
         gp
 
