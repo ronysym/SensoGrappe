@@ -19,7 +19,7 @@
 #' data(wine)
 #' Var.Grappe(wine)
 #' winef <- Var.Grappe(wine, column = c(1:2), type = "factor")
-#' res.AOV <- AOV.Grappe(x = winef, column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
+#' res.AOV <- AOV.Grappe(winef, column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
 #' \dontrun{
 #' export.AOV(res.AOV)
 #' }
