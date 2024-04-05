@@ -11,18 +11,18 @@
 #' @examples
 #' data(wine)
 #' Var.Grappe(wine)
-#' winef=Var.Grappe(wine,column = c(1:2), type="factor")
-#' canonisation(winef,2)
-#'
+#' winef <- Var.Grappe(wine, column = c(1:2), type = "factor")
+#' canonisation(winef, 2)
 #'
 #' @export
-canonisation<-function(data.canon,NbLeft){
+canonisation <- function(data.canon, NbLeft) {
+  tutu <- NULL
+  for (i in 1:(length(colnames(data.canon)) - NbLeft)) {
+    tutu <- rbind(tutu, cbind(data.canon[, c(1:NbLeft)], colnames(data.canon[i + NbLeft]), data.canon[, i + NbLeft]))
+  }
+  colnames(tutu)[c(NbLeft + 1, NbLeft + 2)] <- c("Attribute", "Score")
+  tutu <- Var.Grappe(tutu, c(1:NbLeft + 1), "factor", verbose = FALSE)
+  out <- tutu
 
-tutu<-NULL
-for (i in 1:(length(colnames(data.canon))-NbLeft)){ tutu=rbind(tutu, cbind(data.canon[,c(1:NbLeft)],colnames(data.canon[i+NbLeft]),data.canon[,i+NbLeft] ))}
-colnames(tutu)[c(NbLeft+1,NbLeft+2)]<-c("Attribute","Score")
-tutu<-Var.Grappe(tutu,c(1:NbLeft+1),"factor", verbose=FALSE)
-out<-tutu
-
-return(out)}
-
+  return(out)
+}

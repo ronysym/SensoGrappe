@@ -23,7 +23,7 @@ Check dataset and  encode easily the vector (variables) to factor, integer or ot
 \examples{
 data(wine)
 Var.Grappe(wine)
-Var.Grappe(wine, filter="O_")
-winef=Var.Grappe(wine,column = c(1:2), type="factor")
+Var.Grappe(wine, filter = "O_")
+winef <- Var.Grappe(wine, column = c(1:2), type = "factor")
 
 }

@@ -17,7 +17,6 @@ hrata.codage : function to prepare the codage file needed in hrata.agregation fr
 data(rose.attribute)
 hrata.codage(rose.attribute)
 
-
 }
 \seealso{
 \code{\link[=hrata.signi]{hrata.signi()}} \code{\link[=hrata.table]{hrata.table()}} \code{\link[=hrata.multidim]{hrata.multidim()}}

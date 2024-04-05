@@ -89,23 +89,21 @@ Returns graphs of means by factors and variables with letters from posthoc test,
 Plotting method for results obtain with AOV.Grappe. Mean value are represented associated with post-hoc test results done using lmerTest. Fixed Factors and Interactions can be drawn
 }
 \details{
-By default, the function uses the 20 colors from the command = c(brewer.pal(12,"Set3"),brewer.pal(8,"Set1")) that is recorded in the function.
+By default, the function uses the 20 colors from the command = c(brewer.pal(12,"Set3"),brewer.pal(8,"Set1")) that is recorded in the function and added with as much random color than needed over the 20 first color
 It is possible to modify by entering a color vector containing at least the same number of colors to use in the graph
 For example :  color.graph= rep("grey",6)
 }
 \examples{
 data(wine)
 Var.Grappe(wine)
-winef=Var.Grappe(wine,column = c(1:2), type="factor")
-res.AOV <- AOV.Grappe( x=winef,column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
+winef <- Var.Grappe(wine, column = c(1:2), type = "factor")
+res.AOV <- AOV.Grappe(winef, column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
 \dontrun{
 export.AOV(res.AOV)
 }
-mycolor=c("#EDF8E9","#C7E9C0","#A1D99B","#74C476","#41AB5D","#238B45","#005A32")
-graph.AOV(res.AOV,color.graph=mycolor,y.label="Moyenne")
-graph.AOV(res.AOV,title.graph="Sensory Score", add.moy=TRUE, x.ordered=1, ymin=1, ymax=9)
-
-
+mycolor <- c("#EDF8E9", "#C7E9C0", "#A1D99B", "#74C476", "#41AB5D", "#238B45", "#005A32")
+graph.AOV(res.AOV, color.graph = mycolor, y.label = "Moyenne")
+graph.AOV(res.AOV, title.graph = "Sensory Score", add.moy = TRUE, x.ordered = 1, ymin = 1, ymax = 9)
 
 }
 \seealso{

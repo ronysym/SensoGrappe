@@ -37,6 +37,6 @@ Descri.Quanti : Boxplot  and graph for numeric variables
 }
 \examples{
 data(wine)
-Descri.Quanti(wine, c(3:5),"ProductName")
+Descri.Quanti(wine, c(3:5), "ProductName")
 
 }

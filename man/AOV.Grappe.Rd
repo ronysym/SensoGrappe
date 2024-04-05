@@ -4,32 +4,26 @@
 \alias{AOV.Grappe}
 \title{AOV.Grappe  ANOVA et post-hoc analysis for Linear Mixed Models}
 \usage{
-AOV.Grappe(x,
- column,
-  Model,
-  Random = TRUE,
-  randomodel=FALSE,
+AOV.Grappe(data,
+  column,
+  model,
   reducF=FALSE,
   reducR=FALSE,
   graphic=FALSE,
   verbose=TRUE)
 }
 \arguments{
-\item{x}{dataframe}
+\item{data}{dataframe}
 
 \item{column}{number of the columns on which ANOVA are performed}
 
-\item{Model}{anova Model
+\item{model}{anova model
 - Syntax for fixed factor                :    facteur_A
 - Syntax for Random factorr            : (1|facteur_A)
 - Fixed factors                          : facteur1 + facteur2
 - Interaction for Fixed Factors    : facteur1 + facteur2 + facteur1:facteur2
 - Fixed factor & Random factor    : facteur1 + (1|facteur2)
 - Interaction with random          : facteur1 + (1|facteur2)+ (1|facteur1:facteur2)"}
-
-\item{Random}{Not use for the moment (to be check)}
-
-\item{randomodel}{Not use for the moment (to be check)}
 
 \item{reducF}{logical.reduce fixed effect structure (FALSE by default). To be used only for very complex models}
 
@@ -47,15 +41,13 @@ Then  LS-means differences of LS-mean for all considered factors in the linear m
 \examples{
 data(wine)
 Var.Grappe(wine)
-winef=Var.Grappe(wine,column = c(1:2), type="factor")
-res.AOV <- AOV.Grappe( x=winef,column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
+winef <- Var.Grappe(wine, column = c(1:2), type = "factor")
+res.AOV <- AOV.Grappe(winef, column = c(3:4), "ProductName + (1|CJ)+ (1|ProductName:CJ)")
 \dontrun{
 export.AOV(res.AOV)
 }
-mycolor=c("#EDF8E9","#C7E9C0","#A1D99B","#74C476","#41AB5D","#238B45","#005A32")
-graph.AOV(res.AOV,color.graph=mycolor,y.label="Moyenne")
-graph.AOV(res.AOV,title.graph="Sensory Score", add.moy=TRUE, x.ordered=1, ymin=1, ymax=9)
-
-
+mycolor <- c("#EDF8E9", "#C7E9C0", "#A1D99B", "#74C476", "#41AB5D", "#238B45", "#005A32")
+graph.AOV(res.AOV, color.graph = mycolor, y.label = "Moyenne")
+graph.AOV(res.AOV, title.graph = "Sensory Score", add.moy = TRUE, x.ordered = 1, ymin = 1, ymax = 9)
 
 }
