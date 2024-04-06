@@ -668,5 +668,6 @@ AOV.Grappe <-
       }
     }
     if (graphic == TRUE) {graph.AOV(Total.result)}
+    class(Total.result)<-c("list","AOV.Grappe")
     return(Total.result)
   }
