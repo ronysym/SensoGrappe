@@ -6,28 +6,31 @@
 \usage{
 export.AOV(
   res.from.AOV,
+  path = tempdir(),
   save.stat = TRUE,
   save.LSD = TRUE,
-  name = substitute(res.from.AOV),
-  name.stat = NULL,
-  name.LSD = NULL,
+  name = NULL,
+  name.stat = "stat",
+  name.LSD = "LSD_test",
   print.dir = TRUE
 )
 }
 \arguments{
-\item{res.from.AOV}{results from \code{\link[=AOV.Grappe]{AOV.Grappe()}}}
+\item{res.from.AOV}{list results from \code{\link[=AOV.Grappe]{AOV.Grappe()}}}
 
-\item{save.stat}{save pvalue, signif, F, DF et models results. TRUE by default}
+\item{path}{path where file will be saved : if path="." files will save in the working directory}
 
-\item{save.LSD}{save LS means results. TRUE by defaultTRUE by default}
+\item{save.stat}{logical save pvalue, signif, F, DF et models results. TRUE by default}
 
-\item{name}{name of the existing files}
+\item{save.LSD}{logical save LS means results. TRUE by default TRUE by default}
 
-\item{name.stat}{name for the Stat Files (defaut is NULL)}
+\item{name}{character name of the file}
 
-\item{name.LSD}{name for the LSD Files (defaut is NULL)}
+\item{name.stat}{character name for the Stat Files (defaut is "stat")}
 
-\item{print.dir}{print the directory name. TRUE by default}
+\item{name.LSD}{character name for the LSD Files (defaut is "LSD_stat")}
+
+\item{print.dir}{logical print the directory name. TRUE by default}
 }
 \description{
 Export results from \code{\link[=AOV.Grappe]{AOV.Grappe()}}
