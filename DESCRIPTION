@@ -2,19 +2,40 @@ Package: SensoGrappe
 Title: Some functions for sensory data in GRAPPE Laboratory
 Version: 5.3.4
 Authors@R: 
-    person(given = "Ronan",
-           family = "SYMONEAUX",
-           role = c("aut", "cre"),  
-           email = "r.symoneaux@groupe-esa.com",
+    person("Ronan", "SYMONEAUX", , "r.symoneaux@groupe-esa.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-6792-8629"))
-Description: Several functions useful in Sensory evaluations such as ANOVA and HRATA.
-Depends: R (>= 4.0.0)
+Description: Several functions useful in Sensory evaluations such as ANOVA
+    and HRATA.
 License: GPL-3
-Imports: agricolae,ggplot2,car,lmerTest,lme4,qpdf,utils,stats,plyr,gridExtra,tidyr,FactoMineR,factoextra,stringr,RColorBrewer,randomcoloR, graphics
+Depends: 
+    R (>= 4.0.0)
+Imports: 
+    agricolae,
+    car,
+    factoextra,
+    FactoMineR,
+    ggplot2,
+    graphics,
+    grDevices,
+    grid,
+    gridExtra,
+    lme4,
+    lmerTest,
+    plyr,
+    qpdf,
+    randomcoloR,
+    RColorBrewer,
+    stats,
+    stringr,
+    tidyr,
+    utils
+Suggests: 
+    testthat (>= 3.0.0),
+    knitr
+VignetteBuilder: 
+    knitr
+Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-Suggests: 
-    knitr
-VignetteBuilder: knitr
+RoxygenNote: 7.3.1

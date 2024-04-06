@@ -1,0 +1,16 @@
+devtools::check()
+attachment::att_amend_desc()
+
+
+roxygen2::roxygenise()
+
+
+
+#Test Coverage
+library(covr)
+
+coverage <- package_coverage(type = "function", functions = "export.AOV.R")
+print(coverage)
+
+covr::report()
+
