@@ -7,11 +7,28 @@ roxygen2::roxygenise()
 
 
 
-#Test Coverage
+#Test Coverage pour tester si les testthat recouvrent tout ce qu'il faut
+
+```{r}
+
 library(covr)
 
 coverage <- package_coverage(type = "function", functions = "export.AOV.R")
 print(coverage)
 
 covr::report()
+```
 
+
+commande du terminal pour supprimer une branche à faire après merge, delete branche
+<!-- dans github puis dans le terminal -->
+
+git fetch -p
+
+
+commande du terminal suite à un conflit entre github et Rstudio pour forcer de passer le local
+
+git push --force origin HEAD:refs/heads/2-mis-à-jour-de-exportaovr
+
+
+```
