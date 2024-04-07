@@ -3,9 +3,10 @@
 #' @description Check dataset and  encode easily the vector (variables) to factor, integer or numeric
 #'
 #' @param x 	dataframe
-#' @param column the numbers of the columns to change the type
+#' @param column the numbers or the name of the columns to change the type
 #' @param type expected type of the columns to be changed : "factor", "numeric" or "integer". NULL by default
-#' @param filter character or numeric corresponding to searching name or number of column
+#' @param filter character or numeric corresponding to searching name or number of column. Apply VarGrappe to a set of a fltered
+#'                columns but x is not filtered in the thrown object
 #' @param verbose  logical display of the results. TRUE by default
 #'
 #' @examples
@@ -22,9 +23,23 @@ Var.Grappe <- function(x, column = 0, type = NULL, filter = NULL, verbose = TRUE
     stop("Argument 'x' must be a dataframe.")
   }
 
-  # Check if column is numeric
-  if (!is.numeric(column)) {
-    stop("Argument 'column' must be numeric.")
+  # Check if column is character or numeric
+  if (!is.null(column) && !is.character(column) && !is.numeric(column)) {
+    stop("Argument 'column' must be either character or numeric.")
+  }
+
+  # If column is character, convert it to numeric
+  if (is.character(column)) {
+    column_names <- match(column, names(x))
+    if (any(is.na(column_names))) {
+      stop("Argument 'column' must contain valid column names from the dataframe.")
+    }
+    column <- column_names
+  }
+
+  # Check if column is within the range of the number of columns in the dataframe
+  if (any(column = 0 | column > ncol(x))) {
+    stop("Argument 'column' must be within the range of the number of columns in the dataframe.")
   }
 
   # Check if type is one of "factor", "numeric", or "integer"
@@ -42,6 +57,7 @@ Var.Grappe <- function(x, column = 0, type = NULL, filter = NULL, verbose = TRUE
     stop("Argument 'filter' must be either character or numeric.")
   }
 
+
   allvar <- matrix(1:length(names(x)), ncol = 2, nrow = length(names(x)), byrow = FALSE)
   colnames(allvar) <- c("Column", "Type of variable")
   rownames(allvar) <- names(x)
@@ -58,10 +74,10 @@ Var.Grappe <- function(x, column = 0, type = NULL, filter = NULL, verbose = TRUE
         x[, column[i]] <- as.factor(x[, column[i]])
       }
       if (length(grep(type, num, ignore.case = TRUE)) > 0) {
-        x[, column[i]] <- as.integer(x[, column[i]])
+        x[, column[i]] <- as.numeric(x[, column[i]])
       }
       if (length(grep(type, int, ignore.case = TRUE)) > 0) {
-        x[, column[i]] <- as.numeric(x[, column[i]])
+        x[, column[i]] <- as.integer(x[, column[i]])
       }
     }
   }
@@ -84,5 +100,6 @@ Var.Grappe <- function(x, column = 0, type = NULL, filter = NULL, verbose = TRUE
     }
   }
   # Retourne le nouveau tableau de donnees avec les nouveaux types de variables
-  invisible(as.data.frame(x))
+  x<-as.data.frame(x)
+  invisible(x)
 }
