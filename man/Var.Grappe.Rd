@@ -9,16 +9,17 @@ Var.Grappe(x, column = 0, type = NULL, filter = NULL, verbose = TRUE)
 \arguments{
 \item{x}{dataframe}
 
-\item{column}{the numbers of the columns to change the type}
+\item{column}{the numbers or the name of the columns to change the type}
 
-\item{type}{expected type : "factor", "numeric" or "integer"}
+\item{type}{expected type of the columns to be changed : "factor", "numeric" or "integer". NULL by default}
 
-\item{filter}{text for searching name in column (letter or number)}
+\item{filter}{character or numeric corresponding to searching name or number of column. Apply VarGrappe to a set of a fltered
+columns but x is not filtered in the thrown object}
 
-\item{verbose}{Display of the results ? TRUE by default}
+\item{verbose}{logical display of the results. TRUE by default}
 }
 \description{
-Check dataset and  encode easily the vector (variables) to factor, integer or others
+Check dataset and  encode easily the vector (variables) to factor, integer or numeric
 }
 \examples{
 data(wine)
