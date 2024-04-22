@@ -13,10 +13,26 @@ roxygen2::roxygenise()
 
 library(covr)
 
-coverage <- package_coverage(type = "function", functions = "export.AOV.R")
+coverage <- package_coverage(type = "function", functions = "hrata.agregation.R")
 print(coverage)
 
 covr::report()
+
+pkgload::load_all()
+
+
+# Accéder à l'élément de la colonne "attribut" correspondant à "A_Fleur_d'oranger"
+index <- which(rose.attribute$Attribut == "A_Fleur_d'oranger")
+
+# Modifier l'élément en "A_Fleur_Oranger"
+rose.attribute$Attribut[index] <- "A_Fleur_Oranger"
+
+rose.attribute
+
+save(rose.attribute, file="C:/Users/r.symoneaux/Nextcloud/RScript/PackagePublic/SensoGrappe/data/rose.attribute.RData")
+
+
+
 ```
 
 
