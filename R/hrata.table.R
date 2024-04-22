@@ -15,7 +15,7 @@
 #' @examples
 #' data(rose)
 #' data(rose.attribute)
-#' res.agreg <- hrata.agregation(data = rose, h.table = rose.attribute, crit.agreg = max)
+#' res.agreg <- hrata.agregation(data = rose, h.table = rose.attribute, crit.agreg = "max")
 #' res.signi <- hrata.signi(res.agreg, seuil = 0.05)
 #' res.table <- hrata.table(res.agreg, type = "dravnieks")
 #' res.PCA <- hrata.multidim(res.table, method = "PCA", scale.unit = FALSE, niv = 3)
@@ -29,8 +29,8 @@ hrata.table <- function(res.agreg,
   lfam.name <- res.agreg$lfam.name
   lcat.name <- res.agreg$lcat.name
 
-  res.agreg$hierarchical.data$Produit <- as.factor(res.agreg$hierarchical.data$Produit)
-  npdt <- nlevels(res.agreg$hierarchical.data$Produit)
+  res.agreg$hierarchical.data[, 2] <- as.factor(res.agreg$hierarchical.data[, 2])
+  npdt <- nlevels(res.agreg$hierarchical.data[, 2])
 
   data <- res.agreg$hierarchical.data
 
@@ -66,9 +66,9 @@ hrata.table <- function(res.agreg,
 
     data.table <- matrix(nrow = npdt, ncol = ncol(data) - 2)
     for (i in 1:length(latt)) {
-      for (k in 1:nlevels(data$Produit)) {
+      for (k in 1:nlevels(data[,2])) {
         data.table[k, i] <-
-          mean(latt[[i]][which(latt[[i]][, 2] == levels(data$Produit)[k]), ][, 3])
+          mean(latt[[i]][which(latt[[i]][, 2] == levels(data[,2])[k]), ][, 3])
       }
     }
     data.table[is.na(data.table)] <- 0
@@ -86,13 +86,13 @@ hrata.table <- function(res.agreg,
       echelle <- max(data[(3):ncol(data)])
 
       for (i in 1:length(latt)) {
-        for (k in 1:nlevels(data$Produit)) {
+        for (k in 1:nlevels(data[,2])) {
           pik <-
-            length(which(latt[[i]][latt[[i]][, 2] == levels(data$Produit)[k], 3] > 0)) # nombre de sujets ayant donn? une note positive ? l'attribut i pour le produit k
+            length(which(latt[[i]][latt[[i]][, 2] == levels(data[,2])[k], 3] > 0)) # nombre de sujets ayant donn? une note positive ? l'attribut i pour le produit k
           pk <-
-            length(latt[[i]][latt[[i]][, 2] == levels(data$Produit)[k], 3]) # nombre de sujets ayant ?valu? l'attribut i pour au moins 1 produit
+            length(latt[[i]][latt[[i]][, 2] == levels(data[,2])[k], 3]) # nombre de sujets ayant ?valu? l'attribut i pour au moins 1 produit
           xi <-
-            sum(latt[[i]][latt[[i]][, 2] == levels(data$Produit)[k], 3]) # somme des notes de l'attribut i pour le produit k
+            sum(latt[[i]][latt[[i]][, 2] == levels(data[,2])[k], 3]) # somme des notes de l'attribut i pour le produit k
 
           x <-
             echelle * pk # somme des notes max pour les sujets qui ont ?valu? l'attribut i pour un moins un  des produits

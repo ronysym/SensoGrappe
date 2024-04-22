@@ -4,7 +4,7 @@
 \alias{hrata.agregation}
 \title{hrata.agregation : prepare the HRATA or HCATA table for analysis from rawdata}
 \usage{
-hrata.agregation(data, h.table, crit.agreg = max)
+hrata.agregation(data, h.table, crit.agreg = "max")
 }
 \arguments{
 \item{data}{a dataframe containing rawdata HRATA or HCATA sensory task with Juge in first column and Product in the second column then all attributes}
@@ -25,7 +25,7 @@ create the dataframe used for HRATA or HCATA analysis by integreting the realloc
 \examples{
 data(rose)
 data(rose.attribute)
-res.agreg <- hrata.agregation(data = rose, h.table = rose.attribute, crit.agreg = max)
+res.agreg <- hrata.agregation(data = rose, h.table = rose.attribute, crit.agreg = "max")
 res.signi <- hrata.signi(res.agreg, seuil = 0.05)
 res.table <- hrata.table(res.agreg, type = "dravnieks")
 res.PCA <- hrata.multidim(res.table, method = "PCA", scale.unit = FALSE, niv = 3)
