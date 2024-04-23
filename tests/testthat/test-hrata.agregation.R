@@ -39,12 +39,12 @@ test_that("hrata.agregation works correctly", {
   expect_true(colnames(res$hierarchical.data)[2] %in% allowed_product_cols)
 
 
-  # Test 7: Check if 'lfam.name' and 'lcat.name' have the correct lengths
+  # Test 8: Check if 'lfam.name' and 'lcat.name' have the correct lengths
   expect_length(res$lfam.name, length(unique(rose.attribute$Famille)))
   expect_length(res$lcat.name, length(unique(rose.attribute$Categorie)))
 
 
-  # Test : Check values in lfam.name,lcat.name, hierarchical.data
+  # Test 9 : Check values in lfam.name,lcat.name, hierarchical.data
   expect_equal(res$lfam.name[[1]], c( "C_Agrumes" ,"C_Fruits_rouges","C_Fruits_blancs" , "C_Fruits_jaunes", "C_Fruits_exotique"))
   expect_equal(res$lcat.name[[7]], c("A_Jacinthe" ,"A_Lilas"  ,  "A_Muguet"  , "A_Narcisse"))
   expect_equal(res$hierarchical.data[[3]][1:8],c(0, 2, 3 ,0 ,3, 0, 1, 2 ))
@@ -88,7 +88,7 @@ test_that("hrata.agregation error tests", {
   bad_data <- rose
   colnames(bad_data)[1] <- "Invalid_Judge"
   expect_error(hrata.agregation(data = bad_data, h.table = rose.attribute, crit.agreg = "max"),
-               "The first column of the 'data' argument must be named 'CJ', 'Judge', or 'Juge', and the second column must be named 'Product' or 'Produit'.")
+               "The first column of the 'data' argument must be named 'CJ', 'Judge', 'Sujet' or 'Juge', and the second column must be named 'Product','ProductName' or 'Produit'.")
 
   # Test with incorrect column names in 'h.table'
   bad_h_table <- rose.attribute
@@ -107,14 +107,14 @@ test_that("hrata.agregation error tests", {
   bad_h_table <- rose.attribute
   bad_h_table$Famille[31] <- "F_Fleur_Not_Good"
   expect_error(hrata.agregation(data = rose, h.table = bad_h_table, crit.agreg = "max"),
-               "The 'h.table' and 'data' don't match for Familly or Category")
+              "The 'h.table' and 'data' don't match for Familly or Category")
 
 
   # Test with incorrect attributes in in 'h.table'
   bad_h_table <- rose.attribute
   bad_h_table$Attribut[31] <- "A_Fleur_Not_Good"
   expect_error(hrata.agregation(data = rose, h.table = bad_h_table, crit.agreg = "max"),
-               "The 'h.table' and 'data' don't match, please verify")
+               "The 'h.table' and 'data' don't match, please verify: A_Fleur_Oranger")
 
 
 
@@ -122,13 +122,14 @@ test_that("hrata.agregation error tests", {
   bad_data <- rose
   names(bad_data)[3]<-"F_Fruit_Bad"
   expect_error(hrata.agregation(data = bad_data, h.table = rose.attribute, crit.agreg = "max"),
-               "The 'h.table' and 'data' don't match, please verify")
+               "The 'h.table' and 'data' don't match, please verify: F_Fruit_Bad")
 
 
   # Test with incorrect Attribute in in 'data'
   bad_data <- rose
   names(bad_data)[5]<-"A_Fruit_Bad"
+  names(bad_data)[3]<-"F_Fruit_Bad"
   expect_error(hrata.agregation(data = bad_data, h.table = rose.attribute, crit.agreg = "max"),
-               "The 'h.table' and 'data' don't match, please verify")
+               "The 'h.table' and 'data' don't match, please verify: F_Fruit_Bad, A_Fruit_Bad")
 
       })
