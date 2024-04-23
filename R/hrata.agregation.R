@@ -58,11 +58,11 @@ hrata.agregation <- function(data, h.table, crit.agreg = "max") {
   }
 
   # Check column names in 'data'
-  allowed_judge_cols <- c("CJ", "Judge", "Juge")
-  allowed_product_cols <- c("Product", "Produit")
+  allowed_judge_cols <- c("CJ", "Judge", "Juge", "Sujet")
+  allowed_product_cols <- c("Product", "Produit", "ProductName")
 
   if (!colnames(data)[1] %in% allowed_judge_cols || !colnames(data)[2] %in% allowed_product_cols) {
-    stop("The first column of the 'data' argument must be named 'CJ', 'Judge', or 'Juge', and the second column must be named 'Product' or 'Produit'.", call. = FALSE)
+    stop("The first column of the 'data' argument must be named 'CJ', 'Judge', 'Sujet' or 'Juge', and the second column must be named 'Product','ProductName' or 'Produit'.", call. = FALSE)
   }
 
   # Check if 'h.table' column names are either English or French
@@ -97,11 +97,16 @@ hrata.agregation <- function(data, h.table, crit.agreg = "max") {
   }
 
   if (any(names(data)[3:length(data)]!=vtmp)) {
-    stop("The 'h.table' and 'data' don't match, please verify")
+
+    # Find the index of the value TRUE and then retrieve the name of columns that cause the problem
+    problem_index <- which(names(data)[3:length(data)] != vtmp)
+    problem_column <- names(data)[3 + problem_index - 1]
+
+    stop(paste0("The 'h.table' and 'data' don't match, please verify: ",
+                paste(problem_column, collapse = ", ")))
   }
 
-
-
+  data<-as.data.frame(data)
   data <- Var.Grappe(data, 3:length(data), "numeric", verbose = FALSE)
   data <- Var.Grappe(data, column = 1:2, type = "factor", verbose = FALSE)
 
