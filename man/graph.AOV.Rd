@@ -26,7 +26,8 @@ graph.AOV(
   extension = "wmf",
   color.graph = NULL,
   y.label = "Mean",
-  x.label = NULL
+  x.label = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -81,6 +82,8 @@ graph.AOV(
 \item{y.label}{value for the label (by default : "Mean")}
 
 \item{x.label}{value for the label (by default : "Product")}
+
+\item{verbose}{logical. printing message when graph are saved (by default : TRUE)}
 }
 \value{
 Returns graphs of means by factors and variables with letters from posthoc test, standard deviations and pvalue from ANOVAs

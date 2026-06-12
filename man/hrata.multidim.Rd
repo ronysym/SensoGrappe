@@ -24,7 +24,7 @@ hrata.multidim(
 \item{select}{a value indicating which level are used as active variables  : "cat" for category, "fam" for familly, "att" for terms (by defaul NULL)}
 }
 \value{
-Returns a list similar to \link{PCA}
+Returns a list similar to \link[FactoMineR:PCA]{FactoMineR::PCA}
 }
 \description{
 Performs a multidimensionnal analysis PCA for HRATA data and HCATA data
