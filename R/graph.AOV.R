@@ -36,6 +36,7 @@
 #' @param color.graph vector containing as much color than needed (NULL by defaut)
 #' @param y.label value for the label (by default : "Mean")
 #' @param x.label value for the label (by default : "Product")
+#' @param verbose  logical. printing message when graph are saved (by default : TRUE)
 #'
 #'
 #' @return Returns graphs of means by factors and variables with letters from posthoc test, standard deviations and pvalue from ANOVAs
@@ -85,7 +86,8 @@ graph.AOV <- function(AOV.res = NULL,
                       extension = "wmf",
                       color.graph = NULL,
                       y.label = "Mean",
-                      x.label = NULL) {
+                      x.label = NULL,
+                      verbose = TRUE) {
 
 
    # Variables pour aligner les noms sur les axes
@@ -330,7 +332,7 @@ graph.AOV <- function(AOV.res = NULL,
         print(gp)
       }
       # Remplace les : dans le nom du factor s'il y en a
-      fct <- gsub(":", "_", attr(data.factor, "nom"))
+      fct <- gsub(":", "_", nombaz)
 
       # Engistre le graph (si demande)
       if (save.graph == TRUE) {
@@ -341,7 +343,13 @@ graph.AOV <- function(AOV.res = NULL,
         if (!is.null(suffix)) {
           nom <- paste(nom, "_", suffix, sep = "")
         }
-        ggsave(filename = paste(nom, extension, sep = "."), path = getwd(), gp)
+
+
+        if (verbose) {
+          ggsave(filename = paste(nom, extension, sep = "."), path = getwd(), gp)
+        } else {
+          suppressMessages( ggsave(filename = paste(nom, extension, sep = "."), path = getwd(), gp))
+        }
       }
 
       # Ajoute le graphique des interactions
@@ -387,14 +395,20 @@ graph.AOV <- function(AOV.res = NULL,
 
           # Engistre le graph (si demande)
           if (save.graph == TRUE) {
-            nom <- paste(fct, "_", name.temp, "_interaction", sep = "")
+            nom <- paste(fct, "_", name.temp, "_interaction_", nomBaz[1], "x", nomBaz[2], sep = "")
             if (!is.null(prefix)) {
               nom <- paste(prefix, "_", nom, sep = "")
             }
             if (!is.null(suffix)) {
               nom <- paste(nom, "_", suffix, sep = "")
             }
-            ggsave(filename = paste(nom, extension, sep = "."), path = getwd(), plot.inter)
+
+
+            if (verbose) {
+              ggsave(filename = paste(nom, extension, sep = "."), path = getwd(), plot.inter)
+            } else {
+              suppressMessages( ggsave(filename = paste(nom, extension, sep = "."), path = getwd(), plot.inter))
+            }
           }
         }
 
@@ -436,14 +450,22 @@ graph.AOV <- function(AOV.res = NULL,
 
           # Engistre le graph (si demande)
           if (save.graph == TRUE) {
-            nom <- paste(fct, "_", name.temp, "_interaction", sep = "")
+            nom <- paste(fct, "_", name.temp, "_interaction_", nomBaz[2], "x", nomBaz[1], sep = "")
             if (!is.null(prefix)) {
               nom <- paste(prefix, "_", nom, sep = "")
             }
             if (!is.null(suffix)) {
               nom <- paste(nom, "_", suffix, sep = "")
             }
-            ggsave(filename = paste(nom, extension, sep = "."), path = getwd(), plot.inter)
+
+            if (verbose) {
+              ggsave(filename = paste(nom, extension, sep = "."), path = getwd(), plot.inter)
+            } else {
+              suppressMessages( ggsave(filename = paste(nom, extension, sep = "."), path = getwd(), plot.inter))
+            }
+
+
+
           }
         }
       }
@@ -451,7 +473,9 @@ graph.AOV <- function(AOV.res = NULL,
   }
   # Affiche le chemin du dossier où ont ete enregistres les graphiques
   if (save.graph == TRUE) {
-    cat("\nGraphics have been saved in:\n")
-    print(getwd())
+    if (verbose) {
+      cat("\nGraphics have been saved in:\n")
+      print(getwd())
+    }
   }
 }
