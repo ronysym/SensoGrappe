@@ -1,3 +1,5 @@
 ^SensoGrappe\.Rproj$
 ^\.Rproj\.user$
 ^dev$
+^\.positai$
+^\.claude$
