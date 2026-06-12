@@ -1,6 +1,6 @@
 Package: SensoGrappe
 Title: Some functions for sensory data in GRAPPE Laboratory
-Version: 5.3.4
+Version: 5.4.1
 Authors@R: 
     person("Ronan", "SYMONEAUX", , "r.symoneaux@groupe-esa.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-6792-8629"))
