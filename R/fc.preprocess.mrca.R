@@ -6,12 +6,20 @@
 #' complétion des évaluations manquantes et le filtrage des descripteurs
 #' peu fréquents.
 #'
+#'
+#' @usage
+#'preprocess.mrca(
+#'  dta,
+#'  specific_threshold = 0.05,
+#'  specific_coverage = 1)
+#'
+#'
 #' @param dta Un `data.frame` contenant obligatoirement les colonnes
 #'   `subject`, `product` et `descripteur`.
 #' @param specific_threshold Numérique. Proportion minimale d'observations
 #'   par rapport au nombre maximal de sujets par produit (Ep) requise dans
 #'   un produit pour qu'un descripteur soit retenu. Par défaut `0.05`
-#'   (5 \%).
+#'   (5%).
 #' @param specific_coverage Entier. Nombre minimum de produits devant
 #'   satisfaire `specific_threshold` pour qu'un descripteur soit conservé.
 #'   Par défaut `1`.
@@ -30,8 +38,7 @@
 #'     produits.
 #'   \item Filtrage des descripteurs selon `specific_threshold` et
 #'     `specific_coverage`.
-#' }
-#'
+#'     }
 #' Contrairement à \code{\link{get.binary}}, cette fonction ne récupère
 #' pas de niveau hiérarchique commun et est dédiée à la préparation pour
 #' l'analyse MRCA.
@@ -45,8 +52,7 @@
 #'   specific_threshold = 0.05,
 #'   specific_coverage  = 1
 #' )
-#'
-#' head(dta_mrca)
+#'#' head(dta_mrca)
 #' }
 #'
 #' @export

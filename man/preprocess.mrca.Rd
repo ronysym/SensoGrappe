@@ -4,7 +4,10 @@
 \alias{preprocess.mrca}
 \title{Prétraitement des données pour l'analyse MRCA}
 \usage{
-preprocess.mrca(dta, specific_threshold = 0.05, specific_coverage = 1)
+preprocess.mrca(
+ dta,
+ specific_threshold = 0.05,
+ specific_coverage = 1)
 }
 \arguments{
 \item{dta}{Un \code{data.frame} contenant obligatoirement les colonnes
@@ -13,7 +16,7 @@ preprocess.mrca(dta, specific_threshold = 0.05, specific_coverage = 1)
 \item{specific_threshold}{Numérique. Proportion minimale d'observations
 par rapport au nombre maximal de sujets par produit (Ep) requise dans
 un produit pour qu'un descripteur soit retenu. Par défaut \code{0.05}
-(5 \\%).}
+(5\%).}
 
 \item{specific_coverage}{Entier. Nombre minimum de produits devant
 satisfaire \code{specific_threshold} pour qu'un descripteur soit conservé.
@@ -43,7 +46,6 @@ produits.
 \item Filtrage des descripteurs selon \code{specific_threshold} et
 \code{specific_coverage}.
 }
-
 Contrairement à \code{\link{get.binary}}, cette fonction ne récupère
 pas de niveau hiérarchique commun et est dédiée à la préparation pour
 l'analyse MRCA.
@@ -55,8 +57,7 @@ dta_mrca <- preprocess.mrca(
   specific_threshold = 0.05,
   specific_coverage  = 1
 )
-
-head(dta_mrca)
+#' head(dta_mrca)
 }
 
 }
