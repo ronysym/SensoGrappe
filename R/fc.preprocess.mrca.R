@@ -1,4 +1,4 @@
-#' Prétraitement des données pour l'analyse MRCA
+#' @title Prétraitement des données pour l'analyse MRCA
 #'
 #' @description
 #' Prépare une matrice binaire (sujets × produits × descripteurs) à partir

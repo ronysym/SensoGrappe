@@ -1,15 +1,102 @@
+#' @title Draw the Principal Component Analysis (PCA) graphs - Adapted From FactoMineR
+#'
+#' @description
+#' Plot the graphs for a Principal Component Analysis (PCA) with supplementary individuals,
+#' supplementary quantitative variables and supplementary categorical variables.
+#'
+#' @param x an object of class PCA
+#' @param axes a length 2 vector specifying the components to plot
+#' @param choix the graph to plot ("ind" for the individuals, "var" for the variables,
+#'   "varcor" for a graph with the correlation circle when \code{scale.unit=FALSE})
+#' @param ellipse boolean (NULL by default), if not null, draw ellipses around the
+#'   individuals, and use the results of \code{coord.ellipse}
+#' @param xlim range for the plotted 'x' values, defaulting to the range of the finite
+#'   values of 'x'
+#' @param ylim range for the plotted 'y' values, defaulting to the range of the finite
+#'   values of 'y'
+#' @param habillage give no color for the individuals ("none"), a color for each
+#'   individual ("ind"), or color the individuals among a categorical variable
+#'   (give the number of the categorical variable)
+#' @param col.hab a vector with the color to use for the individuals
+#' @param col.ind a color for the individuals only if there is not habillage
+#' @param col.ind.sup a color for the supplementary individuals only if there is not habillage
+#' @param col.quali a color for the categories of categorical variables only if there
+#'   is not habillage
+#' @param col.quanti.sup a color for the quantitative supplementary variables
+#' @param col.var a color for the variables
+#' @param label a list of character for the elements which are labelled (by default,
+#'   all the elements are labelled ("ind", "ind.sup", "quali", "var", "quanti.sup"))
+#' @param invisible string indicating if some points should not be drawn ("ind",
+#'   "ind.sup" or "quali" for the individual graph and "var" or "quanti.sup" for
+#'   the correlation circle graph)
+#' @param lim.cos2.var value of the square cosinus under which the variables are not drawn
+#' @param title string corresponding to the title of the graph (by default NULL and
+#'   a title is chosen)
+#' @param palette the color palette used to draw the points. By default colors are chosen.
+#'   If you want to define the colors: \code{palette=palette(c("black","red","blue"))};
+#'   or you can use: \code{palette=palette(rainbow(30))}, or in black and white:
+#'   \code{palette=palette(gray(seq(0,.9,len=25)))}
+#' @param autoLab if \code{autoLab="auto"}, equal to "yes" if there are less than 50
+#'   elements and "no" otherwise; if "yes", labels are placed in a "good" way
+#'   (can be time-consuming if many elements), if "no" elements are placed quickly
+#'   but may overlap
+#' @param new.plot boolean, if TRUE a new graphical device is created; only used
+#'   when \code{graph.type="classic"}
+#' @param select a selection of the elements that are drawn; see the details section
+#' @param unselect may be either a value between 0 and 1 that gives the transparency
+#'   of the unselected objects, or a color (for example \code{unselect="grey60"})
+#' @param shadowtext boolean; if TRUE put a shadow on the labels; only used when
+#'   \code{graph.type="classic"}
+#' @param legend a list of arguments that defines the legend if needed; see the
+#'   arguments of the function \code{legend}
+#' @param graph.type a character that gives the type of graph: "ggplot" or "classic"
+#' @param ggoptions a list that gives the graph options when \code{graph.type="ggplot"}
+#'   is used. See the options and default values in the details section
+#' @param ... further arguments passed to or from other methods, such as cex, cex.main
+#'
+#' @details
+#' The argument \code{autoLab = "yes"} is time-consuming if there are many labels
+#' that overlap. In this case, you can modify the size of the characters in order to
+#' have less overlapping, using for example \code{cex=0.7}.\cr
+#' The \code{select} argument can be used to select a part of the elements that are drawn:\cr
+#' \code{select = 1:5} : elements 1 to 5 are drawn.\cr
+#' \code{select = c("name1","name5")} : elements with names name1 and name5 are drawn.\cr
+#' \code{select = "coord 10"} : the 10 elements with the highest coordinates on the 2 chosen dimensions.\cr
+#' \code{select = "contrib 10"} : the 10 elements with the highest contribution on the 2 dimensions.\cr
+#' \code{select = "cos2 5"} : the 5 elements with the highest cos2 on the 2 dimensions.\cr
+#' \code{select = "dist 8"} : the 8 elements with the highest distance to the center of gravity.\cr
+#' \cr
+#' \code{ggoptions} default values:\cr
+#' size = 4, point.shape = 19, line.lty = 2, line.lwd = 0, line.color = "black",\cr
+#' segment.lty = 1, segment.lwd = 0, circle.lty = 1, circle.lwd = 0,\cr
+#' circle.color = "black", low.col.quanti = "blue", high.col.quanti = "red3"
+#'
+#' @return Returns the individuals factor map and the variables factor map.
+#'
+#' @author Francois Husson \email{francois.husson@institut-agro.fr}
+#'
+#' @seealso \code{\link{PCA}}
+#'
+#' @examples
+#' data(decathlon)
+#' res.pca <- PCA(decathlon, quanti.sup = 11:12, quali.sup = 13)
+#' plot(res.pca, habillage = 13, cex = 0.8)
+#'
+#' @exportS3Method
+
+
 plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
-                             ellipse = NULL, xlim = NULL, ylim = NULL, habillage = "none", 
-                             col.hab = NULL, col.ind = "black", col.ind.sup = "blue", 
-                             col.quali = "magenta", col.quanti.sup = "blue", 
-                             col.var = "black", label=c("all","none","ind", "ind.sup", "quali", "var", "quanti.sup"), 
+                             ellipse = NULL, xlim = NULL, ylim = NULL, habillage = "none",
+                             col.hab = NULL, col.ind = "black", col.ind.sup = "blue",
+                             col.quali = "magenta", col.quanti.sup = "blue",
+                             col.var = "black", label=c("all","none","ind", "ind.sup", "quali", "var", "quanti.sup"),
                              invisible = c("none","ind", "ind.sup", "quali","var", "quanti.sup"), lim.cos2.var = 0.,
-                             title = NULL, palette=NULL, autoLab=c("auto","yes","no"),new.plot=FALSE, 
+                             title = NULL, palette=NULL, autoLab=c("auto","yes","no"),new.plot=FALSE,
                              select=NULL, unselect = 0.7,shadowtext = FALSE, legend = list(bty = "y", x = "topleft"),
                              graph.type = c("ggplot","classic"), ggoptions = NULL,  ...){
-  
+
   #la modification concerne : arrows to segment and some color options
-  
+
   res.pca <- x
   argument <- list(...)
   if (!is.null(argument[["cex"]]) & is.null(ggoptions["size"]))  ggoptions["size"] <- 4*argument$cex
@@ -18,7 +105,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
   if (!inherits(res.pca, "PCA")) stop("non convenient data")
   if (is.numeric(unselect)) if ((unselect>1)|(unselect<0)) stop("unselect should be betwwen 0 and 1")
   autoLab <- match.arg(autoLab,c("auto","yes","no"))
-  if (autoLab == "yes") autoLab <- TRUE 
+  if (autoLab == "yes") autoLab <- TRUE
   if (autoLab == "no") autoLab <- FALSE
   old.palette <- palette()
   if (is.null(palette)) palette <- c("black", "red", "green3", "blue", "magenta", "darkgoldenrod","darkgray", "orange", "cyan", "violet", "lightpink", "lavender", "yellow", "darkgreen","turquoise", "lightgrey", "lightblue", "darkkhaki","darkmagenta","lightgreen", "darkolivegreen", "lightcyan", "darkorange","darkorchid", "darkred", "darksalmon", "darkseagreen","darkslateblue", "darkslategray", "darkslategrey","darkturquoise", "darkviolet", "lightgray", "lightsalmon","lightyellow", "maroon")
@@ -46,14 +133,14 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
                    legend.position = ifelse(legend$x %in% c("bottom","up","right","left"), legend$x, "right"),
                    legend.box.spacing=unit(0.1, 'cm'),legend.margin=margin()
     )
-    
-    
+
+
     liste.quali <- colnames(res.pca$call$quali.sup$quali.sup)
     liste.quanti <- colnames(res.pca$call$X)[which(!(colnames(res.pca$call$X) %in% liste.quali))]
     hab_2 <- c(colnames(res.pca$call$X), "contrib", "cos2")
-    
+
     if((habillage != "none") && !(habillage[1] %in% hab_2) && (habillage != "ind")) habillage[1] <- colnames(res.pca$call$X)[as.numeric(habillage[1])]
-    
+
     if(habillage[1] != "none" && length(habillage) == 2){
       if(!habillage[2] %in% hab_2) habillage[2] <- colnames(res.pca$call$X)[as.numeric(habillage[2])]
       if (length(habillage) > 2) {
@@ -69,29 +156,29 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
             habillage <- habillage[2:1]
           }
         }}
-      
+
       if(length(habillage) == 1 && !(habillage %in% hab_2)) habillage <- as.numeric(habillage)
       if((length(habillage) == 2) & (habillage[2] %in% c("contrib","cos2"))) habillage <- habillage[2:1]
       if((length(habillage) == 2) & (habillage[1] %in% c("contrib","cos2")) & !(habillage[2] %in% hab_2)) habillage[2] <- colnames(res.pca$call$X)[as.integer(habillage[2])]
       if(class(habillage[1]) %in% c("numeric","integer") && class(habillage[2]) %in% c("numeric","integer")) habillage <- c(colnames(res.pca$call$X)[habillage[1]],colnames(res.pca$call$X)[habillage[2]])
-      
+
       if(("cos2" %in% habillage) || ("contrib" %in% habillage)){
         if((habillage[2] %in% liste.quanti) || (habillage[1] %in% liste.quanti)) habillage <- habillage[1]
       }
       if(("cos2" %in% habillage) && ("contrib" %in% habillage)) habillage <- habillage[1]
-      
+
     }
   }
   if (choix == "ind") {
     if (is.null(title)) titre <- "PCA graph of individuals"
     else titre <- title
-    
+
     coord.actif <- res.pca$ind$coord[, axes,drop=FALSE]
     coord.illu <- coord.quali <- coord.ellipse <- NULL
     if (!is.null(res.pca$ind.sup)) coord.illu <- res.pca$ind.sup$coord[, axes,drop=FALSE]
     if (!is.null(res.pca$quali.sup))  coord.quali <- res.pca$quali.sup$coord[, axes,drop=FALSE]
     if (!is.null(ellipse))  coord.ellipse <- ellipse$res
-    
+
     test.invisible <- vector(length = 2)
     if (!is.null(invisible)) {
       test.invisible[1] <- match("ind", invisible)
@@ -145,7 +232,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
             else selection <- which(apply(res.pca$ind$cos2[,axes],1,sum)>sum(as.numeric(unlist(strsplit(select,"cos2"))),na.rm=T))
           }
           if (is.integer(select)) selection <- select
-        }  
+        }
       }
     }
     selectionS <- NULL
@@ -161,7 +248,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
             else selectionS <- which(apply(res.pca$ind.sup$cos2[,axes,drop=FALSE],1,sum)>sum(as.numeric(unlist(strsplit(select,"cos2"))),na.rm=T))
           }
           if (is.integer(select)) selectionS <- select
-        }  
+        }
       }
     }
     ## PARTIE GRAPHIQUE
@@ -211,7 +298,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
           color.ind <- as.character(color.ind)
         }
       }
-      
+
       if(class(res.pca$call$X[,habillage[1]])[1] %in% c("numeric","double","integer")){
         if (graph.type == "classic") stop("The variable ", habillage[1], "is not qualitative")
         liste.quanti <- colnames(res.pca$call$X[which(!(colnames(res.pca$call$X) %in% colnames(res.pca$call$quali.sup$quali.sup)))])
@@ -238,7 +325,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
       ipch <- c(ipch,rep(20,nrow(coord.actif)))
       fonte <- c(fonte,rep(1,nrow(coord.actif)))
       if (!is.null(selection)){
-        if (is.numeric(unselect)) coll[!((1:length(coll))%in%selection)] <- rgb(t(col2rgb(coll[!((1:length(coll))%in%selection)])),alpha=255*(1-unselect),maxColorValue=255) 
+        if (is.numeric(unselect)) coll[!((1:length(coll))%in%selection)] <- rgb(t(col2rgb(coll[!((1:length(coll))%in%selection)])),alpha=255*(1-unselect),maxColorValue=255)
         else coll[!((1:length(coll))%in%selection)] <- unselect
         labe[!((1:length(coll))%in%selection)] <- ""
       }
@@ -252,13 +339,13 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
       if (length(color.sup)>1) coll2 <- color.sup
       else coll2 <- rep(color.sup,nrow(res.pca$ind.sup$coord))
       if (!is.null(selectionS)){
-        if (is.numeric(unselect)) coll2[!((1:length(coll2))%in%selectionS)] <- rgb(t(col2rgb(coll2[!((1:length(coll2))%in%selectionS)])),alpha=255*(1-unselect),maxColorValue=255) 
+        if (is.numeric(unselect)) coll2[!((1:length(coll2))%in%selectionS)] <- rgb(t(col2rgb(coll2[!((1:length(coll2))%in%selectionS)])),alpha=255*(1-unselect),maxColorValue=255)
         else coll2[!((1:length(coll2))%in%selectionS)] <- unselect
         labe2[!((1:length(coll2))%in%selectionS)] <- ""
       }
       if (length(select)==1){
         if (grepl("contrib",select)){
-          if (is.numeric(unselect)) coll2[1:length(coll2)] <- rgb(t(col2rgb(coll2[1:length(coll2)])),alpha=255*(1-unselect),maxColorValue=255) 
+          if (is.numeric(unselect)) coll2[1:length(coll2)] <- rgb(t(col2rgb(coll2[1:length(coll2)])),alpha=255*(1-unselect),maxColorValue=255)
           else coll2[1:length(coll2)] <- unselect
           labe2[1:length(coll2)] <- ""
         }}
@@ -304,7 +391,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
         geom_vline(xintercept = 0,lty=ggoptions_default$line.lty, lwd = ggoptions_default$line.lwd, color=ggoptions_default$line.color) +
         theme_light() +
         labs(title = titre, x = lab.x, y= lab.y)
-      
+
       if(!is.null(select)) df_ind2[,1] <- ifelse(rownames(df_ind2) %in% rownames(df_ind2)[selection], rownames(df_ind2), "")
       transparency_ind <- col2rgb(col.ind,alpha=TRUE)[4]/255
       if (!is.null(select)) transparency_ind <- ifelse(rownames(res.pca$ind$coord) %in% rownames(res.pca$ind$coord)[selection], transparency_ind, transparency_ind*(1-unselect))
@@ -320,7 +407,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
           if ((habillage %in% colnames(res.pca$call$X)) & !(habillage %in% liste.quali)){
             df_ind2 <- data.frame(df_ind2, (res.pca$call$X)[rownames(df_ind2),habillage])
             gg_graph <- gg_graph +
-              geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], color = df_ind2[,6]), shape = ggoptions_default$point.shape, size = ggoptions_default$size/3, alpha = transparency_ind) + 
+              geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], color = df_ind2[,6]), shape = ggoptions_default$point.shape, size = ggoptions_default$size/3, alpha = transparency_ind) +
               scale_color_gradient(low=ggoptions_default$low.col.quanti, high=ggoptions_default$high.col.quanti) +
               labs(color = ifelse(legend["title"] %in% legend, legend["title"][[1]], habillage))
             if(autoLab) text <- ggrepel::geom_text_repel(aes(x=df_ind2[,2], y=df_ind2[,3], label=df_ind2[,1], color = df_ind2[,6]), size = ggoptions_default$size, show.legend = FALSE)
@@ -329,7 +416,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
           if (habillage %in% liste.quali){
             df_ind2 <- data.frame(df_ind2, (res.pca$call$X)[rownames(df_ind2),habillage])
             gg_graph <- gg_graph +
-              geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], color = (res.pca$call$X)[rownames(df_ind2),habillage]), shape = ggoptions_default$point.shape, size = ggoptions_default$size/3, alpha = transparency_ind) + 
+              geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], color = (res.pca$call$X)[rownames(df_ind2),habillage]), shape = ggoptions_default$point.shape, size = ggoptions_default$size/3, alpha = transparency_ind) +
               scale_color_manual(values = palette[1:length(levels((res.pca$call$X)[,habillage]))]) +
               labs(color = ifelse(legend["title"] %in% legend, legend["title"][[1]], habillage))
             if (autoLab) text <- ggrepel::geom_text_repel(aes(x=df_ind2[,2], y=df_ind2[,3], label=df_ind2[,1], color = (res.pca$call$X)[rownames(res.pca$ind$coord),habillage[1]]), size = ggoptions_default$size, show.legend = FALSE)
@@ -339,15 +426,15 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
             gg_graph <- gg_graph +
               geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], color = res.pca$ind$cos2[,axes[1]] + res.pca$ind$cos2[,axes[2]]), shape = ggoptions_default$point.shape, size = ggoptions_default$size/3, alpha = transparency_ind) +
               scale_color_gradient(low=ggoptions_default$low.col.quanti, high=ggoptions_default$high.col.quanti) +
-              labs(color = ifelse(legend["title"] %in% legend, legend["title"][[1]], "cos2")) 
+              labs(color = ifelse(legend["title"] %in% legend, legend["title"][[1]], "cos2"))
             if (autoLab) text <- ggrepel::geom_text_repel(aes(x=df_ind2[,2], y=df_ind2[,3], label=df_ind2[,1], color = res.pca$ind$cos2[,axes[1]] + res.pca$ind$cos2[,axes[2]]), size = ggoptions_default$size)
             else{text <- geom_text(aes(x=df_ind2[,2], y=df_ind2[,3], label=df_ind2[,1], color = res.pca$ind$cos2[,axes[1]] + res.pca$ind$cos2[,axes[2]]), size = ggoptions_default$size, hjust = (-sign(df_ind2[,2])+1)/2, vjust = -sign(df_ind2[,3])*0.75+0.25)}
           }
           if (habillage == "contrib"){
             gg_graph <- gg_graph +
-              geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], color = (res.pca$ind$contrib[,axes[1]]*res.pca$eig[axes[1],1]+res.pca$ind$contrib[,axes[2]]*res.pca$eig[axes[2],1])/(res.pca$eig[axes[1],1]+res.pca$eig[axes[2],1])), shape = ggoptions_default$point.shape, size = ggoptions_default$size/3, alpha = transparency_ind) + 
+              geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], color = (res.pca$ind$contrib[,axes[1]]*res.pca$eig[axes[1],1]+res.pca$ind$contrib[,axes[2]]*res.pca$eig[axes[2],1])/(res.pca$eig[axes[1],1]+res.pca$eig[axes[2],1])), shape = ggoptions_default$point.shape, size = ggoptions_default$size/3, alpha = transparency_ind) +
               scale_color_gradient(low=ggoptions_default$low.col.quanti, high=ggoptions_default$high.col.quanti) +
-              labs(color = ifelse(legend["title"] %in% legend, legend["title"][[1]], "Ctr")) 
+              labs(color = ifelse(legend["title"] %in% legend, legend["title"][[1]], "Ctr"))
             if (autoLab) text <- ggrepel::geom_text_repel(aes(x=df_ind2[,2], y=df_ind2[,3], label=df_ind2[,1], color = (res.pca$ind$contrib[,axes[1]]*res.pca$eig[axes[1],1]+res.pca$ind$contrib[,axes[2]]*res.pca$eig[axes[2],1])/(res.pca$eig[axes[1],1]+res.pca$eig[axes[2],1])), size = ggoptions_default$size)
             else{text <- geom_text(aes(x=df_ind2[,2], y=df_ind2[,3], label=df_ind2[,1], color = (res.pca$ind$contrib[,axes[1]]*res.pca$eig[axes[1],1]+res.pca$ind$contrib[,axes[2]]*res.pca$eig[axes[2],1])/(res.pca$eig[axes[1],1]+res.pca$eig[axes[2],1])), size = ggoptions_default$size, hjust = (-sign(df_ind2[,2])+1)/2, vjust = -sign(df_ind2[,3])*0.75+0.25)
             }
@@ -355,15 +442,15 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
         if(length(habillage) == 2 & habillage[1] != "none"){
           if (!(habillage[1] %in% liste.quali)){
             gg_graph <- gg_graph +
-              geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], shape = res.pca$call$X[rownames(res.pca$ind$coord),habillage[2]], color = (res.pca$call$X)[rownames(res.pca$ind$coord),habillage[1]]), size = ggoptions_default$size/3, alpha = transparency_ind) + 
+              geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], shape = res.pca$call$X[rownames(res.pca$ind$coord),habillage[2]], color = (res.pca$call$X)[rownames(res.pca$ind$coord),habillage[1]]), size = ggoptions_default$size/3, alpha = transparency_ind) +
               scale_color_gradient(low=ggoptions_default$low.col.quanti, high=ggoptions_default$high.col.quanti) +
-              labs(color = habillage[1], shape = habillage[2]) 
+              labs(color = habillage[1], shape = habillage[2])
             if (autoLab) text <- ggrepel::geom_text_repel(aes(x=df_ind2[,2], y=df_ind2[,3], label=df_ind2[,1], color = (res.pca$call$X)[rownames(res.pca$ind$coord),habillage[1]]), size = ggoptions_default$size, show.legend = FALSE)
             else{text <- geom_text(aes(x=df_ind2[,2], y=df_ind2[,3], label=df_ind2[,1], color = (res.pca$call$X)[rownames(res.pca$ind$coord),habillage[1]]), size = ggoptions_default$size, show.legend = FALSE, hjust = (-sign(df_ind2[,2])+1)/2, vjust = -sign(df_ind2[,3])*0.75+0.25)}
           }
           if (habillage[1] %in% liste.quali){
             gg_graph <- gg_graph +
-              geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], shape = res.pca$call$X[rownames(res.pca$ind$coord),habillage[2]], color = (res.pca$call$X)[rownames(res.pca$ind$coord),habillage[1]]), size = ggoptions_default$size/3, alpha = transparency_ind) + 
+              geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], shape = res.pca$call$X[rownames(res.pca$ind$coord),habillage[2]], color = (res.pca$call$X)[rownames(res.pca$ind$coord),habillage[1]]), size = ggoptions_default$size/3, alpha = transparency_ind) +
               scale_color_manual(values = palette[1:length(levels((res.pca$call$X)[,habillage[1]]))]) +
               labs(color = habillage[1], shape = habillage[2])
             if(autoLab) text <- ggrepel::geom_text_repel(aes(x=df_ind2[,2], y=df_ind2[,3], label=df_ind2[,1], color = (res.pca$call$X)[rownames(res.pca$ind$coord),habillage[1]]), size = ggoptions_default$size, show.legend = FALSE)
@@ -373,7 +460,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
             gg_graph <- gg_graph +
               geom_point(aes(x=df_ind2[,2], y=df_ind2[,3], color = res.pca$ind$cos2[,axes[1]] + res.pca$ind$cos2[,axes[2]], shape = res.pca$call$X[rownames(res.pca$ind$coord),habillage[2]]), size = ggoptions_default$size/3, alpha = transparency_ind) +
               scale_color_gradient(low=ggoptions_default$low.col.quanti, high=ggoptions_default$high.col.quanti) +
-              labs(color = habillage[1], shape = habillage[2]) 
+              labs(color = habillage[1], shape = habillage[2])
             if (autoLab) text <- ggrepel::geom_text_repel(aes(x=df_ind2[,2], y=df_ind2[,3], label=df_ind2[,1], color = res.pca$ind$cos2[,axes[1]] + res.pca$ind$cos2[,axes[2]]), size = ggoptions_default$size)
             else{text <- geom_text(aes(x=df_ind2[,2], y=df_ind2[,3], label=df_ind2[,1], color = res.pca$ind$cos2[,axes[1]] + res.pca$ind$cos2[,axes[2]]), size = ggoptions_default$size, hjust = (-sign(df_ind2[,2])+1)/2, vjust = -sign(df_ind2[,3])*0.75+0.25)}
           }
@@ -394,7 +481,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
       }
       gg_graph <- gg_graph + theme
       if (is.na(test.invisible[1]) & isTRUE(lab.ind)) gg_graph <- gg_graph + text
-      
+
       if ((!is.null(res.pca$ind.sup)) && (is.na(test.invisible[2]))){
         if(!is.null(select)) df_ind_sup[,1] <- ifelse(rownames(df_ind_sup) %in% rownames(df_ind_sup)[selectionS], rownames(df_ind_sup), "")
         if(nrow(res.pca$ind.sup$coord) > 1){
@@ -463,7 +550,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
         }
         else{
           gg_graph <- gg_graph +
-            geom_point(aes(x = df_quali.sup[,2], y = df_quali.sup[,3]), size = ggoptions_default$size/2.8, color = col.quali, shape = 0)          
+            geom_point(aes(x = df_quali.sup[,2], y = df_quali.sup[,3]), size = ggoptions_default$size/2.8, color = col.quali, shape = 0)
         }
       }
     }
@@ -492,9 +579,9 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
         }
       }
     }
-    
-    
-    
+
+
+
     #    if ((habillage != "none")&(habillage != "ind")) legend("topleft",legend= levels(res.pca$call$X[,habillage]),text.col= color.mod,cex=par("cex")*0.8)
     if ((habillage[1] != "none") & (habillage[1] != "ind") & (habillage[1] != "cos2") & (habillage[1] != "contrib") & (graph.type == "classic")) {
       L <- list(x="topleft", legend = levels(res.pca$call$X[, habillage[1]]), text.col = color.mod, cex = par("cex") * 0.8)
@@ -524,7 +611,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
             else selection <- which(apply(res.pca$var$cos2[,axes],1,sum)>sum(as.numeric(unlist(strsplit(select,"cos2"))),na.rm=T))
           }
           if (is.integer(select)) selection <- select
-        }  
+        }
       }
     }
     if ((!is.null(select))&(!is.null(res.pca$quanti.sup))) {
@@ -539,10 +626,10 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
             else selectionS <- which(apply(res.pca$quanti.sup$cos2[,axes],1,sum)>sum(as.numeric(unlist(strsplit(select,"cos2"))),na.rm=T))
           }
           if (is.integer(select)) selectionS <- select
-        }  
+        }
       }
     }
-    
+
     test.invisible <- vector(length = 2)
     if (!is.null(invisible)) {
       test.invisible[1] <- match("var", invisible)
@@ -564,7 +651,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
     }
     if ((new.plot)&!nzchar(Sys.getenv("RSTUDIO_USER_IDENTITY"))) dev.new()
     if (is.null(palette)) palette(c("black","red","green3","blue","cyan","magenta","darkgray","darkgoldenrod","darkgreen","violet","turquoise","orange","lightpink","lavender","yellow","lightgreen","lightgrey","lightblue","darkkhaki", "darkmagenta","darkolivegreen","lightcyan", "darkorange", "darkorchid","darkred","darksalmon","darkseagreen","darkslateblue","darkslategray","darkslategrey","darkturquoise","darkviolet", "lightgray","lightsalmon","lightyellow", "maroon"))
-    
+
     # cercle variables factor map
     if (graph.type == "classic") {
       if (scale.unit) {
@@ -580,7 +667,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
       abline(v=0,lty=2,...)
       abline(h=0,lty=2,...)
     }
-    
+
     #
     coll <- coo <- labe <- posi <- NULL
     if (!is.null(coord.var[ which(apply(res.pca$var$cos2[, axes,drop=FALSE],1,sum, na.rm = TRUE) >= lim.cos2.var),])&is.na(test.invisible[1])&(nrow(coord.var)>0)){
@@ -592,7 +679,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
       if (lab.var){ labe <- c(labe,rownames(coord.var))
       } else  labe <- c(labe,rep("",nrow(coord.var)))
       if (!is.null(selection)){
-        if (is.numeric(unselect)) coll[!((1:length(coll))%in%selection)] <- rgb(t(col2rgb(coll[!((1:length(coll))%in%selection)])),alpha=255*(1-unselect),maxColorValue=255) 
+        if (is.numeric(unselect)) coll[!((1:length(coll))%in%selection)] <- rgb(t(col2rgb(coll[!((1:length(coll))%in%selection)])),alpha=255*(1-unselect),maxColorValue=255)
         else coll[!((1:length(coll))%in%selection)] <- unselect
         labe[!((1:length(coll))%in%selection)] <- ""
       }
@@ -627,23 +714,23 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
         } else  labe2 <- rep("",nrow(coord.quanti))
         if (length(select)==1){
           if (grepl("contrib",select)){
-            if (is.numeric(unselect)) coll2[1:length(coll2)] <- rgb(t(col2rgb(coll2[1:length(coll2)])),alpha=255*(1-unselect),maxColorValue=255) 
+            if (is.numeric(unselect)) coll2[1:length(coll2)] <- rgb(t(col2rgb(coll2[1:length(coll2)])),alpha=255*(1-unselect),maxColorValue=255)
             else coll2[1:length(coll2)] <- unselect
             labe2[1:length(coll2)] <- ""
           }}
         if (!is.null(selectionS)){
-          if (is.numeric(unselect)) coll2[!((1:length(coll2))%in%selectionS)] <- rgb(t(col2rgb(coll2[!((1:length(coll2))%in%selectionS)])),alpha=255*(1-unselect),maxColorValue=255) 
+          if (is.numeric(unselect)) coll2[!((1:length(coll2))%in%selectionS)] <- rgb(t(col2rgb(coll2[!((1:length(coll2))%in%selectionS)])),alpha=255*(1-unselect),maxColorValue=255)
           else coll2[!((1:length(coll2))%in%selectionS)] <- unselect
           labe2[!((1:length(coll2))%in%selectionS)] <- ""
         }
         if (graph.type == "ggplot") df_quanti.sup <- data.frame(labe2,coord.quanti,coll2)
-        
+
         #
         if (graph.type == "classic"){
           for (q in 1:nrow(coord.quanti)) {
             segments(0, 0, coord.quanti[q, 1], coord.quanti[q, 2], length = 0.1, angle = 15, code = 2, lty = 2, col=coll2[q])
             #
-            
+
             if (lab.quanti) {
               if (abs(coord.quanti[q,1])>abs(coord.quanti[q,2])){
                 if (coord.quanti[q,1]>=0) posi<-c(posi,4)
@@ -657,7 +744,7 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
           }}
         labe <- c(labe,labe2)
         coll <- c(coll,coll2)
-      }  
+      }
     }
     if (graph.type == "classic"){
       if (any(labe!="")){
@@ -684,15 +771,15 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
                          lwd = ggoptions_default$circle.lwd,
                          color = ggoptions_default$circle.color)
       transparency_var <- ifelse(rownames(res.pca$var$coord) %in% labe, 1, 1-unselect)
-      gg_graph <- ggplot() + 
-        coord_fixed(ratio = 1) + 
-        geom_line(aes(x=x, y=y), data=data.frame(x=-1:1,y=0),lty=ggoptions_default$line.lty, lwd = ggoptions_default$line.lwd, color=ggoptions_default$line.color) + 
-        geom_line(aes(x=x, y=y), data=data.frame(x=0,y=-1:1),lty=ggoptions_default$line.lty, lwd = ggoptions_default$line.lwd, color=ggoptions_default$line.color) + 
+      gg_graph <- ggplot() +
+        coord_fixed(ratio = 1) +
+        geom_line(aes(x=x, y=y), data=data.frame(x=-1:1,y=0),lty=ggoptions_default$line.lty, lwd = ggoptions_default$line.lwd, color=ggoptions_default$line.color) +
+        geom_line(aes(x=x, y=y), data=data.frame(x=0,y=-1:1),lty=ggoptions_default$line.lty, lwd = ggoptions_default$line.lwd, color=ggoptions_default$line.color) +
         theme_light()
-      
+
       if (is.na(test.invisible[1])){
         if (((habillage[1] != "contrib") & (habillage[1] != "cos2"))) {
-          gg_graph <- gg_graph + 
+          gg_graph <- gg_graph +
             aes(x=df_var[,2], y=df_var[,3]) +
             geom_segment(aes(x=0,y=0,xend=df_var[,2], yend=df_var[,3]),alpha = transparency_var, lty = ggoptions_default$segment.lty, lwd = ggoptions_default$segment.lwd, color=col.var)
           if(autoLab) text <- ggrepel::geom_text_repel(aes(x=df_var[,2], y=df_var[,3],label=df_var[,1]), size = ggoptions_default$size, color = col.var)
@@ -701,9 +788,9 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
         if (habillage[1] == "cos2" || habillage[1] == "contrib"){
           if (habillage[1] == "cos2") df_var[,4] <- res.pca$var$cos2[,axes[1]] + res.pca$var$cos2[,axes[2]]
           if (habillage[1] == "contrib") df_var[,4] <- (res.pca$var$contrib[,axes[1]]*res.pca$eig[axes[1],1]+res.pca$var$contrib[,axes[2]]*res.pca$eig[axes[2],1])/(res.pca$eig[axes[1],1]+res.pca$eig[axes[2],1])
-          gg_graph <- gg_graph + 
+          gg_graph <- gg_graph +
             aes(x=df_var[,2], y=df_var[,3],color = df_var[,4]) +
-            geom_segment(aes(x=0,y=0,xend=df_var[,2], yend=df_var[,3],col = df_var[,4]), alpha = transparency_var, lty = ggoptions_default$segment.lty, lwd = ggoptions_default$segment.lwd) + 
+            geom_segment(aes(x=0,y=0,xend=df_var[,2], yend=df_var[,3],col = df_var[,4]), alpha = transparency_var, lty = ggoptions_default$segment.lty, lwd = ggoptions_default$segment.lwd) +
             scale_color_gradient(low=ggoptions_default$low.col.quanti, high=ggoptions_default$high.col.quanti)
           if (habillage[1] == "cos2") gg_graph <- gg_graph + labs(color = ifelse(legend["title"] %in% legend, legend["title"][[1]], "cos2"))
           if (habillage[1] == "contrib") gg_graph <- gg_graph + labs(color = ifelse(legend["title"] %in% legend, legend["title"][[1]], "Ctr"))
@@ -712,12 +799,12 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
         }
       }
       if (!is.na(test.invisible[1])){
-        gg_graph <- gg_graph + 
+        gg_graph <- gg_graph +
           labs(color = legend["title"][[1]])
       }
       if ((!is.null(res.pca$quanti.sup))&(is.na(test.invisible[2]))){
         transparency_quanti <- ifelse(rownames(res.pca$quanti.sup$coord) %in% labe, 1, 1-unselect)
-        
+
         if (isTRUE(lab.quanti)){
           if(habillage[1] == "contrib") text_quanti.sup <- NULL
           if (habillage[1] == "none"){ gg_graph <- gg_graph + geom_segment(aes(x=0,y=0,xend=df_quanti.sup[,2], yend=df_quanti.sup[,3]), color = col.quanti.sup,alpha = transparency_quanti)
@@ -728,15 +815,15 @@ plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
           if (autoLab) text_quanti.sup <- ggrepel::geom_text_repel(aes(x = df_quanti.sup[,2], y = df_quanti.sup[,3], label=df_quanti.sup[,1], color = res.pca$quanti.sup$cos2[,axes[1]] + res.pca$quanti.sup$cos2[,axes[2]]), size = ggoptions_default$size,alpha = transparency_quanti)
           else{text_quanti.sup <- geom_text(aes(x = df_quanti.sup[,2], y = df_quanti.sup[,3], label=df_quanti.sup[,1], color = res.pca$quanti.sup$cos2[,axes[1]] + res.pca$quanti.sup$cos2[,axes[2]]), size = ggoptions_default$size,hjust = (-sign(df_quanti.sup[,2])+1)/2, vjust = -sign(df_quanti.sup[,3])*0.75+0.25,alpha = transparency_quanti)}
           }
-          
+
           gg_graph <- gg_graph + text_quanti.sup
         } else{
-          gg_graph <- gg_graph + 
+          gg_graph <- gg_graph +
             geom_segment(aes(x=0,y=0,xend=df_quanti.sup[,2], yend=df_quanti.sup[,3]), color = col.quanti.sup)
         }
       }
-      gg_graph <- gg_graph + theme + circle + labs(title = titre, x = lab.x, y= lab.y) 
-      if (is.na(test.invisible[1]) & (isTRUE(lab.var))) gg_graph <- gg_graph + text 
+      gg_graph <- gg_graph + theme + circle + labs(title = titre, x = lab.x, y= lab.y)
+      if (is.na(test.invisible[1]) & (isTRUE(lab.var))) gg_graph <- gg_graph + text
     }
   }
   palette(old.palette)
