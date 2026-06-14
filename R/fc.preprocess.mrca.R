@@ -1,7 +1,6 @@
 #' @title Prétraitement des données pour l'analyse MRCA
 #'
-#' @description
-#' Prépare une matrice binaire (sujets × produits × descripteurs) à partir
+#' @description Prépare une matrice binaire (sujets × produits × descripteurs) à partir
 #' d'un `data.frame` de commentaires libres déjà structuré, en vue d'une
 #' analyse MRCA (Multiple Response Correspondence Analysis). Inclut la
 #' complétion des évaluations manquantes et le filtrage des descripteurs
@@ -21,8 +20,7 @@
 #'   et une colonne par descripteur retenu (valeurs 0/1), trié par sujet
 #'   et produit.
 #'
-#' @details
-#' Les étapes internes sont :
+#' @details Les étapes internes sont :
 #' \enumerate{
 #'   \item Création d'un tableau de contingence (évaluation × descripteur)
 #'     et binarisation (présence/absence).
@@ -52,8 +50,6 @@
 #' }
 #'
 #' @export
-
-
 preprocess.mrca <- function(
     dta,
     # ====== SEUILS DE FILTRAGE SPÉCIFIQUE ======

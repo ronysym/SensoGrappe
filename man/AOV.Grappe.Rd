@@ -35,7 +35,7 @@ AOV.Grappe(data,
 }
 \description{
 ANOVA table with F-tests and p-values using Satterthwaite's method for denominator
-degrees-of-freedom and F-statistic. Models should be fitted with \code{\link[=lmer]{lmer()}} from the lmerTest-package.
+degrees-of-freedom and F-statistic. Models should be fitted with  \code{\link[lmerTest]{lmer}} from the lmerTest-package.
 Then  LS-means differences of LS-mean for all considered factors in the linear mixed model.
 }
 \examples{
