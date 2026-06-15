@@ -70,6 +70,7 @@
 #' }
 #'
 #' @export
+#'
 mr.sig.cell.table <- function(cell.testi,
                               pvalue.threshold1 = 0.05,
                               pvalue.threshold2 = 0.10,
