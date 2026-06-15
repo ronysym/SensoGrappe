@@ -81,4 +81,5 @@ result <- mr.sig.cell.table(cell_results,
                              pvalue.threshold2 = 0.05,
                              title = "Citations significatives par produit")
 }
+
 }

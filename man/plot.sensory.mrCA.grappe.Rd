@@ -189,6 +189,7 @@ plot.sensory.mrCA.grappe(result_mrca,
 plot.sensory.mrCA.grappe(result_mrca,
                          select.desc = c("Fruité", "Sucré", "Acide"))
 }
+
 }
 \seealso{
 \code{\link[ellipse]{ellipse}}, \code{\link[ggrepel]{geom_text_repel}},
