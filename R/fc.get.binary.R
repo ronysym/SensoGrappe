@@ -68,8 +68,8 @@
 #' }
 #'
 #' @export
-#' 
-#' 
+#'
+#'
 
 
 get.binary <- function(
@@ -80,17 +80,17 @@ get.binary <- function(
     specific_threshold = 0.05,
     specific_coverage = 1
 ) {
-  
+
   # =============================================
   # ETAPE 1 : PREPARATION DES DONNEES INITIALES
   # =============================================
-  
+
   evals <- paste(res.algo$subject, res.algo$product, sep = "et")
-  
+
   bin <- table(evals, res.algo$descripteur)
   class(bin) <- "matrix"
   bin[bin > 1] <- 1
-  
+
   lsplit <- gregexpr("et", rownames(bin))
   get.s <- function(ou) {
     ls <- lsplit[[ou]]
@@ -100,7 +100,7 @@ get.binary <- function(
     ls <- lsplit[[ou]]
     substring(rownames(bin)[ou], ls[[1]] + 2)
   }
-  
+
   retour.1 <- data.frame(
     subject = sapply(1:nrow(bin), get.s),
     product = sapply(1:nrow(bin), get.p)
@@ -109,17 +109,17 @@ get.binary <- function(
   rownames(retour.1) <- as.character(1:nrow(retour.1))
   retour.1$subject <- as.factor(retour.1$subject)
   retour.1$product <- as.factor(retour.1$product)
-  
+
   # =============================================
   # ETAPE 2 : COMPLETION DES DONNEES MANQUANTES
   # =============================================
-  
+
   get.Ep <- table(res.algo$subject, res.algo$product) > 0
   Ep <- colSums(get.Ep)
   if (balanced.data) {
     Ep <- rep(nrow(get.Ep), length(Ep))
   }
-  
+
   if (balanced.data & any(as.numeric(table(retour.1$product)) < Ep)) {
     for (pp in levels(retour.1$product)) {
       if (sum(retour.1$product == pp) < Ep[1]) {
@@ -134,34 +134,34 @@ get.binary <- function(
       }
     }
   }
-  
+
   # =============================================
   # ETAPE 3 : FILTRAGE FINAL
   # =============================================
-  
+
   cont <- aggregate(. ~ product, retour.1, sum)
   rownames(cont) <- cont$product
   cont <- cont[, -c(1:2)]
-  
+
   vec_specific <- apply(cont / Ep >= specific_threshold, 2, sum)
   kept_specific <- vec_specific >= specific_coverage
-  
+
   kept <- colnames(cont)[kept_specific]
-  
+
   if (length(kept) == 0) {
     warning("Aucun descripteur conserv\u00e9 avec ces crit\u00e8res !")
   }
-  
+
   kept <- c("subject", "product", kept)
   retour.1 <- retour.1[, colnames(retour.1) %in% kept]
-  
+
   # =============================================
   # ETAPE 4 : RECUPERATION DU NIVEAU COMMUN
   # =============================================
-  
-  
+
+
   vec <- colnames(retour.1)[-c(1:2)]
-  
+
   if (!manual | common.level %in% names(res.algo)) {
     # Recuperation du niveau commun pour chaque descripteur
     get.common <- function(mot) {
@@ -169,13 +169,13 @@ get.binary <- function(
     }
     retour.2 <- unlist(sapply(vec, get.common))
     names(retour.2) <- as.character(seq_along(retour.2))
-    
+
   } else {
     # Niveau commun non disponible : valeur par defaut
     retour.2 <- rep("idem", length(vec))
     names(retour.2) <- as.character(seq_along(retour.2))
   }
-  
+
   return(list(dta = retour.1, common = retour.2))
 }
 
@@ -222,8 +222,6 @@ get.binary <- function(
 #' #> [1,] "rien"  "rien"  "rien"
 #'
 #' @export
-#' 
-
 transfert.MV.BM=function(x,tres=FALSE){
   if (is.na(x)){
     retour=matrix(rep("rien",3),1,3)

@@ -105,9 +105,6 @@
 #' }
 #'
 #' @export
-
-
-
 mr.clust=function(data,transfer=TRUE){
   common=rep("all",ncol(data)-1) # forcing tout le monde car filtre avant
   names(common)=as.character(1:length(common))
@@ -209,7 +206,7 @@ mr.clust=function(data,transfer=TRUE){
       ntour=ntour+1
     }
   }
-  
+
   #### transfer
   if (transfer){
     go=TRUE
@@ -250,7 +247,7 @@ mr.clust=function(data,transfer=TRUE){
     }
   }
   #### end transfer
-  
+
   retour=curclust
   names(retour)=colnames(data)[-1]
   return(list(clust=retour,criterion=mr.chisqNS(vec.cat,curbin)))

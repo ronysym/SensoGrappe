@@ -128,7 +128,8 @@
 #' plot.sensory.mrCA.grappe(result_mrca,
 #'                          select.desc = c("Fruité", "Sucré", "Acide"))
 #' }
-
+#'
+#' @export
 plot.sensory.mrCA.grappe <- function(x,
                                      axes = c(1, 2),
                                      ellipse = TRUE,

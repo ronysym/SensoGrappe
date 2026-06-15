@@ -88,9 +88,6 @@
 #' @importFrom dplyr bind_cols select
 #' @export
 #'
-#'
-
-
 data.preprocess.fc <- function(
     data,
     balanced.data      = TRUE,

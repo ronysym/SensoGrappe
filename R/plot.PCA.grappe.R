@@ -82,9 +82,7 @@
 #' res.pca <- FactoMineR::PCA(decathlon, quanti.sup = 11:12, quali.sup = 13)
 #' plot(res.pca, habillage = 13, cex = 0.8)
 #'
-#' @exportS3Method
-
-
+#' @export
 plot.PCA.grappe <- function (x, axes = c(1, 2), choix = c("ind","var","varcor"),
                              ellipse = NULL, xlim = NULL, ylim = NULL, habillage = "none",
                              col.hab = NULL, col.ind = "black", col.ind.sup = "blue",
