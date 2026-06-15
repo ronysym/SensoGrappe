@@ -1,10 +1,10 @@
-#' @title Prétraitement des données pour l'analyse MRCA
+#' @title Pretraitement des donnees pour l'analyse MRCA
 #'
-#' @description Prépare une matrice binaire (sujets × produits × descripteurs) à partir
-#' d'un `data.frame` de commentaires libres déjà structuré, en vue d'une
+#' @description Prepare une matrice binaire (sujets x produits x descripteurs) a partir
+#' d'un `data.frame` de commentaires libres deja structure, en vue d'une
 #' analyse MRCA (Multiple Response Correspondence Analysis). Inclut la
-#' complétion des évaluations manquantes et le filtrage des descripteurs
-#' peu fréquents.
+#' completion des evaluations manquantes et le filtrage des descripteurs
+#' peu frequents.
 #'
 #'
 #' @usage
@@ -16,31 +16,31 @@
 #'
 #' @param dta Un `data.frame` contenant obligatoirement les colonnes
 #'   `subject`, `product` et `descripteur`.
-#' @param specific_threshold Numérique. Proportion minimale d'observations
+#' @param specific_threshold Numerique. Proportion minimale d'observations
 #'   par rapport au nombre maximal de sujets par produit (Ep) requise dans
-#'   un produit pour qu'un descripteur soit retenu. Par défaut `0.05`
+#'   un produit pour qu'un descripteur soit retenu. Par defaut `0.05`
 #'   (5%).
 #' @param specific_coverage Entier. Nombre minimum de produits devant
-#'   satisfaire `specific_threshold` pour qu'un descripteur soit conservé.
-#'   Par défaut `1`.
+#'   satisfaire `specific_threshold` pour qu'un descripteur soit conserve.
+#'   Par defaut `1`.
 #'
 #' @return Un `data.frame` binaire avec les colonnes `subject`, `product`
-#'   et une colonne par descripteur retenu (valeurs 0/1), trié par sujet
+#'   et une colonne par descripteur retenu (valeurs 0/1), trie par sujet
 #'   et produit.
 #'
-#' @details Les étapes internes sont :
+#' @details Les etapes internes sont :
 #' \enumerate{
-#'   \item Création d'un tableau de contingence (évaluation × descripteur)
-#'     et binarisation (présence/absence).
-#'   \item Complétion des évaluations manquantes : pour chaque produit,
-#'     les sujets absents sont ajoutés avec des vecteurs de zéros. La
-#'     référence `Ep` est fixée au maximum observé sur l'ensemble des
+#'   \item Creation d'un tableau de contingence (evaluation x descripteur)
+#'     et binarisation (presence/absence).
+#'   \item Completion des evaluations manquantes : pour chaque produit,
+#'     les sujets absents sont ajoutes avec des vecteurs de zeros. La
+#'     reference `Ep` est fixee au maximum observe sur l'ensemble des
 #'     produits.
 #'   \item Filtrage des descripteurs selon `specific_threshold` et
 #'     `specific_coverage`.
 #'     }
-#' Contrairement à \code{\link{get.binary}}, cette fonction ne récupère
-#' pas de niveau hiérarchique commun et est dédiée à la préparation pour
+#' Contrairement a \code{\link{get.binary}}, cette fonction ne recupere
+#' pas de niveau hierarchique commun et est dediee a la preparation pour
 #' l'analyse MRCA.
 #'
 #' @seealso \code{\link{data.preprocess.fc}}, \code{\link{get.binary}}
@@ -58,22 +58,22 @@
 #' @export
 preprocess.mrca <- function(
     dta,
-    # ====== SEUILS DE FILTRAGE SPÉCIFIQUE ======
-    # Seuil minimum pour la proportion d'observations par rapport à Ep
+    # ====== SEUILS DE FILTRAGE SPECIFIQUE ======
+    # Seuil minimum pour la proportion d'observations par rapport a Ep
     # (ex: 0.05 = 5% du nombre maximal de sujets par produit)
     specific_threshold = 0.05,
 
-    # Nombre minimum de produits qui doivent respecter le seuil spécifique
+    # Nombre minimum de produits qui doivent respecter le seuil specifique
     # (0 = au moins un produit, 5 = au moins 5 produits)
     specific_coverage = 1
 ) {
 
-  # ── Résolution de l'entrée : accepte un objet fc.preprocess ou un data.frame ──
+  # -- Resolution de l'entree : accepte un objet fc.preprocess ou un data.frame --
   if (inherits(dta, "fc.preprocess")) {
     if (is.null(dta$dta)) {
       stop(paste0(
-        "L'objet 'fc.preprocess' fourni ne contient pas d'élément '$dta'. ",
-        "Vérifiez la sortie de `data.preprocess.fc()`."
+        "L'objet 'fc.preprocess' fourni ne contient pas d'\u00e9l\u00e9ment '$dta'. ",
+        "V\u00e9rifiez la sortie de `data.preprocess.fc()`."
       ))
     }
     dta <- dta$dta
@@ -81,10 +81,10 @@ preprocess.mrca <- function(
 
   # --- dta ---
   if (missing(dta) || is.null(dta)) {
-    stop("L'argument 'dta' est obligatoire et ne peut pas être NULL.")
+    stop("L'argument 'dta' est obligatoire et ne peut pas \u00eatre NULL.")
   }
   if (!is.data.frame(dta)) {
-    stop("L'argument 'dta' doit être un data.frame.")
+    stop("L'argument 'dta' doit \u00eatre un data.frame.")
   }
   if (nrow(dta) == 0) {
     stop("Le data.frame 'dta' est vide (aucune ligne).")
@@ -100,46 +100,46 @@ preprocess.mrca <- function(
     ))
   }
 
-  # --- absence de NA dans les colonnes clés ---
+  # --- absence de NA dans les colonnes cles ---
   na_counts <- sapply(required_cols, function(col) sum(is.na(dta[[col]])))
   if (any(na_counts > 0)) {
     stop(paste0(
-      "Des valeurs manquantes (NA) ont été détectées dans : ",
+      "Des valeurs manquantes (NA) ont \u00e9t\u00e9 d\u00e9tect\u00e9es dans : ",
       paste(names(na_counts[na_counts > 0]), collapse = ", "), "."
     ))
   }
 
-  # --- absence de chaînes vides dans les colonnes clés ---
+  # --- absence de chaines vides dans les colonnes cles ---
   empty_counts <- sapply(required_cols, function(col) {
     sum(trimws(as.character(dta[[col]])) == "")
   })
   if (any(empty_counts > 0)) {
     stop(paste0(
-      "Des valeurs vides ont été détectées dans : ",
+      "Des valeurs vides ont \u00e9t\u00e9 d\u00e9tect\u00e9es dans : ",
       paste(names(empty_counts[empty_counts > 0]), collapse = ", "), "."
     ))
   }
 
   # --- specific_threshold ---
   if (!is.numeric(specific_threshold) || length(specific_threshold) != 1) {
-    stop("'specific_threshold' doit être une valeur numérique scalaire.")
+    stop("'specific_threshold' doit \u00eatre une valeur num\u00e9rique scalaire.")
   }
   if (is.na(specific_threshold)) {
-    stop("'specific_threshold' ne peut pas être NA.")
+    stop("'specific_threshold' ne peut pas \u00eatre NA.")
   }
   if (specific_threshold < 0 || specific_threshold > 1) {
-    stop("'specific_threshold' doit être compris entre 0 et 1.")
+    stop("'specific_threshold' doit \u00eatre compris entre 0 et 1.")
   }
 
   # --- specific_coverage ---
   if (!is.numeric(specific_coverage) || length(specific_coverage) != 1) {
-    stop("'specific_coverage' doit être une valeur numérique scalaire.")
+    stop("'specific_coverage' doit \u00eatre une valeur num\u00e9rique scalaire.")
   }
   if (is.na(specific_coverage)) {
-    stop("'specific_coverage' ne peut pas être NA.")
+    stop("'specific_coverage' ne peut pas \u00eatre NA.")
   }
   if (specific_coverage < 0 || specific_coverage != round(specific_coverage)) {
-    stop("'specific_coverage' doit être un entier positif ou nul.")
+    stop("'specific_coverage' doit \u00eatre un entier positif ou nul.")
   }
 
   # --- au moins 2 produits distincts ---
@@ -147,7 +147,7 @@ preprocess.mrca <- function(
   if (n_products < 2) {
     stop(paste0(
       "'dta' doit contenir au moins 2 produits distincts. ",
-      n_products, " produit(s) détecté(s)."
+      n_products, " produit(s) d\u00e9tect\u00e9(s)."
     ))
   }
 
@@ -157,27 +157,27 @@ preprocess.mrca <- function(
     stop("'dta' doit contenir au moins 1 sujet distinct.")
   }
 
-  # --- cohérence specific_coverage vs nombre de produits ---
+  # --- coherence specific_coverage vs nombre de produits ---
   if (specific_coverage > n_products) {
     stop(paste0(
-      "'specific_coverage' (", specific_coverage, ") ne peut pas dépasser ",
+      "'specific_coverage' (", specific_coverage, ") ne peut pas d\u00e9passer ",
       "le nombre de produits disponibles (", n_products, ")."
     ))
   }
 
-  # --- séparateur "et" dans subject ou product (risque de confusion) ---
+  # --- separateur "et" dans subject ou product (risque de confusion) ---
   if (any(grepl("et", as.character(dta$subject)))) {
     warning(paste0(
-      "Certains identifiants 'subject' contiennent la chaîne \"et\", ",
-      "utilisée comme séparateur interne. ",
+      "Certains identifiants 'subject' contiennent la cha\u00eene \"et\", ",
+      "utilis\u00e9e comme s\u00e9parateur interne. ",
       "Cela peut provoquer des erreurs lors de la reconstruction des identifiants. ",
       "Envisagez de renommer vos sujets."
     ))
   }
   if (any(grepl("et", as.character(dta$product)))) {
     warning(paste0(
-      "Certains identifiants 'product' contiennent la chaîne \"et\", ",
-      "utilisée comme séparateur interne. ",
+      "Certains identifiants 'product' contiennent la cha\u00eene \"et\", ",
+      "utilis\u00e9e comme s\u00e9parateur interne. ",
       "Cela peut provoquer des erreurs lors de la reconstruction des identifiants. ",
       "Envisagez de renommer vos produits."
     ))
@@ -189,16 +189,16 @@ preprocess.mrca <- function(
     stop("'dta' ne contient aucun descripteur distinct.")
   }
   # =============================================
-  # ÉTAPE 1 : PRÉPARATION DES DONNÉES INITIALES
+  # ETAPE 1 : PREPARATION DES DONNEES INITIALES
   # =============================================
 
-  # Combinaison des colonnes subject et product pour créer des évaluations uniques
+  # Combinaison des colonnes subject et product pour creer des evaluations uniques
   evalsi <- paste(dta$subject, dta$product, sep = "et")
 
-  # Création d'un tableau de contingence (produits × descripteurs)
+  # Creation d'un tableau de contingence (produits x descripteurs)
   bin <- table(evalsi, dta$descripteur)
   class(bin) <- "matrix"
-  bin[bin > 1] <- 1  # Assurer l'unicité des descripteurs par évaluation
+  bin[bin > 1] <- 1  # Assurer l'unicit\u00e9 des descripteurs par \u00e9valuation
 
   # Extraction des sujets et produits des noms de lignes (format "subjectetproduct")
   lsplit <- gregexpr("et", rownames(bin))
@@ -211,7 +211,7 @@ preprocess.mrca <- function(
     substring(rownames(bin)[idx], ls[[1]] + 2)
   }
 
-  # Création du data frame initial
+  # Creation du data frame initial
   n_rows <- nrow(bin)
   retouri <- data.frame(
     subject = sapply(1:n_rows, get_subject),
@@ -225,13 +225,13 @@ preprocess.mrca <- function(
   retouri <- retouri[order(retouri$subject, retouri$product), ]
 
   # =============================================
-  # ÉTAPE 2 : COMPLÉTION DES DONNÉES MANQUANTES
+  # ETAPE 2 : COMPLETION DES DONNEES MANQUANTES
   # =============================================
 
   # Calcul du nombre minimal de sujets par produit (Ep)
   get_Ep <- table(dta$subject, dta$product) > 0
   Ep <- colSums(get_Ep)
-  Ep <- rep(max(Ep), length(Ep))  # On prend le maximum comme référence
+  Ep <- rep(max(Ep), length(Ep))  # On prend le maximum comme r\u00e9f\u00e9rence
 
   # Ajout de lignes manquantes pour les produits qui n'ont pas assez d'observations
   if (any(as.numeric(table(retouri$product)) < Ep)) {
@@ -242,7 +242,7 @@ preprocess.mrca <- function(
         miss_subj <- rownames(croise)[croise[, pp] == 0]
 
         if (length(miss_subj) > 0) {
-          # Créer des lignes manquantes avec des 0 pour les descripteurs
+          # Creer des lignes manquantes avec des 0 pour les descripteurs
           n_missing <- length(miss_subj)
           descripteur_cols <- setdiff(colnames(retouri), c("subject", "product"))
           ajout <- data.frame(
@@ -261,22 +261,22 @@ preprocess.mrca <- function(
   }
 
   # =============================================
-  # ÉTAPE 3 : FILTRAGE FINAL (UNIQUEMENT SPÉCIFIQUE)
+  # ETAPE 3 : FILTRAGE FINAL (UNIQUEMENT SPECIFIQUE)
   # =============================================
 
-  # Agrégation des données par produit
+  # Agregation des donnees par produit
   conti <- aggregate(. ~ product, retouri, sum)
   rownames(conti) <- conti$product
   conti <- conti[, -1, drop = FALSE]  # Supprimer la colonne product
 
-  # === FILTRAGE SPÉCIFIQUE UNIQUEMENT ===
+  # === FILTRAGE SPECIFIQUE UNIQUEMENT ===
   # On garde les descripteurs qui apparaissent dans au moins `specific_threshold`
-  # proportion des observations attendues (par rapport à Ep) dans au moins
+  # proportion des observations attendues (par rapport a Ep) dans au moins
   # `specific_coverage` produits.
   vec_specific <- apply(conti / Ep >= specific_threshold, 2, sum)
   kept_specific <- vec_specific >= specific_coverage
 
-  # === SÉLECTION FINALE ===
+  # === SELECTION FINALE ===
   kept_cols <- colnames(conti)[kept_specific]
   kept_cols <- c("subject", "product", kept_cols)
 

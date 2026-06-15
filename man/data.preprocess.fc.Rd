@@ -2,7 +2,7 @@
 % Please edit documentation in R/fc.data.preprocess.R
 \name{data.preprocess.fc}
 \alias{data.preprocess.fc}
-\title{Prétraitement des données de commentaires libres}
+\title{Pretraitement des donnees de commentaires libres}
 \usage{
 data.preprocess.fc(
   data,
@@ -16,59 +16,59 @@ data.preprocess.fc(
 )
 }
 \arguments{
-\item{data}{Un \code{data.frame} contenant les données brutes à traiter.
-Si \code{manual = FALSE}, les colonnes 1, 2, 3 et 6 sont utilisées
+\item{data}{Un \code{data.frame} contenant les donnees brutes a traiter.
+Si \code{manual = FALSE}, les colonnes 1, 2, 3 et 6 sont utilisees
 (format ConsoTextPlorer). Si \code{manual = TRUE}, le data.frame est
-utilisé tel quel.}
+utilise tel quel.}
 
-\item{balanced.data}{Logique. Si \code{TRUE} (défaut), les données sont
-équilibrées en complétant les évaluations manquantes par des zéros.}
+\item{balanced.data}{Logique. Si \code{TRUE} (defaut), les donnees sont
+equilibrees en completant les evaluations manquantes par des zeros.}
 
-\item{tres}{Logique. Si \code{TRUE}, les modificateurs de type \verb{_très} sont
-conservés dans les descripteurs. Par défaut \code{FALSE}.}
+\item{tres}{Logique. Si \code{TRUE}, les modificateurs de type \verb{_tres} sont
+conserves dans les descripteurs. Par defaut \code{FALSE}.}
 
-\item{specific_threshold}{Numérique. Seuil minimum de proportion
+\item{specific_threshold}{Numerique. Seuil minimum de proportion
 d'observations par rapport au nombre attendu de sujets par produit
-(Ep) pour qu'un descripteur soit conservé. Par défaut \code{0.05}.}
+(Ep) pour qu'un descripteur soit conserve. Par defaut \code{0.05}.}
 
 \item{specific_coverage}{Entier. Nombre minimum de produits devant
 respecter le seuil \code{specific_threshold} pour qu'un descripteur soit
-conservé. Par défaut \code{1}.}
+conserve. Par defaut \code{1}.}
 
-\item{manual}{Logique. Si \code{FALSE} (défaut), les données proviennent de
-ConsoTextPlorer et sont transformées via \code{\link{transfert.MV.BM}}.
-Si \code{TRUE}, les données sont supposées déjà mises en forme.}
+\item{manual}{Logique. Si \code{FALSE} (defaut), les donnees proviennent de
+ConsoTextPlorer et sont transformees via \code{\link{transfert.MV.BM}}.
+Si \code{TRUE}, les donnees sont supposees deja mises en forme.}
 
-\item{common.level}{Caractère. Niveau hiérarchique utilisé pour le
-regroupement lors du clustering des descripteurs. Doit être
-\code{"concept"}, \code{"dimension"} ou \code{"any"}. Par défaut \code{"any"}.}
+\item{common.level}{Caractere. Niveau hierarchique utilise pour le
+regroupement lors du clustering des descripteurs. Doit etre
+\code{"concept"}, \code{"dimension"} ou \code{"any"}. Par defaut \code{"any"}.}
 
-\item{clust.descri}{Logique. Si \code{TRUE} (défaut), un clustering des
-descripteurs est réalisé via \code{\link{mr.clust}}.}
+\item{clust.descri}{Logique. Si \code{TRUE} (defaut), un clustering des
+descripteurs est realise via \code{\link{mr.clust}}.}
 }
 \value{
 Une liste contenant :
 \describe{
 \item{\code{dta}}{\code{data.frame} final avec les colonnes \code{product},
-\code{subject} et \code{descripteur} (et le facteur si présent),
-trié par sujet et produit.}
-\item{\code{res.algo}}{\code{data.frame} intermédiaire enrichi des colonnes
+\code{subject} et \code{descripteur} (et le facteur si present),
+trie par sujet et produit.}
+\item{\code{res.algo}}{\code{data.frame} intermediaire enrichi des colonnes
 \code{dimension}, \code{concept}, \code{descripteur} et \code{dimension.concept}.}
-\item{\code{binary}}{Liste retournée par \code{\link{get.binary}},
+\item{\code{binary}}{Liste retournee par \code{\link{get.binary}},
 contenant la matrice binaire (\code{dta}) et le vecteur du niveau
 commun (\code{common}).}
 }
 }
 \description{
-Fonction principale de prétraitement des données issues de l'outil
-ConsoTextPlorer ou d'un codage manuel. Elle réalise la mise en forme,
+Fonction principale de pretraitement des donnees issues de l'outil
+ConsoTextPlorer ou d'un codage manuel. Elle realise la mise en forme,
 la binarisation et le clustering des descripteurs.
 }
 \details{
-Le pipeline complet comprend les étapes suivantes :
+Le pipeline complet comprend les etapes suivantes :
 \enumerate{
-\item Mise en forme des données brutes (si \code{manual = FALSE}).
-\item Décomposition hiérarchique via \code{\link{transfert.MV.BM}}
+\item Mise en forme des donnees brutes (si \code{manual = FALSE}).
+\item Decomposition hierarchique via \code{\link{transfert.MV.BM}}
 (dimension / concept / descripteur).
 \item Binarisation via \code{\link{get.binary}}.
 \item Clustering des descripteurs via \code{\link{mr.clust}}
@@ -76,12 +76,12 @@ Le pipeline complet comprend les étapes suivantes :
 }
 
 Lorsque \code{common.level = "any"}, aucun regroupement par niveau
-hiérarchique n'est appliqué avant le clustering : tous les descripteurs
-sont traités ensemble.
+hierarchique n'est applique avant le clustering : tous les descripteurs
+sont traites ensemble.
 }
 \examples{
 \dontrun{
-# Données issues de ConsoTextPlorer
+# Donnees issues de ConsoTextPlorer
 result <- data.preprocess.fc(
   data              = mon_jeu_de_donnees,
   balanced.data     = TRUE,
@@ -93,12 +93,12 @@ result <- data.preprocess.fc(
   clust.descri      = TRUE
 )
 
-# Accès aux résultats
+# Acces aux resultats
 result$dta       # Table finale
-result$res.algo  # Données intermédiaires
+result$res.algo  # Donnees intermediaires
 result$binary    # Matrice binaire
 
-# Données codées manuellement
+# Donnees codees manuellement
 result_manual <- data.preprocess.fc(
   data         = mon_jeu_manuel,
   manual       = TRUE,

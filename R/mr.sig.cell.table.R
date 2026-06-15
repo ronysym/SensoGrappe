@@ -1,52 +1,52 @@
-#' Tableau des pourcentages de citations avec coloration selon la significativité
+#' Tableau des pourcentages de citations avec coloration selon la significativite
 #'
 #' @description
-#' Génère un tableau HTML interactif (via \pkg{kableExtra}) affichant les
-#' pourcentages de citations par modalité, avec une coloration des cellules
-#' selon la significativité statistique et la direction (sur- ou
-#' sous-représentation) par rapport à un profil nul.
+#' Genere un tableau HTML interactif (via \pkg{kableExtra}) affichant les
+#' pourcentages de citations par modalite, avec une coloration des cellules
+#' selon la significativite statistique et la direction (sur- ou
+#' sous-representation) par rapport a un profil nul.
 #'
 #' @param cell.testi Liste issue d'un test de cellules mrCA. Doit contenir les
-#'   éléments suivants :
+#'   elements suivants :
 #'   \describe{
-#'     \item{\code{percent.derived.cont}}{Matrice des pourcentages dérivés de
-#'       la table de contingence (lignes = modalités, colonnes = produits).}
-#'     \item{\code{p.value}}{Matrice des p-valeurs associées à chaque cellule.}
-#'     \item{\code{original.cont}}{Matrice des effectifs observés.}
+#'     \item{\code{percent.derived.cont}}{Matrice des pourcentages derives de
+#'       la table de contingence (lignes = modalites, colonnes = produits).}
+#'     \item{\code{p.value}}{Matrice des p-valeurs associees a chaque cellule.}
+#'     \item{\code{original.cont}}{Matrice des effectifs observes.}
 #'     \item{\code{null.cont}}{Matrice des effectifs attendus sous H0.}
 #'   }
-#' @param pvalue.threshold1 Numérique. Seuil de significativité strict.
-#'   Les cellules avec p ≤ \code{pvalue.threshold1} sont colorées avec la
-#'   couleur forte (rouge foncé ou bleu foncé). Par défaut \code{0.05}.
-#' @param pvalue.threshold2 Numérique. Seuil de significativité modéré.
-#'   Les cellules avec \code{pvalue.threshold1} < p ≤ \code{pvalue.threshold2}
-#'   sont colorées avec la couleur légère (rouge clair ou bleu clair).
-#'   Par défaut \code{0.10}.
-#' @param title Chaîne de caractères. Titre du tableau. Par défaut
-#'   \code{"Pourcentages des citations par modalité"}.
+#' @param pvalue.threshold1 Numerique. Seuil de significativite strict.
+#'   Les cellules avec p <= \code{pvalue.threshold1} sont colorees avec la
+#'   couleur forte (rouge fonce ou bleu fonce). Par defaut \code{0.05}.
+#' @param pvalue.threshold2 Numerique. Seuil de significativite modere.
+#'   Les cellules avec \code{pvalue.threshold1} < p <= \code{pvalue.threshold2}
+#'   sont colorees avec la couleur legere (rouge clair ou bleu clair).
+#'   Par defaut \code{0.10}.
+#' @param title Chaine de caracteres. Titre du tableau. Par defaut
+#'   \code{"Pourcentages des citations par modalite"}.
 #'
-#' @return Une liste nommée contenant deux éléments :
+#' @return Une liste nommee contenant deux elements :
 #'   \describe{
-#'     \item{\code{table}}{Objet \code{kableExtra} — tableau principal HTML
-#'       avec cellules colorées et défilement vertical.}
-#'     \item{\code{legend}}{Objet \code{kableExtra} — tableau de légende HTML
+#'     \item{\code{table}}{Objet \code{kableExtra} -- tableau principal HTML
+#'       avec cellules colorees et defilement vertical.}
+#'     \item{\code{legend}}{Objet \code{kableExtra} -- tableau de legende HTML
 #'       expliquant le code couleur.}
 #'   }
 #'
 #' @details
-#' Le code couleur appliqué aux cellules est le suivant :
+#' Le code couleur applique aux cellules est le suivant :
 #' \itemize{
-#'   \item \strong{Rouge foncé} (\code{#D32F2F}) : sur-représentation
-#'     significative (p ≤ \code{pvalue.threshold1}).
-#'   \item \strong{Rouge clair} (\code{#FFCDD2}) : sur-représentation
-#'     tendancielle (\code{pvalue.threshold1} < p ≤ \code{pvalue.threshold2}).
-#'   \item \strong{Bleu foncé} (\code{#1565C0}) : sous-représentation
-#'     significative (p ≤ \code{pvalue.threshold1}).
-#'   \item \strong{Bleu clair} (\code{#BBDEFB}) : sous-représentation
-#'     tendancielle (\code{pvalue.threshold1} < p ≤ \code{pvalue.threshold2}).
+#'   \item \strong{Rouge fonce} (\code{#D32F2F}) : sur-representation
+#'     significative (p <= \code{pvalue.threshold1}).
+#'   \item \strong{Rouge clair} (\code{#FFCDD2}) : sur-representation
+#'     tendancielle (\code{pvalue.threshold1} < p <= \code{pvalue.threshold2}).
+#'   \item \strong{Bleu fonce} (\code{#1565C0}) : sous-representation
+#'     significative (p <= \code{pvalue.threshold1}).
+#'   \item \strong{Bleu clair} (\code{#BBDEFB}) : sous-representation
+#'     tendancielle (\code{pvalue.threshold1} < p <= \code{pvalue.threshold2}).
 #' }
-#' La direction (sur/sous) est déterminée par la différence entre les effectifs
-#' observés (\code{original.cont}) et les effectifs attendus sous H0
+#' La direction (sur/sous) est determinee par la difference entre les effectifs
+#' observes (\code{original.cont}) et les effectifs attendus sous H0
 #' (\code{null.cont}).
 #'
 #' @import knitr
@@ -54,15 +54,15 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Après avoir calculé les tests de cellules :
+#' # Apres avoir calcule les tests de cellules :
 #' cell_results <- mr.cell.test(mrca_object)
 #'
-#' # Tableau avec seuils par défaut
+#' # Tableau avec seuils par defaut
 #' result <- mr.sig.cell.table(cell_results)
 #' result$table    # afficher le tableau
-#' result$legend   # afficher la légende
+#' result$legend   # afficher la legende
 #'
-#' # Tableau avec seuils personnalisés et titre
+#' # Tableau avec seuils personnalises et titre
 #' result <- mr.sig.cell.table(cell_results,
 #'                              pvalue.threshold1 = 0.01,
 #'                              pvalue.threshold2 = 0.05,
@@ -72,14 +72,14 @@
 mr.sig.cell.table <- function(cell.testi,
                               pvalue.threshold1 = 0.05,
                               pvalue.threshold2 = 0.10,
-                              title = "Pourcentages des citations par modalité") {
+                              title = "Pourcentages des citations par modalit\u00e9") {
 
-  # Contrôle de classe
+  # Controle de classe
   if (!inherits(cell.testi, "sensory.mr.sig.cell")) {
     stop(
-      "L'argument 'cell.testi' doit être un objet de classe 'sensory.mr.sig.cell'.\n",
-      "  Classe reçue : ", paste(class(cell.testi), collapse = ", "), "\n",
-      "  Utilisez sensory.mr.sig.cell() pour générer un objet valide.",
+      "L'argument 'cell.testi' doit \u00eatre un objet de classe 'sensory.mr.sig.cell'.\n",
+      "  Classe re\u00e7ue : ", paste(class(cell.testi), collapse = ", "), "\n",
+      "  Utilisez sensory.mr.sig.cell() pour g\u00e9n\u00e9rer un objet valide.",
       call. = FALSE
     )
   }
@@ -128,7 +128,7 @@ mr.sig.cell.table <- function(cell.testi,
           }
         }
 
-        kableExtra::cell_spec(val,          # <-- qualifié
+        kableExtra::cell_spec(val,          # <-- qualifi\u00e9
                               format     = "html",
                               background = bg,
                               color      = txtcol,
@@ -139,12 +139,12 @@ mr.sig.cell.table <- function(cell.testi,
     check.names = FALSE
   )
 
-  main_table <- knitr::kable(colored_df,   # <-- qualifié
+  main_table <- knitr::kable(colored_df,   # <-- qualifi\u00e9
                              format  = "html",
                              escape  = FALSE,
                              caption = title,
                              align   = "c") |>
-    kableExtra::kable_styling(             # <-- qualifié
+    kableExtra::kable_styling(             # <-- qualifi\u00e9
       bootstrap_options = c("hover", "condensed", "bordered"),
       full_width        = FALSE,
       font_size         = 11,
@@ -154,17 +154,17 @@ mr.sig.cell.table <- function(cell.testi,
     kableExtra::scroll_box(width = "100%", height = "600px")
 
   legend_data <- data.frame(
-    Couleur = c("■", "■", "■", "■"),
+    Couleur = c("\u25a0", "\u25a0", "\u25a0", "\u25a0"),
     Description = c(
-      paste0("Sur-représenté  — p ≤ ", pvalue.threshold1),
-      paste0("Sur-représenté  — ", pvalue.threshold1, " < p ≤ ", pvalue.threshold2),
-      paste0("Sous-représenté — p ≤ ", pvalue.threshold1),
-      paste0("Sous-représenté — ", pvalue.threshold1, " < p ≤ ", pvalue.threshold2)
+      paste0("Sur-repr\u00e9sent\u00e9  \u2014 p \u2264 ", pvalue.threshold1),
+      paste0("Sur-repr\u00e9sent\u00e9  \u2014 ", pvalue.threshold1, " < p \u2264 ", pvalue.threshold2),
+      paste0("Sous-repr\u00e9sent\u00e9 \u2014 p \u2264 ", pvalue.threshold1),
+      paste0("Sous-repr\u00e9sent\u00e9 \u2014 ", pvalue.threshold1, " < p \u2264 ", pvalue.threshold2)
     ),
     stringsAsFactors = FALSE
   )
 
-  legend_table <- knitr::kable(legend_data,  # <-- qualifié
+  legend_table <- knitr::kable(legend_data,  # <-- qualifi\u00e9
                                format    = "html",
                                escape    = FALSE,
                                align     = c("c", "l"),

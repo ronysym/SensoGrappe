@@ -75,11 +75,11 @@
 #'
 #' @author Francois Husson \email{francois.husson@institut-agro.fr}
 #'
-#' @seealso \code{\link{PCA}}
+#' @seealso \code{\link[FactoMineR]{PCA}}
 #'
 #' @examples
-#' data(decathlon)
-#' res.pca <- PCA(decathlon, quanti.sup = 11:12, quali.sup = 13)
+#' data("decathlon", package = "FactoMineR")
+#' res.pca <- FactoMineR::PCA(decathlon, quanti.sup = 11:12, quali.sup = 13)
 #' plot(res.pca, habillage = 13, cex = 0.8)
 #'
 #' @exportS3Method

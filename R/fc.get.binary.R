@@ -1,55 +1,55 @@
-#' Binarisation des données de commentaires libres
+#' Binarisation des donnees de commentaires libres
 #'
 #' @description
-#' Construit une matrice binaire (sujets × produits × descripteurs) à
-#' partir des données de commentaires libres, avec complétion des
-#' évaluations manquantes et filtrage des descripteurs peu fréquents.
+#' Construit une matrice binaire (sujets x produits x descripteurs) a
+#' partir des donnees de commentaires libres, avec completion des
+#' evaluations manquantes et filtrage des descripteurs peu frequents.
 #'
 #' @param res.algo Un `data.frame` contenant au minimum les colonnes
-#'   `subject`, `product` et `descripteur`. Peut également contenir
+#'   `subject`, `product` et `descripteur`. Peut egalement contenir
 #'   `dimension`, `concept` et `dimension.concept` selon le flux de
 #'   traitement.
-#' @param common.level Caractère. Niveau hiérarchique à récupérer pour
-#'   chaque descripteur conservé. Doit être `"concept"`, `"dimension"`
-#'   ou `"any"`. Par défaut `"concept"`.
-#' @param balanced.data Logique. Si `TRUE` (défaut), les données sont
-#'   équilibrées : les évaluations manquantes sont complétées par des
-#'   lignes de zéros.
-#' @param manual Logique. Si `TRUE`, indique que les données proviennent
-#'   d'un codage manuel. Influence la récupération du niveau commun.
-#'   Par défaut `FALSE`.
-#' @param specific_threshold Numérique. Proportion minimale d'observations
-#'   par rapport à Ep requise dans un produit pour qu'un descripteur soit
-#'   considéré comme présent dans ce produit. Par défaut `0.05`.
+#' @param common.level Caractere. Niveau hierarchique a recuperer pour
+#'   chaque descripteur conserve. Doit etre `"concept"`, `"dimension"`
+#'   ou `"any"`. Par defaut `"concept"`.
+#' @param balanced.data Logique. Si `TRUE` (defaut), les donnees sont
+#'   equilibrees : les evaluations manquantes sont completees par des
+#'   lignes de zeros.
+#' @param manual Logique. Si `TRUE`, indique que les donnees proviennent
+#'   d'un codage manuel. Influence la recuperation du niveau commun.
+#'   Par defaut `FALSE`.
+#' @param specific_threshold Numerique. Proportion minimale d'observations
+#'   par rapport a Ep requise dans un produit pour qu'un descripteur soit
+#'   considere comme present dans ce produit. Par defaut `0.05`.
 #' @param specific_coverage Entier. Nombre minimum de produits devant
-#'   satisfaire `specific_threshold` pour qu'un descripteur soit conservé.
-#'   Par défaut `1`.
+#'   satisfaire `specific_threshold` pour qu'un descripteur soit conserve.
+#'   Par defaut `1`.
 #'
 #' @return Une liste contenant :
 #'   \describe{
 #'     \item{`dta`}{`data.frame` binaire avec les colonnes `subject`,
-#'       `product` et une colonne par descripteur conservé (valeurs 0/1).}
-#'     \item{`common`}{Vecteur nommé donnant le niveau commun
-#'       (selon `common.level`) de chaque descripteur conservé.
+#'       `product` et une colonne par descripteur conserve (valeurs 0/1).}
+#'     \item{`common`}{Vecteur nomme donnant le niveau commun
+#'       (selon `common.level`) de chaque descripteur conserve.
 #'       Vaut `"idem"` pour tous les descripteurs si le niveau n'est
 #'       pas disponible.}
 #'   }
 #'
 #' @details
-#' Les étapes internes sont :
+#' Les etapes internes sont :
 #' \enumerate{
-#'   \item Création d'un tableau de contingence (évaluation × descripteur)
-#'     et binarisation (présence/absence).
-#'   \item Complétion des évaluations manquantes (si `balanced.data = TRUE`).
+#'   \item Creation d'un tableau de contingence (evaluation x descripteur)
+#'     et binarisation (presence/absence).
+#'   \item Completion des evaluations manquantes (si `balanced.data = TRUE`).
 #'   \item Filtrage des descripteurs selon `specific_threshold` et
 #'     `specific_coverage`.
-#'   \item Récupération du niveau hiérarchique commun pour chaque
+#'   \item Recuperation du niveau hierarchique commun pour chaque
 #'     descripteur retenu.
 #' }
 #'
-#' Le paramètre `Ep` correspond au nombre de sujets attendus par produit :
-#' en mode équilibré (`balanced.data = TRUE`), il est fixé au nombre total
-#' de sujets ; sinon, il reflète les observations réelles.
+#' Le parametre `Ep` correspond au nombre de sujets attendus par produit :
+#' en mode equilibre (`balanced.data = TRUE`), il est fixe au nombre total
+#' de sujets ; sinon, il reflete les observations reelles.
 #'
 #' @seealso \code{\link{data.preprocess.fc}}, \code{\link{transfert.MV.BM}}
 #'
@@ -82,7 +82,7 @@ get.binary <- function(
 ) {
   
   # =============================================
-  # ÉTAPE 1 : PRÉPARATION DES DONNÉES INITIALES
+  # ETAPE 1 : PREPARATION DES DONNEES INITIALES
   # =============================================
   
   evals <- paste(res.algo$subject, res.algo$product, sep = "et")
@@ -111,7 +111,7 @@ get.binary <- function(
   retour.1$product <- as.factor(retour.1$product)
   
   # =============================================
-  # ÉTAPE 2 : COMPLÉTION DES DONNÉES MANQUANTES
+  # ETAPE 2 : COMPLETION DES DONNEES MANQUANTES
   # =============================================
   
   get.Ep <- table(res.algo$subject, res.algo$product) > 0
@@ -136,7 +136,7 @@ get.binary <- function(
   }
   
   # =============================================
-  # ÉTAPE 3 : FILTRAGE FINAL
+  # ETAPE 3 : FILTRAGE FINAL
   # =============================================
   
   cont <- aggregate(. ~ product, retour.1, sum)
@@ -149,21 +149,21 @@ get.binary <- function(
   kept <- colnames(cont)[kept_specific]
   
   if (length(kept) == 0) {
-    warning("Aucun descripteur conservé avec ces critères !")
+    warning("Aucun descripteur conserv\u00e9 avec ces crit\u00e8res !")
   }
   
   kept <- c("subject", "product", kept)
   retour.1 <- retour.1[, colnames(retour.1) %in% kept]
   
   # =============================================
-  # ÉTAPE 4 : RÉCUPÉRATION DU NIVEAU COMMUN
+  # ETAPE 4 : RECUPERATION DU NIVEAU COMMUN
   # =============================================
   
   
   vec <- colnames(retour.1)[-c(1:2)]
   
   if (!manual | common.level %in% names(res.algo)) {
-    # Récupération du niveau commun pour chaque descripteur
+    # Recuperation du niveau commun pour chaque descripteur
     get.common <- function(mot) {
       res.algo[match(mot, res.algo$descripteur), common.level]
     }
@@ -171,7 +171,7 @@ get.binary <- function(
     names(retour.2) <- as.character(seq_along(retour.2))
     
   } else {
-    # Niveau commun non disponible : valeur par défaut
+    # Niveau commun non disponible : valeur par defaut
     retour.2 <- rep("idem", length(vec))
     names(retour.2) <- as.character(seq_along(retour.2))
   }
@@ -181,41 +181,41 @@ get.binary <- function(
 
 
 ##################################################
-#' Décomposition d'un descripteur hiérarchique (format ConsoTextPlorer)
+#' Decomposition d'un descripteur hierarchique (format ConsoTextPlorer)
 #'
 #' @description
-#' Décompose une chaîne de caractères au format ConsoTextPlorer
+#' Decompose une chaine de caracteres au format ConsoTextPlorer
 #' (`"dimension:concept/descripteur"`) en ses trois composantes :
 #' dimension, concept et descripteur.
 #'
-#' @param x Caractère. Chaîne à décomposer, au format
-#'   `"dimension:concept/descripteur"`. Peut être `NA`.
-#' @param tres Logique. Si `FALSE` (défaut), le suffixe `_très` est
-#'   supprimé des composantes `concept` et `descripteur`.
-#'   Si `TRUE`, il est conservé.
+#' @param x Caractere. Chaine a decomposer, au format
+#'   `"dimension:concept/descripteur"`. Peut etre `NA`.
+#' @param tres Logique. Si `FALSE` (defaut), le suffixe `_tres` est
+#'   supprime des composantes `concept` et `descripteur`.
+#'   Si `TRUE`, il est conserve.
 #'
-#' @return Une matrice de dimensions 1 × 3 contenant, dans l'ordre :
+#' @return Une matrice de dimensions 1 x 3 contenant, dans l'ordre :
 #'   `dimension`, `concept`, `descripteur`. Si `x` est `NA`, retourne
 #'   la matrice `c("rien", "rien", "rien")`.
 #'
 #' @details
-#' Le format attendu est `"dimension:concept/descripteur"`, où :
+#' Le format attendu est `"dimension:concept/descripteur"`, ou :
 #' \itemize{
-#'   \item `":"` sépare la dimension du concept ;
-#'   \item `"/"` sépare le concept du descripteur.
+#'   \item `":"` separe la dimension du concept ;
+#'   \item `"/"` separe le concept du descripteur.
 #' }
-#' Si le descripteur vaut `"_"`, il est remplacé par la valeur du concept.
+#' Si le descripteur vaut `"_"`, il est remplace par la valeur du concept.
 #'
 #' @seealso \code{\link{get.binary}}, \code{\link{data.preprocess.fc}}
 #'
 #' @examples
-#' transfert.MV.BM("texture:croustillant/très_croustillant", tres = FALSE)
+#' transfert.MV.BM("texture:croustillant/tres_croustillant", tres = FALSE)
 #' #>      [,1]      [,2]           [,3]
 #' #> [1,] "texture" "croustillant" "croustillant"
 #'
-#' transfert.MV.BM("texture:croustillant/très_croustillant", tres = TRUE)
+#' transfert.MV.BM("texture:croustillant/tres_croustillant", tres = TRUE)
 #' #>      [,1]      [,2]           [,3]
-#' #> [1,] "texture" "croustillant" "très_croustillant"
+#' #> [1,] "texture" "croustillant" "tres_croustillant"
 #'
 #' transfert.MV.BM(NA)
 #' #>      [,1]    [,2]    [,3]
@@ -237,8 +237,8 @@ transfert.MV.BM=function(x,tres=FALSE){
       descripteur=concept
     }
     if (!tres){
-      descripteur=gsub("_très","",descripteur)
-      concept=gsub("_très","",concept)
+      descripteur=gsub("_tr\u00e8s","",descripteur)
+      concept=gsub("_tr\u00e8s","",concept)
     }
     retour=matrix(c(dimension,concept,descripteur),1,3)
   }

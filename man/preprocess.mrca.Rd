@@ -2,7 +2,7 @@
 % Please edit documentation in R/fc.preprocess.mrca.R
 \name{preprocess.mrca}
 \alias{preprocess.mrca}
-\title{Prétraitement des données pour l'analyse MRCA}
+\title{Pretraitement des donnees pour l'analyse MRCA}
 \usage{
 preprocess.mrca(
  dta,
@@ -13,41 +13,41 @@ preprocess.mrca(
 \item{dta}{Un \code{data.frame} contenant obligatoirement les colonnes
 \code{subject}, \code{product} et \code{descripteur}.}
 
-\item{specific_threshold}{Numérique. Proportion minimale d'observations
+\item{specific_threshold}{Numerique. Proportion minimale d'observations
 par rapport au nombre maximal de sujets par produit (Ep) requise dans
-un produit pour qu'un descripteur soit retenu. Par défaut \code{0.05}
+un produit pour qu'un descripteur soit retenu. Par defaut \code{0.05}
 (5\%).}
 
 \item{specific_coverage}{Entier. Nombre minimum de produits devant
-satisfaire \code{specific_threshold} pour qu'un descripteur soit conservé.
-Par défaut \code{1}.}
+satisfaire \code{specific_threshold} pour qu'un descripteur soit conserve.
+Par defaut \code{1}.}
 }
 \value{
 Un \code{data.frame} binaire avec les colonnes \code{subject}, \code{product}
-et une colonne par descripteur retenu (valeurs 0/1), trié par sujet
+et une colonne par descripteur retenu (valeurs 0/1), trie par sujet
 et produit.
 }
 \description{
-Prépare une matrice binaire (sujets × produits × descripteurs) à partir
-d'un \code{data.frame} de commentaires libres déjà structuré, en vue d'une
+Prepare une matrice binaire (sujets x produits x descripteurs) a partir
+d'un \code{data.frame} de commentaires libres deja structure, en vue d'une
 analyse MRCA (Multiple Response Correspondence Analysis). Inclut la
-complétion des évaluations manquantes et le filtrage des descripteurs
-peu fréquents.
+completion des evaluations manquantes et le filtrage des descripteurs
+peu frequents.
 }
 \details{
-Les étapes internes sont :
+Les etapes internes sont :
 \enumerate{
-\item Création d'un tableau de contingence (évaluation × descripteur)
-et binarisation (présence/absence).
-\item Complétion des évaluations manquantes : pour chaque produit,
-les sujets absents sont ajoutés avec des vecteurs de zéros. La
-référence \code{Ep} est fixée au maximum observé sur l'ensemble des
+\item Creation d'un tableau de contingence (evaluation x descripteur)
+et binarisation (presence/absence).
+\item Completion des evaluations manquantes : pour chaque produit,
+les sujets absents sont ajoutes avec des vecteurs de zeros. La
+reference \code{Ep} est fixee au maximum observe sur l'ensemble des
 produits.
 \item Filtrage des descripteurs selon \code{specific_threshold} et
 \code{specific_coverage}.
 }
-Contrairement à \code{\link{get.binary}}, cette fonction ne récupère
-pas de niveau hiérarchique commun et est dédiée à la préparation pour
+Contrairement a \code{\link{get.binary}}, cette fonction ne recupere
+pas de niveau hierarchique commun et est dediee a la preparation pour
 l'analyse MRCA.
 }
 \examples{

@@ -12,7 +12,7 @@
 #'
 #' @seealso [AOV.Grappe()]
 #'
-#' @import car
+#' @rawNamespace import(car, except = ellipse)
 #'
 #' @examples
 #' data(rose)

@@ -137,7 +137,7 @@ mr.clust=function(data,transfer=TRUE){
       stop("contingency data are not composed of only ones and zeros")
     }
   }
-  if (class(common)=="character"){
+  if (is.character(common)){
     if (length(common)!=(ncol(data)-1)){
       stop("length(common) must equal (ncol(data)-1)")
     }
@@ -156,7 +156,7 @@ mr.clust=function(data,transfer=TRUE){
     return(list(statistic=statistic,p.value=p.value))
   }
   evaluate.chisqNS=function(cat,rep){
-    if (class(cat)!="factor"){
+    if (!is.factor(cat)){
       stop("cat must be a factor")
     }
     rep=as.factor(rep)

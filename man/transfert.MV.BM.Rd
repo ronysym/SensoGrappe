@@ -2,44 +2,44 @@
 % Please edit documentation in R/fc.get.binary.R
 \name{transfert.MV.BM}
 \alias{transfert.MV.BM}
-\title{Décomposition d'un descripteur hiérarchique (format ConsoTextPlorer)}
+\title{Decomposition d'un descripteur hierarchique (format ConsoTextPlorer)}
 \usage{
 transfert.MV.BM(x, tres = FALSE)
 }
 \arguments{
-\item{x}{Caractère. Chaîne à décomposer, au format
-\code{"dimension:concept/descripteur"}. Peut être \code{NA}.}
+\item{x}{Caractere. Chaine a decomposer, au format
+\code{"dimension:concept/descripteur"}. Peut etre \code{NA}.}
 
-\item{tres}{Logique. Si \code{FALSE} (défaut), le suffixe \verb{_très} est
-supprimé des composantes \code{concept} et \code{descripteur}.
-Si \code{TRUE}, il est conservé.}
+\item{tres}{Logique. Si \code{FALSE} (defaut), le suffixe \verb{_tres} est
+supprime des composantes \code{concept} et \code{descripteur}.
+Si \code{TRUE}, il est conserve.}
 }
 \value{
-Une matrice de dimensions 1 × 3 contenant, dans l'ordre :
+Une matrice de dimensions 1 x 3 contenant, dans l'ordre :
 \code{dimension}, \code{concept}, \code{descripteur}. Si \code{x} est \code{NA}, retourne
 la matrice \code{c("rien", "rien", "rien")}.
 }
 \description{
-Décompose une chaîne de caractères au format ConsoTextPlorer
+Decompose une chaine de caracteres au format ConsoTextPlorer
 (\code{"dimension:concept/descripteur"}) en ses trois composantes :
 dimension, concept et descripteur.
 }
 \details{
-Le format attendu est \code{"dimension:concept/descripteur"}, où :
+Le format attendu est \code{"dimension:concept/descripteur"}, ou :
 \itemize{
-\item \code{":"} sépare la dimension du concept ;
-\item \code{"/"} sépare le concept du descripteur.
+\item \code{":"} separe la dimension du concept ;
+\item \code{"/"} separe le concept du descripteur.
 }
-Si le descripteur vaut \code{"_"}, il est remplacé par la valeur du concept.
+Si le descripteur vaut \code{"_"}, il est remplace par la valeur du concept.
 }
 \examples{
-transfert.MV.BM("texture:croustillant/très_croustillant", tres = FALSE)
+transfert.MV.BM("texture:croustillant/tres_croustillant", tres = FALSE)
 #>      [,1]      [,2]           [,3]
 #> [1,] "texture" "croustillant" "croustillant"
 
-transfert.MV.BM("texture:croustillant/très_croustillant", tres = TRUE)
+transfert.MV.BM("texture:croustillant/tres_croustillant", tres = TRUE)
 #>      [,1]      [,2]           [,3]
-#> [1,] "texture" "croustillant" "très_croustillant"
+#> [1,] "texture" "croustillant" "tres_croustillant"
 
 transfert.MV.BM(NA)
 #>      [,1]    [,2]    [,3]

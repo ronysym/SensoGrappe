@@ -8,10 +8,11 @@ Description: Several functions useful in Sensory evaluations such as ANOVA
     and HRATA.
 License: GPL-3
 Depends: 
-    R (>= 4.0.0)
+    R (>= 4.1.0)
 Imports: 
     agricolae,
     car,
+    dplyr,
     ellipse,
     factoextra,
     FactoMineR,

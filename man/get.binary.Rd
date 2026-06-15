@@ -2,7 +2,7 @@
 % Please edit documentation in R/fc.get.binary.R
 \name{get.binary}
 \alias{get.binary}
-\title{Binarisation des données de commentaires libres}
+\title{Binarisation des donnees de commentaires libres}
 \usage{
 get.binary(
   res.algo,
@@ -15,61 +15,61 @@ get.binary(
 }
 \arguments{
 \item{res.algo}{Un \code{data.frame} contenant au minimum les colonnes
-\code{subject}, \code{product} et \code{descripteur}. Peut également contenir
+\code{subject}, \code{product} et \code{descripteur}. Peut egalement contenir
 \code{dimension}, \code{concept} et \code{dimension.concept} selon le flux de
 traitement.}
 
-\item{common.level}{Caractère. Niveau hiérarchique à récupérer pour
-chaque descripteur conservé. Doit être \code{"concept"}, \code{"dimension"}
-ou \code{"any"}. Par défaut \code{"concept"}.}
+\item{common.level}{Caractere. Niveau hierarchique a recuperer pour
+chaque descripteur conserve. Doit etre \code{"concept"}, \code{"dimension"}
+ou \code{"any"}. Par defaut \code{"concept"}.}
 
-\item{balanced.data}{Logique. Si \code{TRUE} (défaut), les données sont
-équilibrées : les évaluations manquantes sont complétées par des
-lignes de zéros.}
+\item{balanced.data}{Logique. Si \code{TRUE} (defaut), les donnees sont
+equilibrees : les evaluations manquantes sont completees par des
+lignes de zeros.}
 
-\item{manual}{Logique. Si \code{TRUE}, indique que les données proviennent
-d'un codage manuel. Influence la récupération du niveau commun.
-Par défaut \code{FALSE}.}
+\item{manual}{Logique. Si \code{TRUE}, indique que les donnees proviennent
+d'un codage manuel. Influence la recuperation du niveau commun.
+Par defaut \code{FALSE}.}
 
-\item{specific_threshold}{Numérique. Proportion minimale d'observations
-par rapport à Ep requise dans un produit pour qu'un descripteur soit
-considéré comme présent dans ce produit. Par défaut \code{0.05}.}
+\item{specific_threshold}{Numerique. Proportion minimale d'observations
+par rapport a Ep requise dans un produit pour qu'un descripteur soit
+considere comme present dans ce produit. Par defaut \code{0.05}.}
 
 \item{specific_coverage}{Entier. Nombre minimum de produits devant
-satisfaire \code{specific_threshold} pour qu'un descripteur soit conservé.
-Par défaut \code{1}.}
+satisfaire \code{specific_threshold} pour qu'un descripteur soit conserve.
+Par defaut \code{1}.}
 }
 \value{
 Une liste contenant :
 \describe{
 \item{\code{dta}}{\code{data.frame} binaire avec les colonnes \code{subject},
-\code{product} et une colonne par descripteur conservé (valeurs 0/1).}
-\item{\code{common}}{Vecteur nommé donnant le niveau commun
-(selon \code{common.level}) de chaque descripteur conservé.
+\code{product} et une colonne par descripteur conserve (valeurs 0/1).}
+\item{\code{common}}{Vecteur nomme donnant le niveau commun
+(selon \code{common.level}) de chaque descripteur conserve.
 Vaut \code{"idem"} pour tous les descripteurs si le niveau n'est
 pas disponible.}
 }
 }
 \description{
-Construit une matrice binaire (sujets × produits × descripteurs) à
-partir des données de commentaires libres, avec complétion des
-évaluations manquantes et filtrage des descripteurs peu fréquents.
+Construit une matrice binaire (sujets x produits x descripteurs) a
+partir des donnees de commentaires libres, avec completion des
+evaluations manquantes et filtrage des descripteurs peu frequents.
 }
 \details{
-Les étapes internes sont :
+Les etapes internes sont :
 \enumerate{
-\item Création d'un tableau de contingence (évaluation × descripteur)
-et binarisation (présence/absence).
-\item Complétion des évaluations manquantes (si \code{balanced.data = TRUE}).
+\item Creation d'un tableau de contingence (evaluation x descripteur)
+et binarisation (presence/absence).
+\item Completion des evaluations manquantes (si \code{balanced.data = TRUE}).
 \item Filtrage des descripteurs selon \code{specific_threshold} et
 \code{specific_coverage}.
-\item Récupération du niveau hiérarchique commun pour chaque
+\item Recuperation du niveau hierarchique commun pour chaque
 descripteur retenu.
 }
 
-Le paramètre \code{Ep} correspond au nombre de sujets attendus par produit :
-en mode équilibré (\code{balanced.data = TRUE}), il est fixé au nombre total
-de sujets ; sinon, il reflète les observations réelles.
+Le parametre \code{Ep} correspond au nombre de sujets attendus par produit :
+en mode equilibre (\code{balanced.data = TRUE}), il est fixe au nombre total
+de sujets ; sinon, il reflete les observations reelles.
 }
 \examples{
 \dontrun{

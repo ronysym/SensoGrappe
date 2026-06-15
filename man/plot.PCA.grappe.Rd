@@ -136,13 +136,13 @@ segment.lty = 1, segment.lwd = 0, circle.lty = 1, circle.lwd = 0,\cr
 circle.color = "black", low.col.quanti = "blue", high.col.quanti = "red3"
 }
 \examples{
-data(decathlon)
-res.pca <- PCA(decathlon, quanti.sup = 11:12, quali.sup = 13)
+data("decathlon", package = "FactoMineR")
+res.pca <- FactoMineR::PCA(decathlon, quanti.sup = 11:12, quali.sup = 13)
 plot(res.pca, habillage = 13, cex = 0.8)
 
 }
 \seealso{
-\code{\link{PCA}}
+\code{\link[FactoMineR]{PCA}}
 }
 \author{
 Francois Husson \email{francois.husson@institut-agro.fr}

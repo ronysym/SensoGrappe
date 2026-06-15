@@ -27,7 +27,8 @@
 #' @param		graphic logical. plot the graph (FALSE by default)
 #' @param   verbose logical. show the progression of the analysis TRUE by Default
 #'
-#' @import  utils lmerTest agricolae stringr lme4
+#' @import  utils lmerTest agricolae stringr
+#' @rawNamespace import(lme4, except = lmer)
 #' @rawNamespace import(stats, except=step)
 #'
 #'
