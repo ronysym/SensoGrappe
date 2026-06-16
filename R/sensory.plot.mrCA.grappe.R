@@ -130,7 +130,7 @@
 #' }
 #'
 #' @export
-plot.sensory.mrCA.grappe <- function(x,
+sensory.plot.mrCA.grappe <- function(x,
                                      axes = c(1, 2),
                                      ellipse = TRUE,
                                      alpha.total.bootstrap.test = 0.05,
