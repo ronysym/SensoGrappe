@@ -34,14 +34,18 @@ graph.AOV(
 \item{AOV.res}{an object results from \code{\link[=AOV.Grappe]{AOV.Grappe()}}}
 
 \item{factor}{factor is used to precise the fixed factor(s) to be presented. NULL by default
-- factor=NULL then all factors are presented
-- to represent one factor use  factor="ProductName"
-- to represent several factos use   factor=c("ProductName", "Block", "Seance")}
+\itemize{
+\item factor=NULL then all factors are presented
+\item to represent one factor use  factor="ProductName"
+\item to represent several factos use   factor=c("ProductName", "Block", "Seance")
+}}
 
 \item{attribute}{attribute is used to precise the attribute(s) to be presented. NULL by default
-- Attribute=NULL then all attributes are presented
-- to represent one attribute use  attribute="S_sucre"
-- to represent several attributes use   attribute=c("S_sucre", "A_abricot")}
+\itemize{
+\item Attribute=NULL then all attributes are presented
+\item to represent one attribute use  attribute="S_sucre"
+\item to represent several attributes use   attribute=c("S_sucre", "A_abricot")
+}}
 
 \item{horizontal}{logical.draw horizontal graphs ( FALSE by default)}
 
@@ -54,7 +58,9 @@ graph.AOV(
 \item{ymax}{maximum  for Y (by default the max of Y is used)}
 
 \item{angle.x}{angle for labels on X (by default 0) but 45 is better for long labels
-- if horizontal=TRUE, then labels are oriented automatically}
+\itemize{
+\item if horizontal=TRUE, then labels are oriented automatically
+}}
 
 \item{angle.y}{angle for labels on y (by default 0)}
 
