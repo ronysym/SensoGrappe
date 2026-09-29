@@ -30,7 +30,7 @@
 #' @import  utils lmerTest agricolae stringr
 #' @rawNamespace import(lme4, except = lmer)
 #' @rawNamespace import(stats, except=step)
-#'
+#' @importFrom reformulas findbars
 #'
 #' @examples
 #' data(wine)

@@ -18,12 +18,14 @@ AOV.Grappe(data,
 \item{column}{number of the columns on which ANOVA are performed}
 
 \item{model}{anova model
-- Syntax for fixed factor                :    facteur_A
-- Syntax for Random factorr            : (1|facteur_A)
-- Fixed factors                          : facteur1 + facteur2
-- Interaction for Fixed Factors    : facteur1 + facteur2 + facteur1:facteur2
-- Fixed factor & Random factor    : facteur1 + (1|facteur2)
-- Interaction with random          : facteur1 + (1|facteur2)+ (1|facteur1:facteur2)"}
+\itemize{
+\item Syntax for fixed factor                :    facteur_A
+\item Syntax for Random factorr            : (1|facteur_A)
+\item Fixed factors                          : facteur1 + facteur2
+\item Interaction for Fixed Factors    : facteur1 + facteur2 + facteur1:facteur2
+\item Fixed factor & Random factor    : facteur1 + (1|facteur2)
+\item Interaction with random          : facteur1 + (1|facteur2)+ (1|facteur1:facteur2)"
+}}
 
 \item{reducF}{logical.reduce fixed effect structure (FALSE by default). To be used only for very complex models}
 
